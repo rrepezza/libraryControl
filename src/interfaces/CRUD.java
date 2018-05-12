@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package interfaces;
-import classededados.Contato;
 import java.util.ArrayList;
 
 /**
@@ -12,8 +11,9 @@ import java.util.ArrayList;
  * @author eugeniojulio
  */
 public interface CRUD {
-    void incluir(Contato objeto) throws Exception;
-    public ArrayList<Contato> recuperar() throws Exception;
-    public void excluir(String nome) throws Exception;
+    public void incluir() throws Exception;
+    public ArrayList<Object> consultar() throws Exception;
+    public void excluir(int id) throws Exception;
+    public void alterar(int id) throws Exception;
     
 }
