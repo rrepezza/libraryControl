@@ -27,17 +27,151 @@ public class Inicio extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanelCadastrosBasicos = new javax.swing.JPanel();
+        jButtonLivro = new javax.swing.JButton();
+        jButtonExemplar = new javax.swing.JButton();
+        jButtonEditora = new javax.swing.JButton();
+        jButtonAutor = new javax.swing.JButton();
+        jButtonProfessor = new javax.swing.JButton();
+        jButtonAluno = new javax.swing.JButton();
+        jPanelUltimasReservas = new javax.swing.JPanel();
+        jPanelUltimosEmprestimos = new javax.swing.JPanel();
+        jButtonNovoEmprestimo = new javax.swing.JButton();
+        jButtonNovaReserva = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("libraryControl");
+        setResizable(false);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "libraryControl", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+
+        jPanelCadastrosBasicos.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cadastros Básicos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
+        jPanelCadastrosBasicos.setToolTipText("Cadastros Básicos");
+
+        jButtonLivro.setText("Livro");
+
+        jButtonExemplar.setText("Exemplar");
+
+        jButtonEditora.setText("Editora");
+
+        jButtonAutor.setText("Autor");
+
+        jButtonProfessor.setText("Professor");
+
+        jButtonAluno.setText("Aluno");
+
+        javax.swing.GroupLayout jPanelCadastrosBasicosLayout = new javax.swing.GroupLayout(jPanelCadastrosBasicos);
+        jPanelCadastrosBasicos.setLayout(jPanelCadastrosBasicosLayout);
+        jPanelCadastrosBasicosLayout.setHorizontalGroup(
+            jPanelCadastrosBasicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCadastrosBasicosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonLivro)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonExemplar)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonEditora)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonAutor)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonProfessor)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonAluno)
+                .addContainerGap(190, Short.MAX_VALUE))
+        );
+        jPanelCadastrosBasicosLayout.setVerticalGroup(
+            jPanelCadastrosBasicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCadastrosBasicosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelCadastrosBasicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonLivro)
+                    .addComponent(jButtonExemplar)
+                    .addComponent(jButtonEditora)
+                    .addComponent(jButtonAutor)
+                    .addComponent(jButtonProfessor)
+                    .addComponent(jButtonAluno))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanelUltimasReservas.setBorder(javax.swing.BorderFactory.createTitledBorder("Últimas Reservas"));
+
+        javax.swing.GroupLayout jPanelUltimasReservasLayout = new javax.swing.GroupLayout(jPanelUltimasReservas);
+        jPanelUltimasReservas.setLayout(jPanelUltimasReservasLayout);
+        jPanelUltimasReservasLayout.setHorizontalGroup(
+            jPanelUltimasReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanelUltimasReservasLayout.setVerticalGroup(
+            jPanelUltimasReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 177, Short.MAX_VALUE)
+        );
+
+        jPanelUltimosEmprestimos.setBorder(javax.swing.BorderFactory.createTitledBorder("Últimos Empréstimos"));
+
+        javax.swing.GroupLayout jPanelUltimosEmprestimosLayout = new javax.swing.GroupLayout(jPanelUltimosEmprestimos);
+        jPanelUltimosEmprestimos.setLayout(jPanelUltimosEmprestimosLayout);
+        jPanelUltimosEmprestimosLayout.setHorizontalGroup(
+            jPanelUltimosEmprestimosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanelUltimosEmprestimosLayout.setVerticalGroup(
+            jPanelUltimosEmprestimosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 177, Short.MAX_VALUE)
+        );
+
+        jButtonNovoEmprestimo.setText("Novo Empréstimo");
+
+        jButtonNovaReserva.setText("Nova Reserva");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelCadastrosBasicos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelUltimosEmprestimos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelUltimasReservas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonNovaReserva)
+                            .addComponent(jButtonNovoEmprestimo))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelCadastrosBasicos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelUltimasReservas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonNovaReserva)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelUltimosEmprestimos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonNovoEmprestimo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -79,5 +213,17 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAluno;
+    private javax.swing.JButton jButtonAutor;
+    private javax.swing.JButton jButtonEditora;
+    private javax.swing.JButton jButtonExemplar;
+    private javax.swing.JButton jButtonLivro;
+    private javax.swing.JButton jButtonNovaReserva;
+    private javax.swing.JButton jButtonNovoEmprestimo;
+    private javax.swing.JButton jButtonProfessor;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanelCadastrosBasicos;
+    private javax.swing.JPanel jPanelUltimasReservas;
+    private javax.swing.JPanel jPanelUltimosEmprestimos;
     // End of variables declaration//GEN-END:variables
 }
