@@ -5,22 +5,23 @@
  */
 package dao;
 
-import interfaces.CRUD;
+import classes.Livro;
+import interfaces.ILivroDAO;
 import java.util.ArrayList;
 
 /**
  *
  * @author repez
  */
-public class LivroDAO implements CRUD {
+public class LivroDAO implements ILivroDAO {
 
     @Override
-    public void incluir() throws Exception {
+    public void incluir(Livro livro) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<Object> consultar() throws Exception {
+    public ArrayList<Livro> consultar() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -33,5 +34,6 @@ public class LivroDAO implements CRUD {
     public void alterar(int id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     
 }

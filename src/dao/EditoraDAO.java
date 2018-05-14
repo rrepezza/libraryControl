@@ -5,24 +5,15 @@
  */
 package dao;
 
-import interfaces.CRUD;
+import classes.Editora;
+import interfaces.IEditoraDAO;
 import java.util.ArrayList;
 
 /**
  *
  * @author repez
  */
-public class EditoraDAO implements CRUD {
-
-    @Override
-    public void incluir() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Object> consultar() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+public class EditoraDAO implements IEditoraDAO {
 
     @Override
     public void excluir(int id) throws Exception {
@@ -31,6 +22,16 @@ public class EditoraDAO implements CRUD {
 
     @Override
     public void alterar(int id) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void incluir(Editora editora) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Editora> consultar() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

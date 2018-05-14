@@ -5,22 +5,18 @@
  */
 package dao;
 
-import interfaces.CRUD;
+import classes.Autor;
+import interfaces.IAutorDAO;
 import java.util.ArrayList;
 
 /**
  *
  * @author repez
  */
-public class AutorDAO implements CRUD {
+public class AutorDAO implements IAutorDAO {
 
     @Override
-    public void incluir() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Object> consultar() throws Exception {
+    public ArrayList<Autor> consultar() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -31,6 +27,11 @@ public class AutorDAO implements CRUD {
 
     @Override
     public void alterar(int id) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void incluir(Autor autor) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

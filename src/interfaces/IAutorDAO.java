@@ -4,16 +4,17 @@
  * and open the template in the editor.
  */
 package interfaces;
+
+import classes.Autor;
 import java.util.ArrayList;
 
 /**
  *
- * @author eugeniojulio
+ * @author repez
  */
-public interface CRUD {
-    public void incluir() throws Exception;
-    public ArrayList<Object> consultar() throws Exception;
+public interface IAutorDAO {
+    public void incluir(Autor autor) throws Exception;
+    public ArrayList<Autor> consultar() throws Exception;
     public void excluir(int id) throws Exception;
     public void alterar(int id) throws Exception;
-    
 }
