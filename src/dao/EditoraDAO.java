@@ -8,7 +8,9 @@ package dao;
 import classes.Editora;
 import interfaces.IEditoraDAO;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 /**
@@ -25,7 +27,22 @@ public class EditoraDAO implements IEditoraDAO {
 
     @Override
     public void excluir(int id) throws Exception {
-        
+        try{
+            ArrayList<Editora> listaDeEditoras = this.consultar();
+            //cria o arquivo
+            FileWriter fw = new FileWriter(nomeDoArquivo);
+            //Criar o buffer do arquivo
+            BufferedWriter bw =new BufferedWriter(fw);
+            for(int pos=0;pos<listaDeEditoras.size();pos++){
+                Editora temp = listaDeEditoras.get(pos);
+                if(!(temp.getId() == id)){
+                   bw.write(temp.desmaterializar()+"\n");
+                }
+            }
+            bw.close();
+        }catch(Exception erro){
+            throw erro;
+        }
     }
 
     @Override
@@ -35,13 +52,24 @@ public class EditoraDAO implements IEditoraDAO {
 
     @Override
     public void incluir(Editora editora) throws Exception {
-        
+        try{
+            //cria o arquivo
+            FileWriter fw = new FileWriter(nomeDoArquivo,true);
+            //Criar o buffer do arquivo
+            BufferedWriter bw = new BufferedWriter(fw);
+            //Escreve no arquivo
+            bw.write(editora.desmaterializar() + "\n");
+            //fecha o arquivo
+            bw.close();		
+        }catch(Exception erro){
+            throw erro;
+        }
     }
 
     @Override
     public ArrayList<Editora> consultar() throws Exception {
         try {
-            ArrayList editoras = new ArrayList();
+            ArrayList<Editora> editoras = new ArrayList<Editora>();
             FileReader fr = new FileReader(nomeDoArquivo);
    
             BufferedReader br  = new BufferedReader(fr);

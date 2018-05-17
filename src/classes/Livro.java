@@ -106,19 +106,20 @@ public class Livro implements TratamentoDeDados {
     
     @Override
     public void materializar(String dados) throws Exception {
-        String vetorString[] = dados.split(";");
-        if(vetorString.length != 8) 
-            throw new Exception("Faltam dados na String");
-        
-        setId(Integer.parseInt(vetorString[0]));
-        setIsbn(Integer.parseInt(vetorString[1]));
-        setTitulo(vetorString[2]);
-        setFotoDaCapa(vetorString[3]);
-        getAutor().setId(Integer.parseInt(vetorString[4]));
-        getAutor().setNome(vetorString[5]);
-        getEditora().setId(Integer.parseInt(vetorString[6]));
-        getEditora().setNome(vetorString[7]);
+        if(!dados.isEmpty()) {
+            String vetorString[] = dados.split(";");
+            if(vetorString.length != 8) 
+                throw new Exception("Faltam dados na String");
 
+            setId(Integer.parseInt(vetorString[0]));
+            setIsbn(Integer.parseInt(vetorString[1]));
+            setTitulo(vetorString[2]);
+            setFotoDaCapa(vetorString[3]);
+            getAutor().setId(Integer.parseInt(vetorString[4]));
+            getAutor().setNome(vetorString[5]);
+            getEditora().setId(Integer.parseInt(vetorString[6]));
+            getEditora().setNome(vetorString[7]);
+        }
     }
 
     @Override

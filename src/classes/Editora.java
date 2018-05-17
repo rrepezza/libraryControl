@@ -55,13 +55,15 @@ public class Editora implements TratamentoDeDados {
 
     @Override
     public void materializar(String dados) throws Exception {
-        String vetorString[] = dados.split(";");
-        if(vetorString.length != 2) 
-            throw new Exception("Faltam dados na String");
-        
-        id = Integer.parseInt(vetorString[0]);
-        nome = vetorString[1];
-        
+        if(!dados.isEmpty()) {
+            String vetorString[] = dados.split(";");
+            if(vetorString.length != 2) {
+                throw new Exception("Faltam dados na String");
+            }
+
+            id = Integer.parseInt(vetorString[0]);
+            nome = vetorString[1];
+        }
     }
 
     @Override

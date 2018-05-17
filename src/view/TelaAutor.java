@@ -5,8 +5,8 @@
  */
 package view;
 
-import classes.Editora;
-import dao.EditoraDAO;
+import classes.Autor;
+import dao.AutorDAO;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -15,34 +15,34 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author repez
  */
-public class TelaEditora extends javax.swing.JFrame {
+public class TelaAutor extends javax.swing.JFrame {
     
-    String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
-
+    String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
+    
     /**
-     * Creates new form TelaEditora
+     * Creates new form TelaAutor
      */
-    public TelaEditora() {
+    public TelaAutor() {
         initComponents();
-        showEditoras();
+        showAutores();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
-    //Método para buscar as editoras e preencher a jTable inicialmente
-    public void showEditoras() {
+    //Método para buscar os autores e preencher a jTable inicialmente
+    public void showAutores() {
         try {
-            ArrayList<Editora> listagem;
-            EditoraDAO e = new EditoraDAO(editora_db);
-            listagem = e.consultar();
+            ArrayList<Autor> listagem;
+            AutorDAO a = new AutorDAO(autor_db);
+            listagem = a.consultar();
             
-            DefaultTableModel modelo = (DefaultTableModel) jTableEditoras.getModel();
+            DefaultTableModel modelo = (DefaultTableModel) jTableAutores.getModel();
             
             modelo.setNumRows(listagem.size());
             
             for (int i = 0; i < listagem.size(); i++) {
-                Editora edt = listagem.get(i);
-                modelo.setValueAt(edt.getId(), i, 0);
-                modelo.setValueAt(edt.getNome(), i, 1);
+                Autor aut = listagem.get(i);
+                modelo.setValueAt(aut.getId(), i, 0);
+                modelo.setValueAt(aut.getNome(), i, 1);
             }
             
         } catch (Exception erro) {
@@ -63,28 +63,28 @@ public class TelaEditora extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jTextFieldAutorId = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jButtonCadastrarEditora = new javax.swing.JButton();
-        jTextFieldEditoraId = new javax.swing.JTextField();
-        jTextFieldEditoraNome = new javax.swing.JTextField();
+        jTextFieldAutorNome = new javax.swing.JTextField();
+        jButtonCadastrarAutor = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableEditoras = new javax.swing.JTable();
+        jTableAutores = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Editoras", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Autores", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Nova Editora"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Novo Autor"));
 
         jLabel1.setText("ID:");
 
         jLabel2.setText("Nome:");
 
-        jButtonCadastrarEditora.setText("Cadastrar");
-        jButtonCadastrarEditora.addActionListener(new java.awt.event.ActionListener() {
+        jButtonCadastrarAutor.setText("Cadastrar");
+        jButtonCadastrarAutor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCadastrarEditoraActionPerformed(evt);
+                jButtonCadastrarAutorActionPerformed(evt);
             }
         });
 
@@ -95,15 +95,15 @@ public class TelaEditora extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonCadastrarEditora)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(25, 25, 25)
-                        .addComponent(jTextFieldEditoraNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(41, 41, 41)
-                        .addComponent(jTextFieldEditoraId, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextFieldAutorId, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldAutorNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButtonCadastrarAutor))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -112,19 +112,19 @@ public class TelaEditora extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextFieldEditoraId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldAutorId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextFieldEditoraNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldAutorNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButtonCadastrarEditora)
+                .addComponent(jButtonCadastrarAutor)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Editoras Cadastradas"));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Autores Cadastrados"));
 
-        jTableEditoras.setModel(new javax.swing.table.DefaultTableModel(
+        jTableAutores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -132,13 +132,13 @@ public class TelaEditora extends javax.swing.JFrame {
                 "ID", "Nome"
             }
         ));
-        jScrollPane1.setViewportView(jTableEditoras);
+        jScrollPane1.setViewportView(jTableAutores);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 687, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,33 +188,33 @@ public class TelaEditora extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonCadastrarEditoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarEditoraActionPerformed
+    private void jButtonCadastrarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarAutorActionPerformed
         // TODO add your handling code here:
         try {
-            int id = Integer.parseInt(jTextFieldEditoraId.getText());
-            String nome = jTextFieldEditoraNome.getText();
+            int id = Integer.parseInt(jTextFieldAutorId.getText());
+            String nome = jTextFieldAutorNome.getText();
             
-            if(!jTextFieldEditoraId.getText().isEmpty() && !jTextFieldEditoraNome.getText().isEmpty()) {
-                Editora nova = new Editora(id, nome);
+            if(!jTextFieldAutorId.getText().isEmpty() && !jTextFieldAutorNome.getText().isEmpty()) {
+                Autor novo = new Autor(id, nome);
             
-                EditoraDAO query = new EditoraDAO(editora_db);
+                AutorDAO query = new AutorDAO(autor_db);
 
-                query.incluir(nova);
+                query.incluir(novo);
 
-                jTextFieldEditoraId.setText("");
-                jTextFieldEditoraNome.setText("");
+                jTextFieldAutorId.setText("");
+                jTextFieldAutorNome.setText("");
 
                 
             } else {
-                JOptionPane.showMessageDialog(rootPane, "Preencha os dois campos antes de tentar inserir uma Editora.");
+                JOptionPane.showMessageDialog(rootPane, "Preencha os dois campos antes de tentar inserir um Autor.");
             }
             
-            showEditoras();
+            showAutores();
         } catch (Exception erro) {
             erro.printStackTrace();
             JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
-    }//GEN-LAST:event_jButtonCadastrarEditoraActionPerformed
+    }//GEN-LAST:event_jButtonCadastrarAutorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,34 +233,34 @@ public class TelaEditora extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaEditora.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaAutor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaEditora.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaAutor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaEditora.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaAutor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaEditora.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelaAutor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelaEditora().setVisible(true);
+                new TelaAutor().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonCadastrarEditora;
+    private javax.swing.JButton jButtonCadastrarAutor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTableEditoras;
-    private javax.swing.JTextField jTextFieldEditoraId;
-    private javax.swing.JTextField jTextFieldEditoraNome;
+    private javax.swing.JTable jTableAutores;
+    private javax.swing.JTextField jTextFieldAutorId;
+    private javax.swing.JTextField jTextFieldAutorNome;
     // End of variables declaration//GEN-END:variables
 }

@@ -54,8 +54,18 @@ public class Inicio extends javax.swing.JFrame {
         jButtonExemplar.setText("Exemplar");
 
         jButtonEditora.setText("Editora");
+        jButtonEditora.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditoraActionPerformed(evt);
+            }
+        });
 
         jButtonAutor.setText("Autor");
+        jButtonAutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAutorActionPerformed(evt);
+            }
+        });
 
         jButtonProfessor.setText("Professor");
 
@@ -176,6 +186,20 @@ public class Inicio extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonEditoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditoraActionPerformed
+        // TODO add your handling code here:
+        TelaEditora e = new TelaEditora();
+        e.setVisible(true);
+        //dispose();
+    }//GEN-LAST:event_jButtonEditoraActionPerformed
+
+    private void jButtonAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAutorActionPerformed
+        // TODO add your handling code here:
+        TelaAutor a = new TelaAutor();
+        a.setVisible(true);
+        //dispose();
+    }//GEN-LAST:event_jButtonAutorActionPerformed
 
     /**
      * @param args the command line arguments
