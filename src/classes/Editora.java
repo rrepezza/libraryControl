@@ -16,6 +16,10 @@ public class Editora implements TratamentoDeDados {
     private int id;
     private String nome;
     
+    public Editora() {
+        
+    }
+    
     public Editora(int id, String nome) {
         this.id = id;
         this.nome = nome;

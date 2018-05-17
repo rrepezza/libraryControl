@@ -7,6 +7,8 @@ package dao;
 
 import classes.Editora;
 import interfaces.IEditoraDAO;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 /**
@@ -14,6 +16,12 @@ import java.util.ArrayList;
  * @author repez
  */
 public class EditoraDAO implements IEditoraDAO {
+    
+    private String nomeDoArquivo = "";
+    
+    public EditoraDAO(String nomeDoArquivo){
+        this.nomeDoArquivo = nomeDoArquivo;
+    }
 
     @Override
     public void excluir(int id) throws Exception {
@@ -32,9 +40,23 @@ public class EditoraDAO implements IEditoraDAO {
 
     @Override
     public ArrayList<Editora> consultar() throws Exception {
-        ArrayList editoras = new ArrayList();
-        
-        return editoras;
-    }
+        try {
+            ArrayList editoras = new ArrayList();
+            FileReader fr = new FileReader(nomeDoArquivo);
+   
+            BufferedReader br  = new BufferedReader(fr);
+            String linha = "";
+            while((linha=br.readLine()) != null){
+                Editora editora = new Editora();
+                editora.materializar(linha);
+                editoras.add(editora);
+            }
+            br.close();
+            return editoras;
+        } catch (Exception erro) {
+            throw erro;
+        }
+         
+    }   
     
 }
