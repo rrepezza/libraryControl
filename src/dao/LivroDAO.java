@@ -7,7 +7,9 @@ package dao;
 
 import classes.Livro;
 import interfaces.ILivroDAO;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
@@ -41,9 +43,25 @@ public class LivroDAO implements ILivroDAO {
 
     @Override
     public ArrayList<Livro> consultar() throws Exception {
-        ArrayList livros = new ArrayList();
         
-        return livros;
+        try {
+            ArrayList<Livro> livros = new ArrayList<Livro>();
+            FileReader fr = new FileReader(nomeDoArquivo);
+   
+            BufferedReader br  = new BufferedReader(fr);
+            String linha = "";
+            while((linha=br.readLine()) != null){
+                
+                Livro livro = new Livro();
+                livro.materializar(linha);
+                livros.add(livro);
+            }
+            br.close();
+            return livros;
+        } catch (Exception erro) {
+            throw erro;
+        }
+        
     }
 
     @Override

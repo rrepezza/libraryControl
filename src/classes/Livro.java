@@ -124,22 +124,26 @@ public class Livro implements TratamentoDeDados {
             if(vetorString.length != 8) {
                 throw new Exception("Faltam dados na String");
             }
-                
-            setId(Integer.parseInt(vetorString[0]));
-            setIsbn(Integer.parseInt(vetorString[1]));
-            setTitulo(vetorString[2]);
-            setFotoDaCapa(vetorString[3]);
-            getAutor().setId(Integer.parseInt(vetorString[4]));
-            getAutor().setNome(vetorString[5]);
-            getEditora().setId(Integer.parseInt(vetorString[6]));
-            getEditora().setNome(vetorString[7]);
-          
+            
+            id = Integer.parseInt(vetorString[0]);
+            isbn = Integer.parseInt(vetorString[1]);
+            titulo = vetorString[2];
+            fotoDaCapa = vetorString[3];
+            Autor autor = new Autor(Integer.parseInt(vetorString[4]), vetorString[5]);
+            //autor.setId(Integer.parseInt(vetorString[4]));
+            //autor.setNome(vetorString[5]);
+            this.autor = autor;
+            Editora editora = new Editora(Integer.parseInt(vetorString[6]), vetorString[7]);
+            //editora.setId(Integer.parseInt(vetorString[6]));
+            //editora.setNome(vetorString[7]);
+            this.editora = editora;
+            
         }
     }
 
     @Override
     public String desmaterializar() {
-        String saida = getId() + ";" + getIsbn() + ";" + getTitulo() + ";" + getFotoDaCapa();
+        String saida = getId() + ";" + getIsbn() + ";" + getTitulo() + ";" + getFotoDaCapa() + ";";
         saida += getAutor().desmaterializar() + ";";
         saida += getEditora().desmaterializar();
         return saida;

@@ -49,9 +49,7 @@ public class TelaLivro extends javax.swing.JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
         try {
-            
-            
-            
+
             AutorDAO ad = new AutorDAO(autor_db);
             EditoraDAO ed = new EditoraDAO(editora_db);
             
@@ -76,9 +74,7 @@ public class TelaLivro extends javax.swing.JFrame {
             
             DefaultComboBoxModel m_editoras = new DefaultComboBoxModel(editoras);
             jComboBoLivroEditora.setModel(m_editoras);
-            
-            
-            
+  
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(rootPane, erro.getMessage());
             erro.printStackTrace();
