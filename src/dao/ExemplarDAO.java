@@ -8,7 +8,9 @@ package dao;
 import classes.Exemplar;
 import interfaces.IExemplarDAO;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 /**
@@ -25,6 +27,18 @@ public class ExemplarDAO implements IExemplarDAO {
 
     @Override
     public void incluir(Exemplar exemplar) throws Exception {
+        try{
+            //cria o arquivo
+            FileWriter fw = new FileWriter(nomeDoArquivo,true);
+            //Criar o buffer do arquivo
+            BufferedWriter bw = new BufferedWriter(fw);
+            //Escreve no arquivo
+            bw.write(exemplar.desmaterializar() + "\n");
+            //fecha o arquivo
+            bw.close();		
+        }catch(Exception erro){
+            throw erro;
+        }
     
     }
 

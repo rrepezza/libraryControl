@@ -73,6 +73,24 @@ public class LivroDAO implements ILivroDAO {
     public void alterar(int id) throws Exception {
         
     }
+    
+    public Livro getLivroById(int id) throws Exception {
+        
+        Livro livro = null;
+        
+        ArrayList<Livro> listaLivros = this.consultar();
+        
+        for (int i = 0; i < listaLivros.size(); i++) {
+            Livro temp = listaLivros.get(i);
+            
+            if(temp.getId() == id) {
+                livro = temp;
+            }
+            
+        }
+        
+        return livro;
+    }
 
     
 }

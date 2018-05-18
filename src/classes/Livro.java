@@ -129,14 +129,14 @@ public class Livro implements TratamentoDeDados {
             isbn = Integer.parseInt(vetorString[1]);
             titulo = vetorString[2];
             fotoDaCapa = vetorString[3];
-            Autor autor = new Autor(Integer.parseInt(vetorString[4]), vetorString[5]);
+            Autor autorRetornado = new Autor(Integer.parseInt(vetorString[4]), vetorString[5]);
             //autor.setId(Integer.parseInt(vetorString[4]));
             //autor.setNome(vetorString[5]);
-            this.autor = autor;
-            Editora editora = new Editora(Integer.parseInt(vetorString[6]), vetorString[7]);
+            autor = autorRetornado;
+            Editora editoraRetornada = new Editora(Integer.parseInt(vetorString[6]), vetorString[7]);
             //editora.setId(Integer.parseInt(vetorString[6]));
             //editora.setNome(vetorString[7]);
-            this.editora = editora;
+            editora = editoraRetornada;
             
         }
     }

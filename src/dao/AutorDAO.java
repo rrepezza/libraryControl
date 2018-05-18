@@ -101,9 +101,7 @@ public class AutorDAO implements IAutorDAO {
             }
             System.out.println(temp.getNome());
             if(nome.equals(temp.getNome())) {
-                autor = new Autor(temp.getId(), temp.getNome());
-                //autor.setId(temp.getId());
-                //autor.setNome(temp.getNome());
+                autor = temp;
             }
             
         }
