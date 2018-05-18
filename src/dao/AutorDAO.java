@@ -87,4 +87,22 @@ public class AutorDAO implements IAutorDAO {
         }
     }
     
+    public Autor getAutorByNome(String nome) throws Exception {
+        Autor autor = null;
+        
+        ArrayList<Autor> listaAutores = this.consultar();
+        
+        for (int i = 0; i < listaAutores.size(); i++) {
+            Autor temp = listaAutores.get(i);
+            
+            if(nome.equals(autor.getNome())) {
+                autor.setId(temp.getId());
+                autor.setNome(temp.getNome());
+            }
+            
+        }
+        
+        return autor;
+    }
+    
 }

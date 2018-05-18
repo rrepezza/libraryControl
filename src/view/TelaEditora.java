@@ -17,7 +17,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaEditora extends javax.swing.JFrame {
     
-    String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+    //String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+    String editora_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
 
     /**
      * Creates new form TelaEditora
@@ -192,7 +193,7 @@ public class TelaEditora extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             int id = Integer.parseInt(jTextFieldEditoraId.getText());
-            String nome = jTextFieldEditoraNome.getText();
+            String nome = jTextFieldEditoraNome.getText().toUpperCase();
             
             if(!jTextFieldEditoraId.getText().isEmpty() && !jTextFieldEditoraNome.getText().isEmpty()) {
                 Editora nova = new Editora(id, nome);

@@ -50,6 +50,11 @@ public class Inicio extends javax.swing.JFrame {
         jPanelCadastrosBasicos.setToolTipText("Cadastros Básicos");
 
         jButtonLivro.setText("Livro");
+        jButtonLivro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLivroActionPerformed(evt);
+            }
+        });
 
         jButtonExemplar.setText("Exemplar");
 
@@ -200,6 +205,12 @@ public class Inicio extends javax.swing.JFrame {
         a.setVisible(true);
         //dispose();
     }//GEN-LAST:event_jButtonAutorActionPerformed
+
+    private void jButtonLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLivroActionPerformed
+        // TODO add your handling code here:
+        TelaLivro l = new TelaLivro();
+        l.setVisible(true);
+    }//GEN-LAST:event_jButtonLivroActionPerformed
 
     /**
      * @param args the command line arguments

@@ -8,6 +8,7 @@ package view;
 import classes.Autor;
 import dao.AutorDAO;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -17,7 +18,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaAutor extends javax.swing.JFrame {
     
-    String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
+    //String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
+    String autor_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
     
     /**
      * Creates new form TelaAutor
@@ -192,7 +194,7 @@ public class TelaAutor extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             int id = Integer.parseInt(jTextFieldAutorId.getText());
-            String nome = jTextFieldAutorNome.getText();
+            String nome = jTextFieldAutorNome.getText().toUpperCase();
             
             if(!jTextFieldAutorId.getText().isEmpty() && !jTextFieldAutorNome.getText().isEmpty()) {
                 Autor novo = new Autor(id, nome);

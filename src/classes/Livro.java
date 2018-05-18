@@ -108,9 +108,17 @@ public class Livro implements TratamentoDeDados {
     public void materializar(String dados) throws Exception {
         if(!dados.isEmpty()) {
             String vetorString[] = dados.split(";");
-            if(vetorString.length != 8) 
+            if(vetorString.length != 6) 
                 throw new Exception("Faltam dados na String");
 
+            setId(Integer.parseInt(vetorString[0]));
+            setIsbn(Integer.parseInt(vetorString[1]));
+            setTitulo(vetorString[2]);
+            setFotoDaCapa(vetorString[3]);
+            getAutor().setNome(vetorString[4]);
+            getEditora().setNome(vetorString[5]);
+            
+            /* old
             setId(Integer.parseInt(vetorString[0]));
             setIsbn(Integer.parseInt(vetorString[1]));
             setTitulo(vetorString[2]);
@@ -119,14 +127,15 @@ public class Livro implements TratamentoDeDados {
             getAutor().setNome(vetorString[5]);
             getEditora().setId(Integer.parseInt(vetorString[6]));
             getEditora().setNome(vetorString[7]);
+            */
         }
     }
 
     @Override
     public String desmaterializar() {
         String saida = getId() + ";" + getIsbn() + ";" + getTitulo() + ";" + getFotoDaCapa();
-        saida += getAutor().desmaterializar() + ";";
-        saida += getEditora().desmaterializar();
+        saida += getAutor().getNome() + ";";
+        saida += getEditora().getNome();
         return saida;
     }
 
