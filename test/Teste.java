@@ -1,5 +1,6 @@
 
 import classes.Editora;
+import classes.Livro;
 import dao.EditoraDAO;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,10 +20,11 @@ public class Teste {
     public static void main(String[] args) {
         
         try {
-            String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+            //String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+            String livro_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
             
-            ArrayList<Editora> editoras = new ArrayList<Editora>();
-            FileReader fr = new FileReader(editora_db);
+            ArrayList<Livro> livros = new ArrayList<Livro>();
+            FileReader fr = new FileReader(livro_db);
    
             BufferedReader br  = new BufferedReader(fr);
             String linha = null;

@@ -43,10 +43,14 @@ public class TelaLivro extends javax.swing.JFrame {
      * Creates new form TelaLivro
      */
     public TelaLivro() {
+        
         initComponents();
         showLivros();
-
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
         try {
+            
+            
             
             AutorDAO ad = new AutorDAO(autor_db);
             EditoraDAO ed = new EditoraDAO(editora_db);
@@ -73,8 +77,11 @@ public class TelaLivro extends javax.swing.JFrame {
             DefaultComboBoxModel m_editoras = new DefaultComboBoxModel(editoras);
             jComboBoLivroEditora.setModel(m_editoras);
             
-        } catch (Exception e) {
-            e.printStackTrace();
+            
+            
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+            erro.printStackTrace();
         }
         
     }
@@ -85,6 +92,11 @@ public class TelaLivro extends javax.swing.JFrame {
             ArrayList<Livro> listagem;
             LivroDAO l = new LivroDAO(livro_db);
             listagem = l.consultar();
+            
+            for (int i = 0; i < listagem.size(); i++) {
+                Livro livro = listagem.get(i);
+                System.out.println(livro.getTitulo());
+            }
             
             DefaultTableModel modelo = (DefaultTableModel) jTableLivros.getModel();
             
@@ -337,30 +349,38 @@ public class TelaLivro extends javax.swing.JFrame {
             if(!jTextFieldLivroId.getText().isEmpty() && !jTextFieldLivroISBN.getText().isEmpty() 
                     && !jTextFieldLivroCapa.getText().isEmpty() && !jTextFieldLivroTitulo.getText().isEmpty()) {
 
-                Livro novo = new Livro();
-
+                Autor autorEncontrado = null;
                 if(jComboBoxLivroAutor.getSelectedItem() != null) {
                     AutorDAO ad =  new AutorDAO(autor_db);
-
-                    Autor encontrado = ad.getAutorByNome(jComboBoxLivroAutor.getSelectedItem().toString());
-
+                    autorEncontrado = ad.getAutorByNome(jComboBoxLivroAutor.getSelectedItem().toString());
                 }
                 
+                Editora editoraEncontrada = null;
                 if(jComboBoLivroEditora.getSelectedItem() != null) {
                     EditoraDAO ed =  new EditoraDAO(editora_db);
-
-                    Editora encontrada = ed.getEditoraByNome(jComboBoLivroEditora.getSelectedItem().toString());
-
+                    editoraEncontrada = ed.getEditoraByNome(jComboBoLivroEditora.getSelectedItem().toString());
                 }
                 
+                if(editoraEncontrada != null && autorEncontrado != null) {
+                    Livro novoLivro = new Livro(id, isbn, titulo, capa, autorEncontrado, editoraEncontrada);
+                    
+                    LivroDAO ldao = new LivroDAO(livro_db);
+                    
+                    ldao.incluir(novoLivro);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Erro ao incluir livro.");
+                }
+                                
                 showLivros();
 
             } else {
+                
                 JOptionPane.showMessageDialog(rootPane, "Preencha os campos antes de tentar inserir um Livro.");
             } 
 
-            
-        } catch (Exception e) {
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
         
     }//GEN-LAST:event_jButtonCadastrarLivroActionPerformed

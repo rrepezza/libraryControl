@@ -96,8 +96,9 @@ public class EditoraDAO implements IEditoraDAO {
             Editora temp = listaEditoras.get(i);
             
             if(nome.equals(temp.getNome())) {
-                editora.setId(temp.getId());
-                editora.setNome(temp.getNome());
+                editora = new Editora(temp.getId(), temp.getNome());
+                //editora.setId(temp.getId());
+                //editora.setNome(temp.getNome());
             }
             
         }

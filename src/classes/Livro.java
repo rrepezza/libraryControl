@@ -20,6 +20,19 @@ public class Livro implements TratamentoDeDados {
     private Autor autor;
     private Editora editora;
     
+    public Livro() {
+        
+    }
+    
+    public Livro(int id, int isbn, String titulo, String fotoDaCapa, Autor autor, Editora editora) {
+        this.id = id;
+        this.isbn = isbn;
+        this.titulo = titulo;
+        this.fotoDaCapa = fotoDaCapa;
+        this.autor = autor;
+        this.editora = editora;
+    }
+    
     /**
      * @return the id
      */

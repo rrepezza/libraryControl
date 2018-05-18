@@ -91,13 +91,19 @@ public class AutorDAO implements IAutorDAO {
         Autor autor = null;
         
         ArrayList<Autor> listaAutores = this.consultar();
-        
+        System.out.println(nome);
         for (int i = 0; i < listaAutores.size(); i++) {
             Autor temp = listaAutores.get(i);
-            
             if(nome.equals(temp.getNome())) {
-                autor.setId(temp.getId());
-                autor.setNome(temp.getNome());
+                System.out.println("Sim");
+            }else{
+                System.out.println("Nao");
+            }
+            System.out.println(temp.getNome());
+            if(nome.equals(temp.getNome())) {
+                autor = new Autor(temp.getId(), temp.getNome());
+                //autor.setId(temp.getId());
+                //autor.setNome(temp.getNome());
             }
             
         }
