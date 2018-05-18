@@ -73,6 +73,7 @@ public class TelaEditora extends javax.swing.JFrame {
         jTableEditoras = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Editoras");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Editoras", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 

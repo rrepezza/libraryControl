@@ -57,6 +57,11 @@ public class Inicio extends javax.swing.JFrame {
         });
 
         jButtonExemplar.setText("Exemplar");
+        jButtonExemplar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExemplarActionPerformed(evt);
+            }
+        });
 
         jButtonEditora.setText("Editora");
         jButtonEditora.addActionListener(new java.awt.event.ActionListener() {
@@ -211,6 +216,12 @@ public class Inicio extends javax.swing.JFrame {
         TelaLivro l = new TelaLivro();
         l.setVisible(true);
     }//GEN-LAST:event_jButtonLivroActionPerformed
+
+    private void jButtonExemplarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExemplarActionPerformed
+        // TODO add your handling code here:
+        TelaExemplar te = new TelaExemplar();
+        te.setVisible(true);
+    }//GEN-LAST:event_jButtonExemplarActionPerformed
 
     /**
      * @param args the command line arguments

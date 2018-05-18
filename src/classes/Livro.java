@@ -13,12 +13,12 @@ import interfaces.TratamentoDeDados;
  */
 public class Livro implements TratamentoDeDados {
     
-    private int id;
-    private int isbn;
-    private String titulo;
-    private String fotoDaCapa;
-    private Autor autor;
-    private Editora editora;
+    private int id = 0;
+    private int isbn = 0;
+    private String titulo = "";
+    private String fotoDaCapa = "";
+    private Autor autor = null;
+    private Editora editora = null;
     
     public Livro() {
         

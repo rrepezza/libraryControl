@@ -11,15 +11,11 @@ import classes.Livro;
 import dao.AutorDAO;
 import dao.EditoraDAO;
 import dao.LivroDAO;
-import java.applet.Applet;
 import java.awt.Image;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,12 +28,12 @@ import util.RenderizaLabel;
  */
 public class TelaLivro extends javax.swing.JFrame {
     
-    String livro_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
-    //String livro_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
-    String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
-    //String autor_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
-    String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
-    //String editora_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+    //String livro_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
+    String livro_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
+    //String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
+    String autor_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
+    //String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+    String editora_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
     
     /**
      * Creates new form TelaLivro
@@ -91,7 +87,6 @@ public class TelaLivro extends javax.swing.JFrame {
             
             for (int i = 0; i < listagem.size(); i++) {
                 Livro livro = listagem.get(i);
-                System.out.println(livro.getTitulo());
             }
             
             DefaultTableModel modelo = (DefaultTableModel) jTableLivros.getModel();
@@ -156,6 +151,7 @@ public class TelaLivro extends javax.swing.JFrame {
         jTableLivros = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Livros");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Livros", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 13))); // NOI18N
 

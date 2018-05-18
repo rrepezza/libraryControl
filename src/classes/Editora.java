@@ -13,8 +13,8 @@ import interfaces.TratamentoDeDados;
  */
 public class Editora implements TratamentoDeDados {
     
-    private int id;
-    private String nome;
+    private int id = 0;
+    private String nome = "";
     
     public Editora() {
         
