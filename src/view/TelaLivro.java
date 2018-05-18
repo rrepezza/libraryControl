@@ -328,26 +328,41 @@ public class TelaLivro extends javax.swing.JFrame {
 
     private void jButtonCadastrarLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarLivroActionPerformed
         // TODO add your handling code here:
-        int id = Integer.parseInt(jTextFieldLivroId.getText());
-        int isbn = Integer.parseInt(jTextFieldLivroISBN.getText());
-        String titulo = jTextFieldLivroTitulo.getText();
-        String capa = jTextFieldLivroCapa.getText();
-                   
-        if(!jTextFieldLivroId.getText().isEmpty() && !jTextFieldLivroISBN.getText().isEmpty() 
-                && !jTextFieldLivroCapa.getText().isEmpty() && !jTextFieldLivroTitulo.getText().isEmpty()) {
-            
-            Livro novo = new Livro();
-            
-            if(jComboBoxLivroAutor.getSelectedItem() != null) {
-                Autor novoAutor = null;
+        try {
+            int id = Integer.parseInt(jTextFieldLivroId.getText());
+            int isbn = Integer.parseInt(jTextFieldLivroISBN.getText());
+            String titulo = jTextFieldLivroTitulo.getText();
+            String capa = jTextFieldLivroCapa.getText();
+
+            if(!jTextFieldLivroId.getText().isEmpty() && !jTextFieldLivroISBN.getText().isEmpty() 
+                    && !jTextFieldLivroCapa.getText().isEmpty() && !jTextFieldLivroTitulo.getText().isEmpty()) {
+
+                Livro novo = new Livro();
+
+                if(jComboBoxLivroAutor.getSelectedItem() != null) {
+                    AutorDAO ad =  new AutorDAO(autor_db);
+
+                    Autor encontrado = ad.getAutorByNome(jComboBoxLivroAutor.getSelectedItem().toString());
+
+                }
                 
-            }
-    
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Preencha os campos antes de tentar inserir um Livro.");
-        } 
+                if(jComboBoLivroEditora.getSelectedItem() != null) {
+                    EditoraDAO ed =  new EditoraDAO(editora_db);
+
+                    Editora encontrada = ed.getEditoraByNome(jComboBoLivroEditora.getSelectedItem().toString());
+
+                }
+                
+                showLivros();
+
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Preencha os campos antes de tentar inserir um Livro.");
+            } 
+
             
-        showLivros();
+        } catch (Exception e) {
+        }
+        
     }//GEN-LAST:event_jButtonCadastrarLivroActionPerformed
 
     /**

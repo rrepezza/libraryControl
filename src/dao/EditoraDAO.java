@@ -87,4 +87,22 @@ public class EditoraDAO implements IEditoraDAO {
          
     }   
     
+    public Editora getEditoraByNome(String nome) throws Exception {
+        Editora editora = null;
+        
+        ArrayList<Editora> listaEditoras = this.consultar();
+        
+        for (int i = 0; i < listaEditoras.size(); i++) {
+            Editora temp = listaEditoras.get(i);
+            
+            if(nome.equals(temp.getNome())) {
+                editora.setId(temp.getId());
+                editora.setNome(temp.getNome());
+            }
+            
+        }
+        
+        return editora;
+    }
+    
 }
