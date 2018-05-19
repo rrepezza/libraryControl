@@ -79,8 +79,8 @@ public class Exemplar implements TratamentoDeDados {
             }
 
             id = Integer.parseInt(vetorString[0]);
-            String objDisponivel = vetorString[1];
-            disponivel = objDisponivel.equals("Sim");
+            
+            disponivel = Boolean.parseBoolean(vetorString[1]);
             Autor autor = new Autor(Integer.parseInt(vetorString[6]), vetorString[7]);
             Editora editora = new Editora(Integer.parseInt(vetorString[8]), vetorString[9]);
             Livro livroRetornado = new Livro(Integer.parseInt(vetorString[2]), Integer.parseInt(vetorString[3]),

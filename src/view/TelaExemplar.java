@@ -30,6 +30,7 @@ public class TelaExemplar extends javax.swing.JFrame {
      */
     public TelaExemplar() {
         initComponents();
+        showExemplares();
         
         try {
             
@@ -61,7 +62,7 @@ public class TelaExemplar extends javax.swing.JFrame {
         try {
             ExemplarDAO edao = new ExemplarDAO(exemplar_db);
             ArrayList<Exemplar> listaExemplares = edao.consultar();
-            
+
             DefaultTableModel modelo = (DefaultTableModel) jTableExemplares.getModel();
 
             modelo.setNumRows(listaExemplares.size());
@@ -72,7 +73,9 @@ public class TelaExemplar extends javax.swing.JFrame {
                 modelo.setValueAt(exemplar.getLivro().getTitulo(), i, 1);
                 
                 String disponivel = exemplar.IsDisponivel() ? "Sim" : "Não";
-                modelo.setValueAt(disponivel, i, 2);        
+                modelo.setValueAt(disponivel, i, 2);   
+                
+                System.out.println(exemplar.IsDisponivel());
                 
             }
         } catch (Exception erro) {
@@ -257,6 +260,11 @@ public class TelaExemplar extends javax.swing.JFrame {
             if(livro != null) {
                 
                 Exemplar novoExemplar = new Exemplar(id, disponibilidade, livro);
+                ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+                
+                edao.incluir(novoExemplar);
+                
+                showExemplares();
                 
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Erro ao vincular exemplar ao livro " + titulo);
