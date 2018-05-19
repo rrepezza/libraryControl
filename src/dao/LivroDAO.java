@@ -91,6 +91,25 @@ public class LivroDAO implements ILivroDAO {
         
         return livro;
     }
+    
+    public Livro getLivroByTitulo(String titulo) throws Exception {
+        
+        Livro livro = null;
+        
+        ArrayList<Livro> listaLivros = this.consultar();
+        
+        for (int i = 0; i < listaLivros.size(); i++) {
+            Livro temp = listaLivros.get(i);
+            
+            if(titulo.equals(temp.getTitulo())) {
+                livro = temp;
+            }
+            
+        }
+        
+        return livro;
+    }
+
 
     
 }

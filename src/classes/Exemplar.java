@@ -5,6 +5,7 @@
  */
 package classes;
 
+import dao.LivroDAO;
 import interfaces.TratamentoDeDados;
 
 /**
@@ -73,16 +74,19 @@ public class Exemplar implements TratamentoDeDados {
     public void materializar(String dados) throws Exception {
         if(!dados.isEmpty()) {
             String vetorString[] = dados.split(";");
-            if(vetorString.length != 3) {
+            if(vetorString.length != 10) {
                 throw new Exception("Faltam dados na String");
             }
 
             id = Integer.parseInt(vetorString[0]);
             String objDisponivel = vetorString[1];
             disponivel = objDisponivel.equals("Sim");
-            
-            
-
+            Autor autor = new Autor(Integer.parseInt(vetorString[6]), vetorString[7]);
+            Editora editora = new Editora(Integer.parseInt(vetorString[8]), vetorString[9]);
+            Livro livroRetornado = new Livro(Integer.parseInt(vetorString[2]), Integer.parseInt(vetorString[3]),
+            vetorString[4], vetorString[5], autor, editora);
+            livro = livroRetornado;
+        
         }
     }
 

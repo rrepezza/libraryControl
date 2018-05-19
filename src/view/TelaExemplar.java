@@ -5,11 +5,14 @@
  */
 package view;
 
+import classes.Exemplar;
 import classes.Livro;
+import dao.ExemplarDAO;
 import dao.LivroDAO;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -56,7 +59,22 @@ public class TelaExemplar extends javax.swing.JFrame {
     
     public void showExemplares() {
         try {
+            ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+            ArrayList<Exemplar> listaExemplares = edao.consultar();
             
+            DefaultTableModel modelo = (DefaultTableModel) jTableExemplares.getModel();
+
+            modelo.setNumRows(listaExemplares.size());
+            
+            for (int i = 0; i < listaExemplares.size(); i++) {
+                Exemplar exemplar = listaExemplares.get(i);
+                modelo.setValueAt(exemplar.getId(), i, 0);
+                modelo.setValueAt(exemplar.getLivro().getTitulo(), i, 1);
+                
+                String disponivel = exemplar.IsDisponivel() ? "Sim" : "Não";
+                modelo.setValueAt(disponivel, i, 2);        
+                
+            }
         } catch (Exception erro) {
             erro.printStackTrace();
         }
@@ -83,7 +101,7 @@ public class TelaExemplar extends javax.swing.JFrame {
         jButtonCadastrarExemplar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableExemplares = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -108,6 +126,11 @@ public class TelaExemplar extends javax.swing.JFrame {
         jComboBoxExemplarDisponivel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButtonCadastrarExemplar.setText("Cadastrar");
+        jButtonCadastrarExemplar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCadastrarExemplarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -151,7 +174,7 @@ public class TelaExemplar extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Exemplares Cadastrados"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableExemplares.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -159,7 +182,7 @@ public class TelaExemplar extends javax.swing.JFrame {
                 "ID", "Livro", "Disponivel"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableExemplares);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -219,6 +242,33 @@ public class TelaExemplar extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldExemplarIdActionPerformed
 
+    private void jButtonCadastrarExemplarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarExemplarActionPerformed
+        // TODO add your handling code here:
+        try {
+            int id = Integer.parseInt(jTextFieldExemplarId.getText());
+            String titulo = jComboBoxExemplarLivro.getSelectedItem().toString();
+            String opcaoDisponibilidade = jComboBoxExemplarDisponivel.getSelectedItem().toString();
+            
+            boolean disponibilidade = opcaoDisponibilidade.equals("Sim");
+            
+            LivroDAO ldao = new LivroDAO(livro_db);
+            Livro livro = ldao.getLivroByTitulo(titulo);
+            
+            if(livro != null) {
+                
+                Exemplar novoExemplar = new Exemplar(id, disponibilidade, livro);
+                
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Erro ao vincular exemplar ao livro " + titulo);
+            }
+            
+            
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonCadastrarExemplarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -265,7 +315,7 @@ public class TelaExemplar extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableExemplares;
     private javax.swing.JTextField jTextFieldExemplarId;
     // End of variables declaration//GEN-END:variables
 }

@@ -85,10 +85,6 @@ public class TelaLivro extends javax.swing.JFrame {
             LivroDAO l = new LivroDAO(livro_db);
             listagem = l.consultar();
             
-            for (int i = 0; i < listagem.size(); i++) {
-                Livro livro = listagem.get(i);
-            }
-            
             DefaultTableModel modelo = (DefaultTableModel) jTableLivros.getModel();
             
             //setando o modo de renderizacão da coluna Capa da tabela
