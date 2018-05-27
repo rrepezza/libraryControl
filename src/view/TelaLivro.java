@@ -28,12 +28,12 @@ import util.RenderizaLabel;
  */
 public class TelaLivro extends javax.swing.JFrame {
     
-    //String livro_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
-    String livro_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
-    //String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
-    String autor_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
-    //String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
-    String editora_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+    String livro_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
+    //String livro_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
+    String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
+    //String autor_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
+    String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+    //String editora_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
     
     /**
      * Creates new form TelaLivro
@@ -49,8 +49,8 @@ public class TelaLivro extends javax.swing.JFrame {
             AutorDAO ad = new AutorDAO(autor_db);
             EditoraDAO ed = new EditoraDAO(editora_db);
             
-            ArrayList<Autor> listaAutores = ad.consultar();
-            ArrayList<Editora> listaEditoras = ed.consultar();
+            ArrayList<Autor> listaAutores = ad.listar();
+            ArrayList<Editora> listaEditoras = ed.listar();
             
             String[] autores = new String[listaAutores.size()];
             String[] editoras = new String[listaEditoras.size()];
@@ -83,7 +83,7 @@ public class TelaLivro extends javax.swing.JFrame {
         try {
             ArrayList<Livro> listagem;
             LivroDAO l = new LivroDAO(livro_db);
-            listagem = l.consultar();
+            listagem = l.listar();
             
             DefaultTableModel modelo = (DefaultTableModel) jTableLivros.getModel();
             
@@ -92,13 +92,20 @@ public class TelaLivro extends javax.swing.JFrame {
             
             modelo.setNumRows(listagem.size());
             
+            AutorDAO ad = new AutorDAO(autor_db);
+            EditoraDAO ed = new EditoraDAO(editora_db);
+            
             for (int i = 0; i < listagem.size(); i++) {
                 Livro liv = listagem.get(i);
                 modelo.setValueAt(liv.getId(), i, 0);
                 modelo.setValueAt(liv.getIsbn(), i, 1);
-                modelo.setValueAt(liv.getTitulo(), i, 2);        
-                modelo.setValueAt(liv.getAutor().getNome(), i, 3);
-                modelo.setValueAt(liv.getEditora().getNome(), i, 4);
+                modelo.setValueAt(liv.getTitulo(), i, 2);   
+                
+                Autor a = ad.getAutorByID(liv.getAutorID());
+                modelo.setValueAt(a.getNome(), i, 3);
+                
+                Editora e = ed.getEditoraByID(liv.getEditoraID());            
+                modelo.setValueAt(e.getNome(), i, 4);
                    
                 ImageIcon foto = new ImageIcon(liv.getFotoDaCapa());
                 Image imagem = foto.getImage();
@@ -350,7 +357,7 @@ public class TelaLivro extends javax.swing.JFrame {
                 }
                 
                 if(editoraEncontrada != null && autorEncontrado != null) {
-                    Livro novoLivro = new Livro(id, isbn, titulo, capa, autorEncontrado, editoraEncontrada);
+                    Livro novoLivro = new Livro(id, isbn, titulo, capa, autorEncontrado.getId(), editoraEncontrada.getId());
                     
                     LivroDAO ldao = new LivroDAO(livro_db);
                     

@@ -17,20 +17,20 @@ public class Livro implements TratamentoDeDados {
     private int isbn = 0;
     private String titulo = "";
     private String fotoDaCapa = "";
-    private Autor autor = null;
-    private Editora editora = null;
+    private int autorID = 0;
+    private int editoraID = 0;
     
     public Livro() {
         
     }
     
-    public Livro(int id, int isbn, String titulo, String fotoDaCapa, Autor autor, Editora editora) {
+    public Livro(int id, int isbn, String titulo, String fotoDaCapa, int autorID, int editoraID) {
         this.id = id;
         this.isbn = isbn;
         this.titulo = titulo;
         this.fotoDaCapa = fotoDaCapa;
-        this.autor = autor;
-        this.editora = editora;
+        this.autorID = autorID;
+        this.editoraID = editoraID;
     }
     
     /**
@@ -92,36 +92,36 @@ public class Livro implements TratamentoDeDados {
     /**
      * @return the autor
      */
-    public Autor getAutor() {
-        return autor;
+    public int getAutorID() {
+        return autorID;
     }
 
     /**
      * @param autor the autor to set
      */
-    public void setAutor(Autor autor) {
-        this.autor = autor;
+    public void setAutorID(int autorID) {
+        this.autorID = autorID;
     }
 
     /**
      * @return the editora
      */
-    public Editora getEditora() {
-        return editora;
+    public int getEditoraID() {
+        return editoraID;
     }
 
     /**
      * @param editora the editora to set
      */
-    public void setEditora(Editora editora) {
-        this.editora = editora;
+    public void setEditoraID(int editoraID) {
+        this.editoraID = editoraID;
     }
     
     @Override
     public void materializar(String dados) throws Exception {
         if(!dados.isEmpty()) {
             String vetorString[] = dados.split(";");
-            if(vetorString.length != 8) {
+            if(vetorString.length != 6) {
                 throw new Exception("Faltam dados na String");
             }
             
@@ -129,23 +129,14 @@ public class Livro implements TratamentoDeDados {
             isbn = Integer.parseInt(vetorString[1]);
             titulo = vetorString[2];
             fotoDaCapa = vetorString[3];
-            Autor autorRetornado = new Autor(Integer.parseInt(vetorString[4]), vetorString[5]);
-            //autor.setId(Integer.parseInt(vetorString[4]));
-            //autor.setNome(vetorString[5]);
-            autor = autorRetornado;
-            Editora editoraRetornada = new Editora(Integer.parseInt(vetorString[6]), vetorString[7]);
-            //editora.setId(Integer.parseInt(vetorString[6]));
-            //editora.setNome(vetorString[7]);
-            editora = editoraRetornada;
-            
+            autorID = Integer.parseInt(vetorString[4]);
+            editoraID = Integer.parseInt(vetorString[5]);
         }
     }
 
     @Override
     public String desmaterializar() {
-        String saida = getId() + ";" + getIsbn() + ";" + getTitulo() + ";" + getFotoDaCapa() + ";";
-        saida += getAutor().desmaterializar() + ";";
-        saida += getEditora().desmaterializar();
+        String saida = getId() + ";" + getIsbn() + ";" + getTitulo() + ";" + getFotoDaCapa() + ";" + getAutorID() + ";" + getEditoraID();
         return saida;
     }
 

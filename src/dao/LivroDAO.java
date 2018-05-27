@@ -42,7 +42,7 @@ public class LivroDAO implements ILivroDAO {
     }
 
     @Override
-    public ArrayList<Livro> consultar() throws Exception {
+    public ArrayList<Livro> listar() throws Exception {
         
         try {
             ArrayList<Livro> livros = new ArrayList<Livro>();
@@ -65,11 +65,6 @@ public class LivroDAO implements ILivroDAO {
     }
 
     @Override
-    public void excluir(int id) throws Exception {
-        
-    }
-
-    @Override
     public void alterar(int id) throws Exception {
         
     }
@@ -78,7 +73,7 @@ public class LivroDAO implements ILivroDAO {
         
         Livro livro = null;
         
-        ArrayList<Livro> listaLivros = this.consultar();
+        ArrayList<Livro> listaLivros = this.listar();
         
         for (int i = 0; i < listaLivros.size(); i++) {
             Livro temp = listaLivros.get(i);
@@ -92,21 +87,29 @@ public class LivroDAO implements ILivroDAO {
         return livro;
     }
     
-    public Livro getLivroByTitulo(String titulo) throws Exception {
-        
-        Livro livro = null;
-        
-        ArrayList<Livro> listaLivros = this.consultar();
-        
+    public Livro getLivroByTitulo(String titulo) throws Exception { 
+        Livro livro = null;        
+        ArrayList<Livro> listaLivros = this.listar();
         for (int i = 0; i < listaLivros.size(); i++) {
             Livro temp = listaLivros.get(i);
-            
             if(titulo.equals(temp.getTitulo())) {
                 livro = temp;
             }
             
         }
-        
+        return livro;
+    }
+    
+    public Livro getLivroByID(int id) throws Exception { 
+        Livro livro = null;        
+        ArrayList<Livro> listaLivros = this.listar();
+        for (int i = 0; i < listaLivros.size(); i++) {
+            Livro temp = listaLivros.get(i);
+            if(id == temp.getId()) {
+                livro = temp;
+            }
+            
+        }
         return livro;
     }
 

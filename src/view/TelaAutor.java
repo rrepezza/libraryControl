@@ -18,8 +18,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaAutor extends javax.swing.JFrame {
     
-    //String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
-    String autor_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
+    String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
+    //String autor_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
     
     /**
      * Creates new form TelaAutor
@@ -35,7 +35,7 @@ public class TelaAutor extends javax.swing.JFrame {
         try {
             ArrayList<Autor> listagem;
             AutorDAO a = new AutorDAO(autor_db);
-            listagem = a.consultar();
+            listagem = a.listar();
             
             DefaultTableModel modelo = (DefaultTableModel) jTableAutores.getModel();
             

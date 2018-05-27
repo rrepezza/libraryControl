@@ -43,7 +43,7 @@ public class ExemplarDAO implements IExemplarDAO {
     }
 
     @Override
-    public ArrayList<Exemplar> consultar() throws Exception {
+    public ArrayList<Exemplar> listar() throws Exception {
         try {
             ArrayList<Exemplar> exemplares = new ArrayList<Exemplar>();
             FileReader fr = new FileReader(nomeDoArquivo);
@@ -60,11 +60,6 @@ public class ExemplarDAO implements IExemplarDAO {
         } catch (Exception erro) {
             throw erro;
         }
-    }
-
-    @Override
-    public void excluir(int id) throws Exception {
-        
     }
 
     @Override

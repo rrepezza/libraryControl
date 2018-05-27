@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 public interface ILivroDAO {
     public void incluir(Livro livro) throws Exception;
-    public ArrayList<Livro> consultar() throws Exception;
-    public void excluir(int id) throws Exception;
+    public ArrayList<Livro> listar() throws Exception;
     public void alterar(int id) throws Exception;
 }
