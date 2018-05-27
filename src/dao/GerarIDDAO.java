@@ -1,41 +1,35 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
-
-import classes.Editora;
-import interfaces.IEditoraDAO;
+import classes.GerarID;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import classes.GerarID;
+
 
 /**
  *
- * @author repez
+ * @author jhenerson
  */
-public class EditoraDAO implements IEditoraDAO {
+public class GerarIDDAO {
     
+
     private String nomeDoArquivo = "";
     
-    public EditoraDAO(String nomeDoArquivo){
+    public GerarIDDAO(String nomeDoArquivo){
         this.nomeDoArquivo = nomeDoArquivo;
     }
 
-    @Override
+    
     public void excluir(int id) throws Exception {
         try{
-            ArrayList<Editora> listaDeEditoras = this.consultar();
+            ArrayList<GerarID> listaDeIDs = this.consultar();
             //cria o arquivo
             FileWriter fw = new FileWriter(nomeDoArquivo);
             //Criar o buffer do arquivo
             BufferedWriter bw =new BufferedWriter(fw);
-            for(int pos=0;pos<listaDeEditoras.size();pos++){
-                Editora temp = listaDeEditoras.get(pos);
+            for(int pos=0;pos<listaDeIDs.size();pos++){
+                GerarID temp = listaDeIDs.get(pos);
                 if(!(temp.getNumeroID() == id)){
                    bw.write(temp.desmaterializar()+"\n");
                 }
@@ -46,20 +40,19 @@ public class EditoraDAO implements IEditoraDAO {
         }
     }
 
-    @Override
-    public void alterar(int id) throws Exception {
-        
+    
+    public void alterar(int id) throws Exception {        
     }
 
-    @Override
-    public void incluir(Editora editora) throws Exception {
+
+    public void incluir(GerarID ID) throws Exception {
         try{
             //cria o arquivo
             FileWriter fw = new FileWriter(nomeDoArquivo,true);
             //Criar o buffer do arquivo
             BufferedWriter bw = new BufferedWriter(fw);
             //Escreve no arquivo
-            bw.write(editora.desmaterializar() + "\n");
+            bw.write(ID.desmaterializar() + "\n");
             //fecha o arquivo
             bw.close();		
         }catch(Exception erro){
@@ -67,43 +60,44 @@ public class EditoraDAO implements IEditoraDAO {
         }
     }
 
-    @Override
-    public ArrayList<Editora> consultar() throws Exception {
+    
+    public ArrayList<GerarID> consultar() throws Exception {
         try {
-            ArrayList<Editora> editoras = new ArrayList<Editora>();
+            ArrayList<GerarID> IDs = new ArrayList<GerarID>();
             FileReader fr = new FileReader(nomeDoArquivo);
    
             BufferedReader br  = new BufferedReader(fr);
             String linha = "";
             while((linha=br.readLine()) != null){
-                Editora editora = new Editora();
-                editora.materializar(linha);
-                editoras.add(editora);
+                GerarID ID = new GerarID();
+                ID.materializar(linha);
+                IDs.add(ID);
             }
             br.close();
-            return editoras;
+            return IDs;
         } catch (Exception erro) {
             throw erro;
         }
          
     }   
     
-    public Editora getEditoraByNome(String nome) throws Exception {
-        Editora editora = null;
+    public GerarID getIDByNumero(int numero) throws Exception {
+        GerarID ID = null;
         
-        ArrayList<Editora> listaEditoras = this.consultar();
+        ArrayList<GerarID> listaDeIDs = this.consultar();
         
-        for (int i = 0; i < listaEditoras.size(); i++) {
-            Editora temp = listaEditoras.get(i);
+        for (int i = 0; i < listaDeIDs.size(); i++) {
+            GerarID temp = listaDeIDs.get(i);
             
-            if(nome.equals(temp.getNome())) {
-                editora = temp;
+            if(numero == temp.getNumeroID()) {
+                ID = temp;
                 
             }
             
         }
         
-        return editora;
+        return ID;
     }
     
 }
+

@@ -6,6 +6,7 @@
 package view;
 
 import classes.Autor;
+import classes.GerarID;
 import dao.AutorDAO;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -18,9 +19,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaAutor extends javax.swing.JFrame {
     
-    //String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
-    String autor_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
-    
+    //String autor_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\arquivos\\Autores.csv";
+    String autor_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\Autores.csv";
+    String IDs_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\ID.csv";
     /**
      * Creates new form TelaAutor
      */
@@ -28,6 +29,9 @@ public class TelaAutor extends javax.swing.JFrame {
         initComponents();
         showAutores();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        GerarID IDs = new GerarID();
+        jTextFieldAutorId.setEditable(false);
+        jTextFieldAutorId.setText(Integer.toString(IDs.gerarNumeroUnico()));
     }
     
     //Método para buscar os autores e preencher a jTable inicialmente
@@ -43,7 +47,7 @@ public class TelaAutor extends javax.swing.JFrame {
             
             for (int i = 0; i < listagem.size(); i++) {
                 Autor aut = listagem.get(i);
-                modelo.setValueAt(aut.getId(), i, 0);
+                modelo.setValueAt(aut.getID().getNumeroID(), i, 0);
                 modelo.setValueAt(aut.getNome(), i, 1);
             }
             
@@ -194,7 +198,7 @@ public class TelaAutor extends javax.swing.JFrame {
     private void jButtonCadastrarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarAutorActionPerformed
         // TODO add your handling code here:
         try {
-            int id = Integer.parseInt(jTextFieldAutorId.getText());
+            GerarID id = new GerarID();
             String nome = jTextFieldAutorNome.getText().toUpperCase();
             
             if(!jTextFieldAutorId.getText().isEmpty() && !jTextFieldAutorNome.getText().isEmpty()) {

@@ -13,7 +13,7 @@ import interfaces.TratamentoDeDados;
  */
 public class Livro implements TratamentoDeDados {
     
-    private int id = 0;
+    private GerarID ID = null;
     private int isbn = 0;
     private String titulo = "";
     private String fotoDaCapa = "";
@@ -24,8 +24,8 @@ public class Livro implements TratamentoDeDados {
         
     }
     
-    public Livro(int id, int isbn, String titulo, String fotoDaCapa, Autor autor, Editora editora) {
-        this.id = id;
+    public Livro(GerarID ID, int isbn, String titulo, String fotoDaCapa, Autor autor, Editora editora) {
+        this.ID = ID;
         this.isbn = isbn;
         this.titulo = titulo;
         this.fotoDaCapa = fotoDaCapa;
@@ -36,18 +36,10 @@ public class Livro implements TratamentoDeDados {
     /**
      * @return the id
      */
-    public int getId() {
-        return id;
+    public GerarID getID(){
+        return ID;
     }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
+        /**
      * @return the isbn
      */
     public int getIsbn() {
@@ -125,15 +117,15 @@ public class Livro implements TratamentoDeDados {
                 throw new Exception("Faltam dados na String");
             }
             
-            id = Integer.parseInt(vetorString[0]);
+            ID = new GerarID(Integer.parseInt(vetorString[0]));
             isbn = Integer.parseInt(vetorString[1]);
             titulo = vetorString[2];
             fotoDaCapa = vetorString[3];
-            Autor autorRetornado = new Autor(Integer.parseInt(vetorString[4]), vetorString[5]);
+            Autor autorRetornado = new Autor(new GerarID(Integer.parseInt(vetorString[6])), vetorString[5]);
             //autor.setId(Integer.parseInt(vetorString[4]));
             //autor.setNome(vetorString[5]);
             autor = autorRetornado;
-            Editora editoraRetornada = new Editora(Integer.parseInt(vetorString[6]), vetorString[7]);
+            Editora editoraRetornada = new Editora(new GerarID(Integer.parseInt(vetorString[6])), vetorString[7]);
             //editora.setId(Integer.parseInt(vetorString[6]));
             //editora.setNome(vetorString[7]);
             editora = editoraRetornada;
@@ -143,7 +135,7 @@ public class Livro implements TratamentoDeDados {
 
     @Override
     public String desmaterializar() {
-        String saida = getId() + ";" + getIsbn() + ";" + getTitulo() + ";" + getFotoDaCapa() + ";";
+        String saida = getID().desmaterializar()+ ";" + getIsbn() + ";" + getTitulo() + ";" + getFotoDaCapa() + ";";
         saida += getAutor().desmaterializar() + ";";
         saida += getEditora().desmaterializar();
         return saida;

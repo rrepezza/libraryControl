@@ -50,7 +50,7 @@ public class ExemplarDAO implements IExemplarDAO {
    
             BufferedReader br  = new BufferedReader(fr);
             String linha = "";
-            while((linha=br.readLine()) != null){
+            while((linha = br.readLine()) != null){
                 Exemplar exemplar = new Exemplar();
                 exemplar.materializar(linha);
                 exemplares.add(exemplar);

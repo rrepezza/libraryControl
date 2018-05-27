@@ -83,7 +83,7 @@ public class LivroDAO implements ILivroDAO {
         for (int i = 0; i < listaLivros.size(); i++) {
             Livro temp = listaLivros.get(i);
             
-            if(temp.getId() == id) {
+            if(temp.getID().getNumeroID() == id) {
                 livro = temp;
             }
             

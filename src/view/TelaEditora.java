@@ -6,6 +6,7 @@
 package view;
 
 import classes.Editora;
+import classes.GerarID;
 import dao.EditoraDAO;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -17,8 +18,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaEditora extends javax.swing.JFrame {
     
-    //String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
-    String editora_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+    String IDs_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\IDs.csv";
+    //String editora_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\Editoras.csv";
+    String editora_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\Editoras.csv";
 
     /**
      * Creates new form TelaEditora
@@ -27,6 +29,10 @@ public class TelaEditora extends javax.swing.JFrame {
         initComponents();
         showEditoras();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        GerarID ID = new GerarID();
+        jTextFieldEditoraId.setEditable(false);
+        jTextFieldEditoraId.setText(Integer.toString(ID.gerarNumeroUnico()));
+        
     }
     
     //Método para buscar as editoras e preencher a jTable inicialmente
@@ -42,7 +48,7 @@ public class TelaEditora extends javax.swing.JFrame {
             
             for (int i = 0; i < listagem.size(); i++) {
                 Editora edt = listagem.get(i);
-                modelo.setValueAt(edt.getId(), i, 0);
+                modelo.setValueAt(edt.getNumeroID(), i, 0);
                 modelo.setValueAt(edt.getNome(), i, 1);
             }
             
@@ -197,7 +203,8 @@ public class TelaEditora extends javax.swing.JFrame {
             String nome = jTextFieldEditoraNome.getText().toUpperCase();
             
             if(!jTextFieldEditoraId.getText().isEmpty() && !jTextFieldEditoraNome.getText().isEmpty()) {
-                Editora nova = new Editora(id, nome);
+                GerarID ID = null;
+                Editora nova = new Editora(ID, nome);
             
                 EditoraDAO query = new EditoraDAO(editora_db);
 

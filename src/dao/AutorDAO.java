@@ -56,7 +56,7 @@ public class AutorDAO implements IAutorDAO {
             BufferedWriter bw =new BufferedWriter(fw);
             for(int pos=0;pos<listaDeAutores.size();pos++){
                 Autor temp = listaDeAutores.get(pos);
-                if(!(temp.getId() == id)){
+                if(!(temp.getID().getNumeroID() == id)){
                    bw.write(temp.desmaterializar()+"\n");
                 }
             }
