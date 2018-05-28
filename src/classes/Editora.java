@@ -13,32 +13,25 @@ import interfaces.TratamentoDeDados;
  */
 public class Editora implements TratamentoDeDados {
     
-    private int id = 0;
+    private GerarID ID = null;
     private String nome = "";
     
     public Editora() {
         
     }
     
-    public Editora(int id, String nome) {
-        this.id = id;
+    public Editora(GerarID ID, String nome) {
+        this.ID = ID;
         this.nome = nome;
     }
 
     /**
      * @return the id
      */
-    public int getId() {
-        return id;
+    public GerarID getID(){
+        return ID;
     }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
+   
     /**
      * @return the nome
      */
@@ -61,14 +54,14 @@ public class Editora implements TratamentoDeDados {
                 throw new Exception("Faltam dados na String");
             }
 
-            id = Integer.parseInt(vetorString[0]);
+            ID = new GerarID(Integer.parseInt(vetorString[0]));
             nome = vetorString[1];
         }
     }
 
     @Override
     public String desmaterializar() {
-        String saida = id + ";" + nome;
+        String saida = getID().desmaterializar() + ";" + nome;
         return saida;
     }
 }

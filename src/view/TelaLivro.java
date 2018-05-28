@@ -7,6 +7,7 @@ package view;
 
 import classes.Autor;
 import classes.Editora;
+import classes.GerarID;
 import classes.Livro;
 import dao.AutorDAO;
 import dao.EditoraDAO;
@@ -28,12 +29,16 @@ import util.RenderizaLabel;
  */
 public class TelaLivro extends javax.swing.JFrame {
     
+
+    String ID_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\IDs.csv";
+
     String livro_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
     //String livro_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
     String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
     //String autor_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
     String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
     //String editora_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+
     
     /**
      * Creates new form TelaLivro
@@ -43,6 +48,9 @@ public class TelaLivro extends javax.swing.JFrame {
         initComponents();
         showLivros();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        GerarID IDs = new GerarID();
+        jTextFieldLivroId.setEditable(false);
+        jTextFieldLivroId.setText(Integer.toString(IDs.gerarNumeroUnico()));
         
         try {
 
@@ -97,7 +105,7 @@ public class TelaLivro extends javax.swing.JFrame {
             
             for (int i = 0; i < listagem.size(); i++) {
                 Livro liv = listagem.get(i);
-                modelo.setValueAt(liv.getId(), i, 0);
+                modelo.setValueAt(liv.getID().getNumeroID(), i, 0);
                 modelo.setValueAt(liv.getIsbn(), i, 1);
                 modelo.setValueAt(liv.getTitulo(), i, 2);   
                 
@@ -220,7 +228,7 @@ public class TelaLivro extends javax.swing.JFrame {
                             .addComponent(jComboBoLivroEditora, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(jButtonCarregaCapa)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(337, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -336,7 +344,7 @@ public class TelaLivro extends javax.swing.JFrame {
     private void jButtonCadastrarLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarLivroActionPerformed
         // TODO add your handling code here:
         try {
-            int id = Integer.parseInt(jTextFieldLivroId.getText());
+            
             int isbn = Integer.parseInt(jTextFieldLivroISBN.getText());
             String titulo = jTextFieldLivroTitulo.getText();
             String capa = jTextFieldLivroCapa.getText();
@@ -357,8 +365,9 @@ public class TelaLivro extends javax.swing.JFrame {
                 }
                 
                 if(editoraEncontrada != null && autorEncontrado != null) {
-                    Livro novoLivro = new Livro(id, isbn, titulo, capa, autorEncontrado.getId(), editoraEncontrada.getId());
-                    
+                    GerarID IDs = null;
+                    Livro novoLivro = new Livro(IDs, isbn, titulo, capa, autorEncontrado, editoraEncontrada);
+  
                     LivroDAO ldao = new LivroDAO(livro_db);
                     
                     ldao.incluir(novoLivro);

@@ -6,6 +6,7 @@
 package view;
 
 import classes.Exemplar;
+import classes.GerarID;
 import classes.Livro;
 import dao.ExemplarDAO;
 import dao.LivroDAO;
@@ -20,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaExemplar extends javax.swing.JFrame {
     
+    String ID_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\IDs.csv";
     String livro_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
     //String livro_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
     String exemplar_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Exemplares.csv";
@@ -31,7 +33,13 @@ public class TelaExemplar extends javax.swing.JFrame {
     public TelaExemplar() {
         initComponents();
         showExemplares();
+        
+        GerarID IDs = new GerarID();
+        jTextFieldExemplarId.setEditable(false);
+        jTextFieldExemplarId.setText(Integer.toString(IDs.gerarNumeroUnico()));
+
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
         
         try {
             
@@ -72,7 +80,8 @@ public class TelaExemplar extends javax.swing.JFrame {
             
             for (int i = 0; i < listaExemplares.size(); i++) {
                 Exemplar exemplar = listaExemplares.get(i);
-                modelo.setValueAt(exemplar.getId(), i, 0);
+
+                modelo.setValueAt(exemplar.getNumeroID(), i, 0);
                 
                 Livro livro = ldao.getLivroByID(exemplar.getLivroID());
                 modelo.setValueAt(livro.getTitulo(), i, 1);
@@ -253,7 +262,8 @@ public class TelaExemplar extends javax.swing.JFrame {
     private void jButtonCadastrarExemplarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarExemplarActionPerformed
         // TODO add your handling code here:
         try {
-            int id = Integer.parseInt(jTextFieldExemplarId.getText());
+            GerarID ID = new GerarID();
+            ID.gerarNumeroUnico();
             String titulo = jComboBoxExemplarLivro.getSelectedItem().toString();
             String opcaoDisponibilidade = jComboBoxExemplarDisponivel.getSelectedItem().toString();
             
@@ -264,7 +274,8 @@ public class TelaExemplar extends javax.swing.JFrame {
             
             if(livro != null) {
                 
-                Exemplar novoExemplar = new Exemplar(id, disponibilidade, livro.getId());
+                Exemplar novoExemplar = new Exemplar(ID, disponibilidade, livro);
+
                 ExemplarDAO edao = new ExemplarDAO(exemplar_db);
                 
                 edao.incluir(novoExemplar);

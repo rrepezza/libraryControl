@@ -13,7 +13,7 @@ import interfaces.TratamentoDeDados;
  */
 public class Exemplar implements TratamentoDeDados {
     
-    private int id = 0;
+    private GerarID ID = null;
     private boolean disponivel = true; 
     private int livroID = 0;
     
@@ -21,8 +21,9 @@ public class Exemplar implements TratamentoDeDados {
         
     }
     
-    public Exemplar(int id, boolean disponivel, int livroID) {
-        this.id = id;
+
+    public Exemplar(GerarID ID, boolean disponivel, Livro livro) {
+        this.ID = ID;
         this.disponivel = disponivel;
         this.livroID = livroID;
     }
@@ -30,17 +31,10 @@ public class Exemplar implements TratamentoDeDados {
     /**
      * @return the id
      */
-    public int getId() {
-        return id;
+    public GerarID getID(){
+        return ID;
     }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    
     /**
      * @return the disponivel
      */
@@ -73,20 +67,27 @@ public class Exemplar implements TratamentoDeDados {
     public void materializar(String dados) throws Exception {
         if(!dados.isEmpty()) {
             String vetorString[] = dados.split(";");
-            if(vetorString.length != 3) {
-                throw new Exception("Faltam dados na String");
+
+            if(vetorString.length != 10) {
+               // throw new Exception("Faltam dados na String");
             }
+
+            ID = new GerarID(Integer.parseInt(vetorString[0]));
+            
+            disponivel = Boolean.parseBoolean(vetorString[1]);
 
             id = Integer.parseInt(vetorString[0]);
             disponivel = Boolean.parseBoolean(vetorString[1]);
             livroID = Integer.parseInt(vetorString[2]);
+
         
         }
     }
 
     @Override
     public String desmaterializar() {
-        String saida = getId() + ";" + IsDisponivel() + ";" + getLivroID();
+        String saida = getID().desmaterializar() + ";" + IsDisponivel() + ";";
+        saida += getLivro().desmaterializar();
         return saida;
     }
 

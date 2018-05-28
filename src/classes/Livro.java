@@ -13,7 +13,7 @@ import interfaces.TratamentoDeDados;
  */
 public class Livro implements TratamentoDeDados {
     
-    private int id = 0;
+    private GerarID ID = null;
     private int isbn = 0;
     private String titulo = "";
     private String fotoDaCapa = "";
@@ -24,8 +24,9 @@ public class Livro implements TratamentoDeDados {
         
     }
     
-    public Livro(int id, int isbn, String titulo, String fotoDaCapa, int autorID, int editoraID) {
-        this.id = id;
+
+    public Livro(GerarID ID, int isbn, String titulo, String fotoDaCapa, Autor autor, Editora editora) {
+        this.ID = ID;
         this.isbn = isbn;
         this.titulo = titulo;
         this.fotoDaCapa = fotoDaCapa;
@@ -36,18 +37,10 @@ public class Livro implements TratamentoDeDados {
     /**
      * @return the id
      */
-    public int getId() {
-        return id;
+    public GerarID getID(){
+        return ID;
     }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
+        /**
      * @return the isbn
      */
     public int getIsbn() {
@@ -125,7 +118,7 @@ public class Livro implements TratamentoDeDados {
                 throw new Exception("Faltam dados na String");
             }
             
-            id = Integer.parseInt(vetorString[0]);
+            ID = new GerarID(Integer.parseInt(vetorString[0]));
             isbn = Integer.parseInt(vetorString[1]);
             titulo = vetorString[2];
             fotoDaCapa = vetorString[3];
@@ -136,7 +129,11 @@ public class Livro implements TratamentoDeDados {
 
     @Override
     public String desmaterializar() {
-        String saida = getId() + ";" + getIsbn() + ";" + getTitulo() + ";" + getFotoDaCapa() + ";" + getAutorID() + ";" + getEditoraID();
+
+        String saida = getID().desmaterializar()+ ";" + getIsbn() + ";" + getTitulo() + ";" + getFotoDaCapa() + ";";
+        saida += getAutor().desmaterializar() + ";";
+        saida += getEditora().desmaterializar();
+
         return saida;
     }
 

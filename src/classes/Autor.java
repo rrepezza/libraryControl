@@ -5,6 +5,7 @@
  */
 package classes;
 
+
 import interfaces.TratamentoDeDados;
 
 /**
@@ -13,30 +14,30 @@ import interfaces.TratamentoDeDados;
  */
 public class Autor implements TratamentoDeDados {
     
-    private int id = 0;
+    private GerarID ID = null;
     private String nome = "";
     
     public Autor() {
         
     }
     
-    public Autor(int id, String nome){
-        this.id = id;
+    public Autor(GerarID ID, String nome){
+        this.ID = ID;
         this.nome = nome;
     }
 
     /**
      * @return the id
      */
-    public int getId() {
-        return id;
+    public GerarID getID() {
+        return ID;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setID(GerarID ID) {
+        this.ID = ID;
     }
 
     /**
@@ -58,9 +59,9 @@ public class Autor implements TratamentoDeDados {
         if(!dados.isEmpty()) {
             String vetorString[] = dados.split(";");
             if(vetorString.length != 2) 
-                throw new Exception("Faltam dados na String");
+                //throw new Exception("Faltam dados na String");
 
-            id = Integer.parseInt(vetorString[0]);
+            ID = new GerarID(Integer.parseInt(vetorString[0]));
             nome = vetorString[1];
 
         }
@@ -68,7 +69,7 @@ public class Autor implements TratamentoDeDados {
 
     @Override
     public String desmaterializar() {
-        String saida = id + ";" + nome;
+        String saida = getID().desmaterializar() + ";" + nome;
         return saida;
     }
 }
