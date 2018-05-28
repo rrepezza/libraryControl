@@ -27,26 +27,6 @@ public class EditoraDAO implements IEditoraDAO {
     }
 
     @Override
-    public void excluir(int id) throws Exception {
-        try{
-            ArrayList<Editora> listaDeEditoras = this.consultar();
-            //cria o arquivo
-            FileWriter fw = new FileWriter(nomeDoArquivo);
-            //Criar o buffer do arquivo
-            BufferedWriter bw =new BufferedWriter(fw);
-            for(int pos=0;pos<listaDeEditoras.size();pos++){
-                Editora temp = listaDeEditoras.get(pos);
-                if(!(temp.getNumeroID() == id)){
-                   bw.write(temp.desmaterializar()+"\n");
-                }
-            }
-            bw.close();
-        }catch(Exception erro){
-            throw erro;
-        }
-    }
-
-    @Override
     public void alterar(int id) throws Exception {
         
     }
@@ -68,7 +48,7 @@ public class EditoraDAO implements IEditoraDAO {
     }
 
     @Override
-    public ArrayList<Editora> consultar() throws Exception {
+    public ArrayList<Editora> listar() throws Exception {
         try {
             ArrayList<Editora> editoras = new ArrayList<Editora>();
             FileReader fr = new FileReader(nomeDoArquivo);
@@ -90,19 +70,25 @@ public class EditoraDAO implements IEditoraDAO {
     
     public Editora getEditoraByNome(String nome) throws Exception {
         Editora editora = null;
-        
-        ArrayList<Editora> listaEditoras = this.consultar();
-        
+        ArrayList<Editora> listaEditoras = this.listar();
         for (int i = 0; i < listaEditoras.size(); i++) {
             Editora temp = listaEditoras.get(i);
-            
             if(nome.equals(temp.getNome())) {
-                editora = temp;
-                
-            }
-            
+                editora = temp;            
+            }     
         }
-        
+        return editora;
+    }
+    
+    public Editora getEditoraByID(int id) throws Exception {
+        Editora editora = null;
+        ArrayList<Editora> listaEditoras = this.listar();
+        for (int i = 0; i < listaEditoras.size(); i++) {
+            Editora temp = listaEditoras.get(i);
+            if(id == temp.getId()) {
+                editora = temp;            
+            }     
+        }
         return editora;
     }
     

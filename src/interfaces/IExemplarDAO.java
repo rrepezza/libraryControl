@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 public interface IExemplarDAO {
     public void incluir(Exemplar exemplar) throws Exception;
-    public ArrayList<Exemplar> consultar() throws Exception;
-    public void excluir(int id) throws Exception;
+    public ArrayList<Exemplar> listar() throws Exception;
     public void alterar(int id) throws Exception;
 }

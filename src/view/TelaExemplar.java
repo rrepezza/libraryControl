@@ -21,11 +21,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaExemplar extends javax.swing.JFrame {
     
-    String ID_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\IDs.csv";
-    //String livro_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\Livros.csv";
-    String livro_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\Livros.csv";
-    //String exemplar_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\Exemplares.csv";
-    String exemplar_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\Exemplares.csv";
+    String ID_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\IDs.csv";
+    String livro_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
+    //String livro_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
+    String exemplar_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Exemplares.csv";
+    //String exemplar_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Exemplares.csv";
 
     /**
      * Creates new form TelaExemplar
@@ -33,14 +33,18 @@ public class TelaExemplar extends javax.swing.JFrame {
     public TelaExemplar() {
         initComponents();
         showExemplares();
+        
         GerarID IDs = new GerarID();
         jTextFieldExemplarId.setEditable(false);
         jTextFieldExemplarId.setText(Integer.toString(IDs.gerarNumeroUnico()));
+
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
         
         try {
             
             LivroDAO ldao = new LivroDAO(livro_db);
-            ArrayList<Livro> listaLivros = ldao.consultar();
+            ArrayList<Livro> listaLivros = ldao.listar();
             String[] livros = new String[listaLivros.size()];
             
             for (int i = 0; i < listaLivros.size(); i++) {
@@ -66,7 +70,9 @@ public class TelaExemplar extends javax.swing.JFrame {
     public void showExemplares() {
         try {
             ExemplarDAO edao = new ExemplarDAO(exemplar_db);
-            ArrayList<Exemplar> listaExemplares = edao.consultar();
+            LivroDAO ldao = new LivroDAO(livro_db);
+            ArrayList<Exemplar> listaExemplares = edao.listar();
+            ArrayList<Livro> listaLivros = ldao.listar();
 
             DefaultTableModel modelo = (DefaultTableModel) jTableExemplares.getModel();
 
@@ -74,8 +80,11 @@ public class TelaExemplar extends javax.swing.JFrame {
             
             for (int i = 0; i < listaExemplares.size(); i++) {
                 Exemplar exemplar = listaExemplares.get(i);
+
                 modelo.setValueAt(exemplar.getNumeroID(), i, 0);
-                modelo.setValueAt(exemplar.getLivro().getTitulo(), i, 1);
+                
+                Livro livro = ldao.getLivroByID(exemplar.getLivroID());
+                modelo.setValueAt(livro.getTitulo(), i, 1);
                 
                 String disponivel = exemplar.IsDisponivel() ? "Sim" : "Não";
                 modelo.setValueAt(disponivel, i, 2);   
@@ -266,6 +275,7 @@ public class TelaExemplar extends javax.swing.JFrame {
             if(livro != null) {
                 
                 Exemplar novoExemplar = new Exemplar(ID, disponibilidade, livro);
+
                 ExemplarDAO edao = new ExemplarDAO(exemplar_db);
                 
                 edao.incluir(novoExemplar);

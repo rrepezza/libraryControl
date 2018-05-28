@@ -18,9 +18,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaEditora extends javax.swing.JFrame {
     
-    String IDs_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\IDs.csv";
-    //String editora_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\Editoras.csv";
-    String editora_db = "C:\\Users\\jhene\\Documents\\NetBeansProjects\\ProjetoLibrary\\src\\arquivos\\Editoras.csv";
+
+    String IDs_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\IDs.csv";
+    String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+    //String editora_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
+
 
     /**
      * Creates new form TelaEditora
@@ -40,7 +42,7 @@ public class TelaEditora extends javax.swing.JFrame {
         try {
             ArrayList<Editora> listagem;
             EditoraDAO e = new EditoraDAO(editora_db);
-            listagem = e.consultar();
+            listagem = e.listar();
             
             DefaultTableModel modelo = (DefaultTableModel) jTableEditoras.getModel();
             

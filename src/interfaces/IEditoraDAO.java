@@ -14,7 +14,6 @@ import java.util.ArrayList;
  */
 public interface IEditoraDAO {
     public void incluir(Editora editora) throws Exception;
-    public ArrayList<Editora> consultar() throws Exception;
-    public void excluir(int id) throws Exception;
+    public ArrayList<Editora> listar() throws Exception;
     public void alterar(int id) throws Exception;
 }

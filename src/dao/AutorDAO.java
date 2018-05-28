@@ -26,7 +26,7 @@ public class AutorDAO implements IAutorDAO {
     }
 
     @Override
-    public ArrayList<Autor> consultar() throws Exception {
+    public ArrayList<Autor> listar() throws Exception {
         try {
             ArrayList<Autor> autores = new ArrayList<Autor>();
             FileReader fr = new FileReader(nomeDoArquivo);
@@ -42,26 +42,6 @@ public class AutorDAO implements IAutorDAO {
             br.close();
             return autores;
         } catch (Exception erro) {
-            throw erro;
-        }
-    }
-
-    @Override
-    public void excluir(int id) throws Exception {
-        try{
-            ArrayList<Autor> listaDeAutores = this.consultar();
-            //cria o arquivo
-            FileWriter fw = new FileWriter(nomeDoArquivo);
-            //Criar o buffer do arquivo
-            BufferedWriter bw =new BufferedWriter(fw);
-            for(int pos=0;pos<listaDeAutores.size();pos++){
-                Autor temp = listaDeAutores.get(pos);
-                if(!(temp.getID().getNumeroID() == id)){
-                   bw.write(temp.desmaterializar()+"\n");
-                }
-            }
-            bw.close();
-        }catch(Exception erro){
             throw erro;
         }
     }
@@ -89,23 +69,27 @@ public class AutorDAO implements IAutorDAO {
     
     public Autor getAutorByNome(String nome) throws Exception {
         Autor autor = null;
-        
-        ArrayList<Autor> listaAutores = this.consultar();
+        ArrayList<Autor> listaAutores = this.listar();
         System.out.println(nome);
         for (int i = 0; i < listaAutores.size(); i++) {
             Autor temp = listaAutores.get(i);
-            if(nome.equals(temp.getNome())) {
-                System.out.println("Sim");
-            }else{
-                System.out.println("Nao");
-            }
-            System.out.println(temp.getNome());
             if(nome.equals(temp.getNome())) {
                 autor = temp;
             }
             
         }
-        
+        return autor;
+    }
+    
+    public Autor getAutorByID(int id) throws Exception {
+        Autor autor = null;
+        ArrayList<Autor> listaAutores = this.listar();
+        for (int i = 0; i < listaAutores.size(); i++) {
+            Autor temp = listaAutores.get(i);
+            if(id == temp.getId()) {
+                autor = temp;
+            }
+        }
         return autor;
     }
     

@@ -5,7 +5,6 @@
  */
 package classes;
 
-import dao.LivroDAO;
 import interfaces.TratamentoDeDados;
 
 /**
@@ -16,16 +15,17 @@ public class Exemplar implements TratamentoDeDados {
     
     private GerarID ID = null;
     private boolean disponivel = true; 
-    private Livro livro = null;
+    private int livroID = 0;
     
     public Exemplar() {
         
     }
     
+
     public Exemplar(GerarID ID, boolean disponivel, Livro livro) {
         this.ID = ID;
         this.disponivel = disponivel;
-        this.livro = livro;
+        this.livroID = livroID;
     }
     
     /**
@@ -35,7 +35,6 @@ public class Exemplar implements TratamentoDeDados {
         return ID;
     }
     
-
     /**
      * @return the disponivel
      */
@@ -53,21 +52,22 @@ public class Exemplar implements TratamentoDeDados {
     /**
      * @return the livro
      */
-    public Livro getLivro() {
-        return livro;
+    public int getLivroID() {
+        return livroID;
     }
 
     /**
      * @param livro the livro to set
      */
-    public void setLivro(Livro livro) {
-        this.livro = livro;
+    public void setLivroID(int livroID) {
+        this.livroID = livroID;
     }
     
     @Override
     public void materializar(String dados) throws Exception {
         if(!dados.isEmpty()) {
             String vetorString[] = dados.split(";");
+
             if(vetorString.length != 10) {
                // throw new Exception("Faltam dados na String");
             }
@@ -75,11 +75,11 @@ public class Exemplar implements TratamentoDeDados {
             ID = new GerarID(Integer.parseInt(vetorString[0]));
             
             disponivel = Boolean.parseBoolean(vetorString[1]);
-            Autor autor = new Autor(new GerarID(Integer.parseInt(vetorString[6])), vetorString[7]);            
-            Editora editora = new Editora(new GerarID(Integer.parseInt(vetorString[8])), vetorString[9]);
-            Livro livroRetornado = new Livro(new GerarID(Integer.parseInt(vetorString[2])), Integer.parseInt(vetorString[3]),
-            vetorString[4], vetorString[5], autor, editora);
-            livro = livroRetornado;
+
+            id = Integer.parseInt(vetorString[0]);
+            disponivel = Boolean.parseBoolean(vetorString[1]);
+            livroID = Integer.parseInt(vetorString[2]);
+
         
         }
     }
