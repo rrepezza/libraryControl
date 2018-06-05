@@ -70,7 +70,6 @@ public class AutorDAO implements IAutorDAO {
     public Autor getAutorByNome(String nome) throws Exception {
         Autor autor = null;
         ArrayList<Autor> listaAutores = this.listar();
-        System.out.println(nome);
         for (int i = 0; i < listaAutores.size(); i++) {
             Autor temp = listaAutores.get(i);
             if(nome.equals(temp.getNome())) {
@@ -79,6 +78,19 @@ public class AutorDAO implements IAutorDAO {
             
         }
         return autor;
+    }
+    
+    public ArrayList getAutoresByNome(String nome) throws Exception {
+        ArrayList<Autor> autoresEncontrados = new ArrayList<Autor>();
+        ArrayList<Autor> listaAutores = this.listar();
+        for (int i = 0; i < listaAutores.size(); i++) {
+            Autor temp = listaAutores.get(i);
+            String nomeDoAutor = temp.getNome();
+            if(nomeDoAutor.contains(nome)) {        
+                autoresEncontrados.add(listaAutores.get(i));
+            }
+        }
+        return autoresEncontrados;
     }
     
     public Autor getAutorByID(int id) throws Exception {

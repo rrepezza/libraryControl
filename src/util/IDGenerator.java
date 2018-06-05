@@ -20,7 +20,6 @@ public class IDGenerator {
     private String id_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\IDs.csv";
     
     public int getNovoID() throws Exception {
-        
         try {
             int id = 0;
             File f = new File(id_db);
@@ -32,14 +31,11 @@ public class IDGenerator {
         } catch (Exception erro) {
             erro.printStackTrace();
             throw erro;
-        } 
-
+        }
     }
     
     public void gravaID(int id) throws Exception {
-        
         try{
-
             //Abre o arquivo para gravacao e grava o novo id retornado
             FileWriter fw = new FileWriter(id_db, false);
             BufferedWriter bw = new BufferedWriter(fw);
