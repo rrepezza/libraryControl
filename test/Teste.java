@@ -5,6 +5,7 @@ import dao.EditoraDAO;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import util.IDGenerator;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,10 +22,17 @@ public class Teste {
         
         try {
             //String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
-            String livro_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
+            String ids = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\IDs.csv";
             
+            IDGenerator idNew = new IDGenerator();
+            int id = idNew.getNovoID();
+            System.out.println(id);
+            
+            idNew.gravaID(id);
+            
+            /*
             ArrayList<Livro> livros = new ArrayList<Livro>();
-            FileReader fr = new FileReader(livro_db);
+            FileReader fr = new FileReader(ids);
    
             BufferedReader br  = new BufferedReader(fr);
             String linha = null;
@@ -35,6 +43,7 @@ public class Teste {
                 //editoras.add(editora);
             }
             br.close();
+            */
             
         } catch (Exception e) {
             e.printStackTrace();
