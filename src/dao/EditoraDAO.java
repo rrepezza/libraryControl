@@ -5,6 +5,7 @@
  */
 package dao;
 
+import classes.Autor;
 import classes.Editora;
 import interfaces.IEditoraDAO;
 import java.io.BufferedReader;
@@ -66,6 +67,19 @@ public class EditoraDAO implements IEditoraDAO {
         }
          
     }   
+    
+    public ArrayList getEditorasByName(String nome) throws Exception {
+        ArrayList<Editora> editorasEncontradas = new ArrayList();
+        ArrayList<Editora> listaEditoras = this.listar();
+        for (int i = 0; i < listaEditoras.size(); i++) {
+            Editora temp = listaEditoras.get(i);
+            String nomeDaEditora = temp.getNome();
+            if(nomeDaEditora.contains(nome)) {        
+                editorasEncontradas.add(listaEditoras.get(i));
+            }
+        }
+        return editorasEncontradas;
+    }
     
     public Editora getEditoraByNome(String nome) throws Exception {
         Editora editora = null;

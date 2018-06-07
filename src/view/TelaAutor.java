@@ -72,6 +72,7 @@ public class TelaAutor extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jTextFieldBuscaAutor = new javax.swing.JTextField();
         jButtonBuscaAutor = new javax.swing.JButton();
+        jButtonListarAutores = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Autores");
@@ -149,6 +150,13 @@ public class TelaAutor extends javax.swing.JFrame {
             }
         });
 
+        jButtonListarAutores.setText("Listar Autores");
+        jButtonListarAutores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonListarAutoresActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -160,7 +168,9 @@ public class TelaAutor extends javax.swing.JFrame {
                 .addComponent(jTextFieldBuscaAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonBuscaAutor)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonListarAutores)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,7 +179,8 @@ public class TelaAutor extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldBuscaAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonBuscaAutor))
+                    .addComponent(jButtonBuscaAutor)
+                    .addComponent(jButtonListarAutores))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -236,7 +247,7 @@ public class TelaAutor extends javax.swing.JFrame {
                 novoID.gravaID(id);
 
             } else {
-                JOptionPane.showMessageDialog(rootPane, "Preencha os dois campos antes de tentar inserir um Autor.");
+                JOptionPane.showMessageDialog(rootPane, "Preencha todos os campos antes de tentar inserir um Autor.");
             }
           
         } catch (Exception erro) {
@@ -267,6 +278,24 @@ public class TelaAutor extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
     }//GEN-LAST:event_jButtonBuscaAutorActionPerformed
+
+    private void jButtonListarAutoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarAutoresActionPerformed
+        // TODO add your handling code here:
+        try {
+            AutorDAO adao = new AutorDAO(autor_db);
+            ArrayList<Autor> listaAutores = adao.listar();
+            if(listaAutores.size() > 0) {
+                showAutores(listaAutores);
+            } else {
+                DefaultTableModel modelo = (DefaultTableModel) jTableAutores.getModel();
+                    modelo.setRowCount(0);
+                    JOptionPane.showMessageDialog(rootPane, "Nenhum autor encontrado cadastrado.");
+            }   
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonListarAutoresActionPerformed
 
     /**
      * @param args the command line arguments
@@ -306,6 +335,7 @@ public class TelaAutor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBuscaAutor;
     private javax.swing.JButton jButtonCadastrarAutor;
+    private javax.swing.JButton jButtonListarAutores;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

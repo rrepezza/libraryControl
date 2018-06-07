@@ -81,7 +81,7 @@ public class AutorDAO implements IAutorDAO {
     }
     
     public ArrayList getAutoresByNome(String nome) throws Exception {
-        ArrayList<Autor> autoresEncontrados = new ArrayList<Autor>();
+        ArrayList<Autor> autoresEncontrados = new ArrayList();
         ArrayList<Autor> listaAutores = this.listar();
         for (int i = 0; i < listaAutores.size(); i++) {
             Autor temp = listaAutores.get(i);

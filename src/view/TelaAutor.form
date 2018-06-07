@@ -221,6 +221,8 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jButtonBuscaAutor" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="jButtonListarAutores" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -232,6 +234,7 @@
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextFieldBuscaAutor" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonBuscaAutor" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonListarAutores" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -252,6 +255,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonBuscaAutorActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonListarAutores">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Listar Autores"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonListarAutoresActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
