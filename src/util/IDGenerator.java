@@ -15,9 +15,8 @@ import java.util.Scanner;
  * @author repez
  */
 public class IDGenerator {
-    
-    //private String id_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
-    private String id_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\IDs.csv";
+
+    String id_db = "./src/arquivos/IDs.csv";
     
     public int getNovoID() throws Exception {
         try {

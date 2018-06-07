@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import util.IDGenerator;
 
 /**
  *
@@ -20,17 +21,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TelaExemplar extends javax.swing.JFrame {
     
-    //String livro_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
-    String livro_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Livros.csv";
-    //String exemplar_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Exemplares.csv";
-    String exemplar_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Exemplares.csv";
+    String livro_db = "./src/arquivos/Livros.csv";
+    String exemplar_db = "./src/arquivos/Exemplares.csv";
 
     /**
      * Creates new form TelaExemplar
      */
     public TelaExemplar() {
         initComponents();
-        showExemplares();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
         try {
@@ -59,11 +57,10 @@ public class TelaExemplar extends javax.swing.JFrame {
         }
     }
     
-    public void showExemplares() {
+    public void showExemplares(ArrayList<Exemplar> listaExemplares) {
         try {
-            ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+           
             LivroDAO ldao = new LivroDAO(livro_db);
-            ArrayList<Exemplar> listaExemplares = edao.listar();
             ArrayList<Livro> listaLivros = ldao.listar();
 
             DefaultTableModel modelo = (DefaultTableModel) jTableExemplares.getModel();
@@ -100,16 +97,19 @@ public class TelaExemplar extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextFieldExemplarId = new javax.swing.JTextField();
         jComboBoxExemplarLivro = new javax.swing.JComboBox<>();
         jComboBoxExemplarDisponivel = new javax.swing.JComboBox<>();
         jButtonCadastrarExemplar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableExemplares = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jTextFieldBuscaExemplar = new javax.swing.JTextField();
+        jButtonBuscarExemplar = new javax.swing.JButton();
+        jButtonListarExemplares = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,17 +117,9 @@ public class TelaExemplar extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Novo Exemplar"));
 
-        jLabel1.setText("ID:");
-
         jLabel2.setText("Livro:");
 
         jLabel3.setText("Disponível:");
-
-        jTextFieldExemplarId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldExemplarIdActionPerformed(evt);
-            }
-        });
 
         jComboBoxExemplarLivro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -149,25 +141,19 @@ public class TelaExemplar extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3))
                         .addGap(21, 21, 21)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldExemplarId, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBoxExemplarLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBoxExemplarDisponivel, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jButtonCadastrarExemplar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(357, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldExemplarId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jComboBoxExemplarLivro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -200,9 +186,42 @@ public class TelaExemplar extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
+        );
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Busca de Exemplares"));
+
+        jLabel1.setText("Título:");
+
+        jButtonBuscarExemplar.setText("Buscar");
+
+        jButtonListarExemplares.setText("Listar Exemplares");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jTextFieldBuscaExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonBuscarExemplar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonListarExemplares)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextFieldBuscaExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBuscarExemplar)
+                    .addComponent(jButtonListarExemplares))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -213,7 +232,8 @@ public class TelaExemplar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -221,7 +241,9 @@ public class TelaExemplar extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -246,14 +268,13 @@ public class TelaExemplar extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldExemplarIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldExemplarIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldExemplarIdActionPerformed
-
     private void jButtonCadastrarExemplarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarExemplarActionPerformed
         // TODO add your handling code here:
         try {
-            int id = Integer.parseInt(jTextFieldExemplarId.getText());
+            
+            IDGenerator novoID = new IDGenerator();
+            int id = novoID.getNovoID();
+            
             String titulo = jComboBoxExemplarLivro.getSelectedItem().toString();
             String opcaoDisponibilidade = jComboBoxExemplarDisponivel.getSelectedItem().toString();
             
@@ -268,9 +289,8 @@ public class TelaExemplar extends javax.swing.JFrame {
                 ExemplarDAO edao = new ExemplarDAO(exemplar_db);
                 
                 edao.incluir(novoExemplar);
-                
-                showExemplares();
-                
+                novoID.gravaID(id);
+  
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Erro ao vincular exemplar ao livro " + titulo);
             }
@@ -318,7 +338,9 @@ public class TelaExemplar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonBuscarExemplar;
     private javax.swing.JButton jButtonCadastrarExemplar;
+    private javax.swing.JButton jButtonListarExemplares;
     private javax.swing.JComboBox<String> jComboBoxExemplarDisponivel;
     private javax.swing.JComboBox<String> jComboBoxExemplarLivro;
     private javax.swing.JLabel jLabel1;
@@ -327,8 +349,9 @@ public class TelaExemplar extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableExemplares;
-    private javax.swing.JTextField jTextFieldExemplarId;
+    private javax.swing.JTextField jTextFieldBuscaExemplar;
     // End of variables declaration//GEN-END:variables
 }

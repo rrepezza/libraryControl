@@ -6,6 +6,7 @@
 package dao;
 
 import classes.Exemplar;
+import classes.Livro;
 import interfaces.IExemplarDAO;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class ExemplarDAO implements IExemplarDAO {
     
     private String nomeDoArquivo = "";
+    private String livro_db = "./src/arquivos/Livros.csv";
     
     public ExemplarDAO(String nomeDoArquivo){
         this.nomeDoArquivo = nomeDoArquivo;
@@ -27,19 +29,14 @@ public class ExemplarDAO implements IExemplarDAO {
 
     @Override
     public void incluir(Exemplar exemplar) throws Exception {
-        try{
-            //cria o arquivo
+        try{         
             FileWriter fw = new FileWriter(nomeDoArquivo,true);
-            //Criar o buffer do arquivo
             BufferedWriter bw = new BufferedWriter(fw);
-            //Escreve no arquivo
             bw.write(exemplar.desmaterializar() + "\n");
-            //fecha o arquivo
             bw.close();		
         }catch(Exception erro){
             throw erro;
         }
-    
     }
 
     @Override
@@ -65,6 +62,21 @@ public class ExemplarDAO implements IExemplarDAO {
     @Override
     public void alterar(int id) throws Exception {
         
+    }
+    
+    public ArrayList<Exemplar> getExemplarByTitulo(String titulo) throws Exception {
+        try {
+            ArrayList<Exemplar> exemplaresEncontrados = new ArrayList();
+            ArrayList<Exemplar> listaExemplares = this.listar();
+            LivroDAO ldao = new LivroDAO(livro_db);
+            ArrayList<Livro> listaLivros = ldao.getLivrosByTitulo(titulo);
+            for (int i = 0; i < listaLivros.size(); i++) {
+                
+            }
+            return exemplaresEncontrados;
+        } catch (Exception erro) {
+            throw erro;
+        }
     }
     
 }

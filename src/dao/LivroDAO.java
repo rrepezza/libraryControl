@@ -45,7 +45,7 @@ public class LivroDAO implements ILivroDAO {
     public ArrayList<Livro> listar() throws Exception {
         
         try {
-            ArrayList<Livro> livros = new ArrayList<Livro>();
+            ArrayList<Livro> livros = new ArrayList();
             FileReader fr = new FileReader(nomeDoArquivo);
    
             BufferedReader br  = new BufferedReader(fr);
@@ -69,24 +69,6 @@ public class LivroDAO implements ILivroDAO {
         
     }
     
-    public Livro getLivroById(int id) throws Exception {
-        
-        Livro livro = null;
-        
-        ArrayList<Livro> listaLivros = this.listar();
-        
-        for (int i = 0; i < listaLivros.size(); i++) {
-            Livro temp = listaLivros.get(i);
-            
-            if(temp.getId() == id) {
-                livro = temp;
-            }
-            
-        }
-        
-        return livro;
-    }
-    
     public Livro getLivroByTitulo(String titulo) throws Exception { 
         Livro livro = null;        
         ArrayList<Livro> listaLivros = this.listar();
@@ -94,10 +76,21 @@ public class LivroDAO implements ILivroDAO {
             Livro temp = listaLivros.get(i);
             if(titulo.equals(temp.getTitulo())) {
                 livro = temp;
-            }
-            
+            }       
         }
         return livro;
+    }
+    
+    public ArrayList<Livro> getLivrosByTitulo(String titulo) throws Exception { 
+        ArrayList<Livro> livrosEncontrados = new ArrayList();
+        ArrayList<Livro> listaLivros = this.listar();
+        for (int i = 0; i < listaLivros.size(); i++) {
+            Livro temp = listaLivros.get(i);
+            if(titulo.contains(temp.getTitulo())) {
+                livrosEncontrados.add(temp);
+            }
+        }
+        return livrosEncontrados;
     }
     
     public Livro getLivroByID(int id) throws Exception { 
@@ -107,12 +100,9 @@ public class LivroDAO implements ILivroDAO {
             Livro temp = listaLivros.get(i);
             if(id == temp.getId()) {
                 livro = temp;
-            }
-            
+            } 
         }
         return livro;
     }
-
-
     
 }

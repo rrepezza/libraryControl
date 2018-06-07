@@ -21,29 +21,8 @@ public class Teste {
     public static void main(String[] args) {
         
         try {
-            //String editora_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Editoras.csv";
-            String ids = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\IDs.csv";
             
-            IDGenerator idNew = new IDGenerator();
-            int id = idNew.getNovoID();
-            System.out.println(id);
             
-            idNew.gravaID(id);
-            
-            /*
-            ArrayList<Livro> livros = new ArrayList<Livro>();
-            FileReader fr = new FileReader(ids);
-   
-            BufferedReader br  = new BufferedReader(fr);
-            String linha = null;
-            while((linha=br.readLine()) != null){
-                System.out.println(linha);
-                //Editora editora = new Editora();
-                //editora.materializar(linha);
-                //editoras.add(editora);
-            }
-            br.close();
-            */
             
         } catch (Exception e) {
             e.printStackTrace();

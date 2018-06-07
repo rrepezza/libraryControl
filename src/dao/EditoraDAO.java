@@ -5,7 +5,6 @@
  */
 package dao;
 
-import classes.Autor;
 import classes.Editora;
 import interfaces.IEditoraDAO;
 import java.io.BufferedReader;
@@ -50,7 +49,7 @@ public class EditoraDAO implements IEditoraDAO {
     @Override
     public ArrayList<Editora> listar() throws Exception {
         try {
-            ArrayList<Editora> editoras = new ArrayList<Editora>();
+            ArrayList<Editora> editoras = new ArrayList();
             FileReader fr = new FileReader(nomeDoArquivo);
    
             BufferedReader br  = new BufferedReader(fr);

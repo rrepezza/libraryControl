@@ -28,7 +28,7 @@ public class AutorDAO implements IAutorDAO {
     @Override
     public ArrayList<Autor> listar() throws Exception {
         try {
-            ArrayList<Autor> autores = new ArrayList<Autor>();
+            ArrayList<Autor> autores = new ArrayList();
             FileReader fr = new FileReader(nomeDoArquivo);
    
             BufferedReader br  = new BufferedReader(fr);

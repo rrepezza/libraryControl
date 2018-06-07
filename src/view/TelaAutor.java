@@ -8,7 +8,6 @@ package view;
 import classes.Autor;
 import dao.AutorDAO;
 import java.util.ArrayList;
-import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.IDGenerator;
@@ -19,9 +18,7 @@ import util.IDGenerator;
  */
 public class TelaAutor extends javax.swing.JFrame {
     
-    //String autor_db = "P:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
-    String autor_db = "D:\\Drive\\Graduação ADS\\2SEM\\Programação Orientada a Objetos\\libraryControl\\src\\arquivos\\Autores.csv";
-
+    String autor_db = "./src/arquivos/Autores.csv";
     
     /**
      * Creates new form TelaAutor
