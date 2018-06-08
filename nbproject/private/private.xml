@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Drive/Graduação%20ADS/2SEM/Programação%20Orientada%20a%20Objetos/libraryControl/src/view/TelaAutor.java</file>
-            <file>file:/D:/Drive/Graduação%20ADS/2SEM/Programação%20Orientada%20a%20Objetos/libraryControl/src/arquivos/IDs.csv</file>
-            <file>file:/D:/Drive/Graduação%20ADS/2SEM/Programação%20Orientada%20a%20Objetos/libraryControl/src/dao/AutorDAO.java</file>
-            <file>file:/D:/Drive/Graduação%20ADS/2SEM/Programação%20Orientada%20a%20Objetos/libraryControl/src/arquivos/Autores.csv</file>
+            <file>file:/D:/Drive/Graduação%20ADS/2SEM/Programação%20Orientada%20a%20Objetos/libraryControl/src/view/TelaExemplar.java</file>
+            <file>file:/D:/Drive/Graduação%20ADS/2SEM/Programação%20Orientada%20a%20Objetos/libraryControl/src/classes/Exemplar.java</file>
+            <file>file:/D:/Drive/Graduação%20ADS/2SEM/Programação%20Orientada%20a%20Objetos/libraryControl/src/dao/LivroDAO.java</file>
+            <file>file:/D:/Drive/Graduação%20ADS/2SEM/Programação%20Orientada%20a%20Objetos/libraryControl/src/dao/ExemplarDAO.java</file>
+            <file>file:/D:/Drive/Graduação%20ADS/2SEM/Programação%20Orientada%20a%20Objetos/libraryControl/src/view/TelaLivro.java</file>
         </group>
     </open-files>
 </project-private>

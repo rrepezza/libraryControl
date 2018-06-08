@@ -102,6 +102,8 @@ public class TelaExemplar extends javax.swing.JFrame {
         jComboBoxExemplarLivro = new javax.swing.JComboBox<>();
         jComboBoxExemplarDisponivel = new javax.swing.JComboBox<>();
         jButtonCadastrarExemplar = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jTextFieldQuantidadeExemplar = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableExemplares = new javax.swing.JTable();
@@ -132,6 +134,8 @@ public class TelaExemplar extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setText("Quantidade:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -147,8 +151,12 @@ public class TelaExemplar extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBoxExemplarLivro, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBoxExemplarDisponivel, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jButtonCadastrarExemplar))
-                .addContainerGap(357, Short.MAX_VALUE))
+                    .addComponent(jButtonCadastrarExemplar)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFieldQuantidadeExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,6 +169,10 @@ public class TelaExemplar extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jComboBoxExemplarDisponivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jTextFieldQuantidadeExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButtonCadastrarExemplar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -186,7 +198,7 @@ public class TelaExemplar extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Busca de Exemplares"));
@@ -196,6 +208,11 @@ public class TelaExemplar extends javax.swing.JFrame {
         jButtonBuscarExemplar.setText("Buscar");
 
         jButtonListarExemplares.setText("Listar Exemplares");
+        jButtonListarExemplares.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonListarExemplaresActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -242,9 +259,9 @@ public class TelaExemplar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -274,6 +291,7 @@ public class TelaExemplar extends javax.swing.JFrame {
             
             IDGenerator novoID = new IDGenerator();
             int id = novoID.getNovoID();
+            int quantidadeDeExemplares = Integer.parseInt(jTextFieldQuantidadeExemplar.getText());
             
             String titulo = jComboBoxExemplarLivro.getSelectedItem().toString();
             String opcaoDisponibilidade = jComboBoxExemplarDisponivel.getSelectedItem().toString();
@@ -283,9 +301,9 @@ public class TelaExemplar extends javax.swing.JFrame {
             LivroDAO ldao = new LivroDAO(livro_db);
             Livro livro = ldao.getLivroByTitulo(titulo);
             
-            if(livro != null) {
+            if(livro != null && !jTextFieldQuantidadeExemplar.getText().isEmpty() && !jComboBoxExemplarDisponivel.getSelectedItem().toString().isEmpty()) {
                 
-                Exemplar novoExemplar = new Exemplar(id, disponibilidade, livro.getId());
+                Exemplar novoExemplar = new Exemplar(id, disponibilidade, livro.getId(), quantidadeDeExemplares);
                 ExemplarDAO edao = new ExemplarDAO(exemplar_db);
                 
                 edao.incluir(novoExemplar);
@@ -301,6 +319,23 @@ public class TelaExemplar extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
     }//GEN-LAST:event_jButtonCadastrarExemplarActionPerformed
+
+    private void jButtonListarExemplaresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarExemplaresActionPerformed
+        // TODO add your handling code here:
+        try {
+            ExemplarDAO exdao = new ExemplarDAO(exemplar_db);
+            ArrayList<Exemplar> listaExemplares = exdao.listar();
+            if(listaExemplares.size() > 0) {
+                showExemplares(listaExemplares);
+            } else {
+                DefaultTableModel modelo = (DefaultTableModel) jTableExemplares.getModel();
+                modelo.setRowCount(0);
+                JOptionPane.showMessageDialog(rootPane, "Nenhum exemplar cadastrado."); 
+            }  
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonListarExemplaresActionPerformed
 
     /**
      * @param args the command line arguments
@@ -346,6 +381,7 @@ public class TelaExemplar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -353,5 +389,6 @@ public class TelaExemplar extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableExemplares;
     private javax.swing.JTextField jTextFieldBuscaExemplar;
+    private javax.swing.JTextField jTextFieldQuantidadeExemplar;
     // End of variables declaration//GEN-END:variables
 }

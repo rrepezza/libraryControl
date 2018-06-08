@@ -404,11 +404,8 @@ public class TelaLivro extends javax.swing.JFrame {
                     novoID.gravaID(id);
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Erro ao incluir livro.");
-                }
-                               
-
+                }                           
             } else {
-                
                 JOptionPane.showMessageDialog(rootPane, "Preencha os campos antes de tentar inserir um Livro.");
             } 
 

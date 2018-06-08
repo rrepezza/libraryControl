@@ -16,15 +16,17 @@ public class Exemplar implements TratamentoDeDados {
     private int id = 0;
     private boolean disponivel = true; 
     private int livroID = 0;
+    private int quantidadeDeExemplares = 0;
     
     public Exemplar() {
         
     }
     
-    public Exemplar(int id, boolean disponivel, int livroID) {
+    public Exemplar(int id, boolean disponivel, int livroID, int quantidadeDeExemplares) {
         this.id = id;
         this.disponivel = disponivel;
         this.livroID = livroID;
+        this.quantidadeDeExemplares = quantidadeDeExemplares;
     }
     
     /**
@@ -69,6 +71,20 @@ public class Exemplar implements TratamentoDeDados {
         this.livroID = livroID;
     }
     
+     /**
+     * @return the quantidadeDeExemplares
+     */
+    public int getQuantidadeDeExemplares() {
+        return quantidadeDeExemplares;
+    }
+
+    /**
+     * @param quantidadeDeExemplares the quantidadeDeExemplares to set
+     */
+    public void setQuantidadeDeExemplares(int quantidadeDeExemplares) {
+        this.quantidadeDeExemplares = quantidadeDeExemplares;
+    }    
+    
     @Override
     public void materializar(String dados) throws Exception {
         if(!dados.isEmpty()) {
@@ -89,6 +105,8 @@ public class Exemplar implements TratamentoDeDados {
         String saida = getId() + ";" + IsDisponivel() + ";" + getLivroID();
         return saida;
     }
+
+   
 
     
 }

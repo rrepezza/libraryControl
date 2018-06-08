@@ -71,7 +71,13 @@ public class ExemplarDAO implements IExemplarDAO {
             LivroDAO ldao = new LivroDAO(livro_db);
             ArrayList<Livro> listaLivros = ldao.getLivrosByTitulo(titulo);
             for (int i = 0; i < listaLivros.size(); i++) {
-                
+                Livro tempLivro = listaLivros.get(i);
+                for (int j = 0; j < listaExemplares.size(); j++) {
+                    Exemplar tempExemplar = listaExemplares.get(i);
+                    if(tempLivro.getId() == tempExemplar.getLivroID()) {
+                        listaExemplares.add(tempExemplar);
+                    }
+                }
             }
             return exemplaresEncontrados;
         } catch (Exception erro) {
