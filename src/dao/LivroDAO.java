@@ -28,14 +28,24 @@ public class LivroDAO implements ILivroDAO {
     @Override
     public void incluir(Livro livro) throws Exception {
         try{
-            //cria o arquivo
-            FileWriter fw = new FileWriter(nomeDoArquivo,true);
-            //Criar o buffer do arquivo
-            BufferedWriter bw = new BufferedWriter(fw);
-            //Escreve no arquivo
-            bw.write(livro.desmaterializar() + "\n");
-            //fecha o arquivo
-            bw.close();		
+            ArrayList<Livro> livrosCadastrados = this.listar();
+            boolean flag = false;
+            if(livrosCadastrados.size() > 0) {
+                for (int i = 0; i < livrosCadastrados.size(); i++) {
+                    Livro temp = livrosCadastrados.get(i);
+                    if(temp.getIsbn() == livro.getIsbn()) {
+                        flag = true;
+                    }
+                }
+            }
+            if(!flag) {
+                FileWriter fw = new FileWriter(nomeDoArquivo,true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(livro.desmaterializar() + "\n");
+                bw.close();	
+            } else {
+                throw new Exception("Já existe livro com o ISBN informado.");
+            }
         }catch(Exception erro){
             throw erro;
         }

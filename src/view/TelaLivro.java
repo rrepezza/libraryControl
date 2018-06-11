@@ -51,17 +51,19 @@ public class TelaLivro extends javax.swing.JFrame {
             ArrayList<Autor> listaAutores = ad.listar();
             ArrayList<Editora> listaEditoras = ed.listar();
             
-            String[] autores = new String[listaAutores.size()];
-            String[] editoras = new String[listaEditoras.size()];
+            String[] autores = new String[listaAutores.size() + 1];
+            String[] editoras = new String[listaEditoras.size() + 1];
             
+            autores[0] = "Selecione...";
+            editoras[0] = "Selecione...";
             for (int i = 0; i < listaAutores.size(); i++) {
                 Autor a = listaAutores.get(i);
-                autores[i] = a.getNome();
+                autores[i + 1] = a.getNome();
             }
             
             for (int i = 0; i < listaEditoras.size(); i++) {
                 Editora e = listaEditoras.get(i);
-                editoras[i] = e.getNome();
+                editoras[i + 1] = e.getNome();
             }
             
             DefaultComboBoxModel m_autores = new DefaultComboBoxModel(autores);
@@ -118,6 +120,14 @@ public class TelaLivro extends javax.swing.JFrame {
             erro.printStackTrace();
             JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
+    }
+    
+    public void limparCampos() {
+        jTextFieldLivroTitulo.setText("");
+        jTextFieldLivroISBN.setText("");
+        jTextFieldLivroCapa.setText("");
+        jComboBoxLivroAutor.setSelectedIndex(0);
+        jComboBoLivroEditora.setSelectedIndex(0);
     }
 
     /**
@@ -402,6 +412,7 @@ public class TelaLivro extends javax.swing.JFrame {
                     ldao.incluir(novoLivro);
                     
                     novoID.gravaID(id);
+                    limparCampos();
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Erro ao incluir livro.");
                 }                           

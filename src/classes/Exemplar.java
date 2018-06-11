@@ -16,19 +16,15 @@ public class Exemplar implements TratamentoDeDados {
     private int id = 0;
     private boolean disponivel = false; 
     private int livroID = 0;
-    private int quantidadeDeExemplares = 0;
     private boolean exemplarFixo = true;
     
     public Exemplar() {
         
     }
     
-    public Exemplar(int id, int livroID, int quantidadeDeExemplares) {
+    public Exemplar(int id, int livroID) {
         this.id = id;
-        this.disponivel = false;
-        this.livroID = livroID;
-        this.quantidadeDeExemplares = quantidadeDeExemplares;
-        this.exemplarFixo = true;
+        this.livroID = livroID;  
     }
     
     /**
@@ -73,20 +69,6 @@ public class Exemplar implements TratamentoDeDados {
         this.livroID = livroID;
     }
     
-     /**
-     * @return the quantidadeDeExemplares
-     */
-    public int getQuantidadeDeExemplares() {
-        return quantidadeDeExemplares;
-    }
-
-    /**
-     * @param quantidadeDeExemplares the quantidadeDeExemplares to set
-     */
-    public void setQuantidadeDeExemplares(int quantidadeDeExemplares) {
-        this.quantidadeDeExemplares = quantidadeDeExemplares;
-    }   
-    
     /**
      * @return the exemplarFixo
      */
@@ -105,20 +87,21 @@ public class Exemplar implements TratamentoDeDados {
     public void materializar(String dados) throws Exception {
         if(!dados.isEmpty()) {
             String vetorString[] = dados.split(";");
-            if(vetorString.length != 3) {
+            if(vetorString.length != 4) {
                 throw new Exception("Faltam dados na String");
             }
 
             id = Integer.parseInt(vetorString[0]);
             disponivel = Boolean.parseBoolean(vetorString[1]);
             livroID = Integer.parseInt(vetorString[2]);
+            exemplarFixo = Boolean.parseBoolean(vetorString[3]);
         
         }
     }
 
     @Override
     public String desmaterializar() {
-        String saida = getId() + ";" + IsDisponivel() + ";" + getLivroID();
+        String saida = getId() + ";" + IsDisponivel() + ";" + getLivroID() + ";" + isExemplarFixo();
         return saida;
     }
     

@@ -62,8 +62,7 @@ public class TelaExemplar extends javax.swing.JFrame {
         try {
            
             LivroDAO ldao = new LivroDAO(livro_db);
-            ArrayList<Livro> listaLivros = ldao.listar();
-
+            
             DefaultTableModel modelo = (DefaultTableModel) jTableExemplares.getModel();
 
             modelo.setNumRows(listaExemplares.size());
@@ -78,12 +77,18 @@ public class TelaExemplar extends javax.swing.JFrame {
                 String disponivel = exemplar.IsDisponivel() ? "Sim" : "Não";
                 modelo.setValueAt(disponivel, i, 2);   
                 
-                System.out.println(exemplar.IsDisponivel());
+                String fixo = exemplar.isExemplarFixo() ? "Sim" : "Não";
+                modelo.setValueAt(fixo, i, 3);           
                 
             }
         } catch (Exception erro) {
             erro.printStackTrace();
         }
+    }
+    
+    public void limparCampos() {
+        jTextFieldBuscaExemplar.setText("");
+        jComboBoxExemplarLivro.setSelectedIndex(0);
     }
     
 
@@ -172,7 +177,7 @@ public class TelaExemplar extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Livro", "Disponivel"
+                "ID", "Livro", "Disponivel", "Fixo"
             }
         ));
         jScrollPane1.setViewportView(jTableExemplares);
@@ -277,27 +282,42 @@ public class TelaExemplar extends javax.swing.JFrame {
         try {
             
             IDGenerator novoID = new IDGenerator();
-            int id = novoID.getNovoID();
+         
+            int id;
             int quantidadeDeExemplares = Integer.parseInt(jTextFieldQuantidadeExemplar.getText());
             
             String titulo = jComboBoxExemplarLivro.getSelectedItem().toString();
-            //String opcaoDisponibilidade = jComboBoxExemplarDisponivel.getSelectedItem().toString();
-            
-            //boolean disponibilidade = opcaoDisponibilidade.equals("Sim");
             
             LivroDAO ldao = new LivroDAO(livro_db);
             Livro livro = ldao.getLivroByTitulo(titulo);
             
-            if(livro != null && !jTextFieldQuantidadeExemplar.getText().isEmpty() && !jComboBoxExemplarLivro.getSelectedItem().toString().equals("Selecione...")) {
+            ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+
+            if(!jTextFieldQuantidadeExemplar.getText().isEmpty() && !jComboBoxExemplarLivro.getSelectedItem().toString().equals("Selecione...")) {
                 
-                Exemplar novoExemplar = new Exemplar(id, livro.getId(), quantidadeDeExemplares);
-                ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+                boolean hasExemplarFixo = edao.hasExemplarFixo(livro.getId());
+
+                for (int i = 0; i < quantidadeDeExemplares; i++) {
+                    
+                    id = novoID.getNovoID();
+                    Exemplar novoExemplar = new Exemplar(id, livro.getId());
+                     
+                    if(hasExemplarFixo) {
+                        novoExemplar.setDisponivel(true);
+                        novoExemplar.setExemplarFixo(false);
+                    } else {
+                        novoExemplar.setDisponivel(false);
+                        novoExemplar.setExemplarFixo(true);
+                        hasExemplarFixo = true;
+                    }
+                    edao.incluir(novoExemplar);
+                    novoID.gravaID(id);
+                }
                 
-                edao.incluir(novoExemplar);
-                novoID.gravaID(id);
-  
+                limparCampos();
+                
             } else {
-                JOptionPane.showMessageDialog(rootPane, "Erro ao vincular exemplar ao livro " + titulo);
+                JOptionPane.showMessageDialog(rootPane, "Erro ao vincular exemplar(es) ao livro: " + titulo);
             }
             
             
