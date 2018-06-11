@@ -127,4 +127,13 @@ public class ExemplarDAO implements IExemplarDAO {
         }
     }
     
+    public boolean isExemplarFixo(int exemplarID) {
+        try {
+            
+            return false;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
 }

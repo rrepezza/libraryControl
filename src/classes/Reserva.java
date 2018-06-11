@@ -122,7 +122,9 @@ public class Reserva implements TratamentoDeDados {
 
     @Override
     public String desmaterializar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String saida = getId() + ";" + getExemplarID() + ";" + getClienteID() + ";";
+        saida += getDataReserva() + ";" + isAtiva();         
+        return saida;
     }
 
    
