@@ -20,7 +20,7 @@ public class Reserva implements TratamentoDeDados {
     private int exemplarID = 0;
     private int clienteID = 0;
     private Date dataReserva = null;
-    private boolean ativa = true;
+    private boolean isAtiva = true;
     
     public Reserva() {
         
@@ -76,17 +76,17 @@ public class Reserva implements TratamentoDeDados {
     }
 
     /**
-     * @return the ativa
+     * @return the isAtiva
      */
     public boolean isAtiva() {
-        return ativa;
+        return isAtiva;
     }
 
     /**
-     * @param ativa the ativa to set
+     * @param isAtiva the ativa to set
      */
-    public void setAtiva(boolean ativa) {
-        this.ativa = ativa;
+    public void setIsAtiva(boolean isAtiva) {
+        this.isAtiva = isAtiva;
     }
     
      /**
@@ -116,14 +116,16 @@ public class Reserva implements TratamentoDeDados {
             clienteID = Integer.parseInt(vetorString[2]);
             DateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
             dataReserva = (Date) formatoData.parse(vetorString[3]);
-            ativa = Boolean.parseBoolean(vetorString[4]);
+            isAtiva = Boolean.parseBoolean(vetorString[4]);
         }
     }
 
     @Override
     public String desmaterializar() {
         String saida = getId() + ";" + getExemplarID() + ";" + getClienteID() + ";";
-        saida += getDataReserva() + ";" + isAtiva();         
+        DateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+        String stringDataReserva = formatoData.format(getDataReserva());
+        saida += stringDataReserva + ";" + isAtiva();         
         return saida;
     }
 

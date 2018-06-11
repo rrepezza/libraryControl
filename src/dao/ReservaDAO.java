@@ -78,4 +78,20 @@ public class ReservaDAO implements IReservaDAO {
         
     }
     
+    public boolean existeReserva(int exemplarID) throws Exception {
+        try {
+            boolean hasReserva = false;
+            ArrayList<Reserva> reservas = this.listar();
+            for (int i = 0; i < reservas.size(); i++) {
+                Reserva temp = reservas.get(i);
+                if(temp.getExemplarID() == exemplarID) {
+                    hasReserva = true;
+                }
+            }
+            return hasReserva;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
 }

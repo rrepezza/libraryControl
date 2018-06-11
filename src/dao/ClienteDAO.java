@@ -19,17 +19,17 @@ import java.util.ArrayList;
  */
 public class ClienteDAO implements IClienteDAO{
     
-    private String nomeDoCliente = "";
+    private String nomeDoArquivo = "";
     
-    public ClienteDAO(String nomeDoCliente){
-        this.nomeDoCliente = nomeDoCliente;
+    public ClienteDAO(String nomeDoArquivo){
+        this.nomeDoArquivo = nomeDoArquivo;
     }
 
     @Override
     public ArrayList<Cliente> listar() throws Exception {
         try {
             ArrayList<Cliente> clientes = new ArrayList();
-            FileReader fr = new FileReader(nomeDoCliente);
+            FileReader fr = new FileReader(nomeDoArquivo);
             BufferedReader br  = new BufferedReader(fr);
             String linha;
             while((linha=br.readLine()) != null){
@@ -65,7 +65,7 @@ public class ClienteDAO implements IClienteDAO{
             
             //caso não exista, inclui
             if(!encontrado) {
-                FileWriter fw = new FileWriter(nomeDoCliente,true);
+                FileWriter fw = new FileWriter(nomeDoArquivo,true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 bw.write(cliente.desmaterializar() + "\n");
                 bw.close();	
