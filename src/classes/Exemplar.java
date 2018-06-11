@@ -14,19 +14,21 @@ import interfaces.TratamentoDeDados;
 public class Exemplar implements TratamentoDeDados {
     
     private int id = 0;
-    private boolean disponivel = true; 
+    private boolean disponivel = false; 
     private int livroID = 0;
     private int quantidadeDeExemplares = 0;
+    private boolean exemplarFixo = true;
     
     public Exemplar() {
         
     }
     
-    public Exemplar(int id, boolean disponivel, int livroID, int quantidadeDeExemplares) {
+    public Exemplar(int id, int livroID, int quantidadeDeExemplares) {
         this.id = id;
-        this.disponivel = disponivel;
+        this.disponivel = false;
         this.livroID = livroID;
         this.quantidadeDeExemplares = quantidadeDeExemplares;
+        this.exemplarFixo = true;
     }
     
     /**
@@ -83,7 +85,21 @@ public class Exemplar implements TratamentoDeDados {
      */
     public void setQuantidadeDeExemplares(int quantidadeDeExemplares) {
         this.quantidadeDeExemplares = quantidadeDeExemplares;
-    }    
+    }   
+    
+    /**
+     * @return the exemplarFixo
+     */
+    public boolean isExemplarFixo() {
+        return exemplarFixo;
+    }
+
+    /**
+     * @param exemplarFixo the exemplarFixo to set
+     */
+    public void setExemplarFixo(boolean exemplarFixo) {
+        this.exemplarFixo = exemplarFixo;
+    }
     
     @Override
     public void materializar(String dados) throws Exception {
@@ -105,8 +121,5 @@ public class Exemplar implements TratamentoDeDados {
         String saida = getId() + ";" + IsDisponivel() + ";" + getLivroID();
         return saida;
     }
-
-   
-
     
 }

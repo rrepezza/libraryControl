@@ -107,7 +107,7 @@ public class TelaCliente extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Cliente", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Cadastro de Cliente"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Novo Cliente"));
 
         jLabel1.setText("Nome:");
 

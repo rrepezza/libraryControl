@@ -30,6 +30,8 @@ public class ExemplarDAO implements IExemplarDAO {
     @Override
     public void incluir(Exemplar exemplar) throws Exception {
         try{         
+            
+            
             FileWriter fw = new FileWriter(nomeDoArquivo,true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(exemplar.desmaterializar() + "\n");
@@ -76,6 +78,26 @@ public class ExemplarDAO implements IExemplarDAO {
                     Exemplar tempExemplar = listaExemplares.get(i);
                     if(tempLivro.getId() == tempExemplar.getLivroID()) {
                         listaExemplares.add(tempExemplar);
+                    }
+                }
+            }
+            return exemplaresEncontrados;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    public ArrayList<Exemplar> getExemplarByLivroID(int livroID) throws Exception {
+        try {
+            ArrayList<Exemplar> exemplaresEncontrados = new ArrayList();
+            ArrayList<Exemplar> listaExemplares = this.listar();
+            LivroDAO ldao = new LivroDAO(livro_db);
+            Livro livro = ldao.getLivroByID(livroID);
+            if(livro != null) {
+                for (int i = 0; i < listaExemplares.size(); i++) {
+                    Exemplar temp = listaExemplares.get(i);
+                    if(temp.getLivroID() == livro.getId()) {
+                        listaExemplares.add(temp);
                     }
                 }
             }
