@@ -33,8 +33,7 @@ public class Inicio extends javax.swing.JFrame {
         jButtonExemplar = new javax.swing.JButton();
         jButtonEditora = new javax.swing.JButton();
         jButtonAutor = new javax.swing.JButton();
-        jButtonProfessor = new javax.swing.JButton();
-        jButtonAluno = new javax.swing.JButton();
+        jButtonCliente = new javax.swing.JButton();
         jPanelUltimasReservas = new javax.swing.JPanel();
         jPanelUltimosEmprestimos = new javax.swing.JPanel();
         jButtonNovoEmprestimo = new javax.swing.JButton();
@@ -77,9 +76,12 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
 
-        jButtonProfessor.setText("Professor");
-
-        jButtonAluno.setText("Aluno");
+        jButtonCliente.setText("Cliente");
+        jButtonCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonClienteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelCadastrosBasicosLayout = new javax.swing.GroupLayout(jPanelCadastrosBasicos);
         jPanelCadastrosBasicos.setLayout(jPanelCadastrosBasicosLayout);
@@ -95,10 +97,8 @@ public class Inicio extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jButtonAutor)
                 .addGap(18, 18, 18)
-                .addComponent(jButtonProfessor)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonAluno)
-                .addContainerGap(190, Short.MAX_VALUE))
+                .addComponent(jButtonCliente)
+                .addContainerGap(281, Short.MAX_VALUE))
         );
         jPanelCadastrosBasicosLayout.setVerticalGroup(
             jPanelCadastrosBasicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,8 +109,7 @@ public class Inicio extends javax.swing.JFrame {
                     .addComponent(jButtonExemplar)
                     .addComponent(jButtonEditora)
                     .addComponent(jButtonAutor)
-                    .addComponent(jButtonProfessor)
-                    .addComponent(jButtonAluno))
+                    .addComponent(jButtonCliente))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -223,6 +222,12 @@ public class Inicio extends javax.swing.JFrame {
         te.setVisible(true);
     }//GEN-LAST:event_jButtonExemplarActionPerformed
 
+    private void jButtonClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClienteActionPerformed
+        // TODO add your handling code here:
+        TelaCliente tc = new TelaCliente();
+        tc.setVisible(true);
+    }//GEN-LAST:event_jButtonClienteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -259,14 +264,13 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAluno;
     private javax.swing.JButton jButtonAutor;
+    private javax.swing.JButton jButtonCliente;
     private javax.swing.JButton jButtonEditora;
     private javax.swing.JButton jButtonExemplar;
     private javax.swing.JButton jButtonLivro;
     private javax.swing.JButton jButtonNovaReserva;
     private javax.swing.JButton jButtonNovoEmprestimo;
-    private javax.swing.JButton jButtonProfessor;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelCadastrosBasicos;
     private javax.swing.JPanel jPanelUltimasReservas;

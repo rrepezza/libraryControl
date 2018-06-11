@@ -285,8 +285,8 @@ public class TelaAutor extends javax.swing.JFrame {
                 showAutores(listaAutores);
             } else {
                 DefaultTableModel modelo = (DefaultTableModel) jTableAutores.getModel();
-                    modelo.setRowCount(0);
-                    JOptionPane.showMessageDialog(rootPane, "Nenhum autor encontrado cadastrado.");
+                modelo.setRowCount(0);
+                JOptionPane.showMessageDialog(rootPane, "Nenhum autor encontrado cadastrado.");
             }   
         } catch (Exception erro) {
             erro.printStackTrace();

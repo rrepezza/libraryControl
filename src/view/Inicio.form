@@ -117,10 +117,8 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jButtonAutor" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButtonProfessor" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButtonAluno" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="190" max="32767" attributes="0"/>
+                      <Component id="jButtonCliente" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="281" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -133,8 +131,7 @@
                           <Component id="jButtonExemplar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonEditora" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonAutor" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonProfessor" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButtonAluno" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -174,15 +171,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAutorActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButtonProfessor">
+            <Component class="javax.swing.JButton" name="jButtonCliente">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Professor"/>
+                <Property name="text" type="java.lang.String" value="Cliente"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="jButtonAluno">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Aluno"/>
-              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonClienteActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
