@@ -5,6 +5,8 @@
  */
 package dao;
 
+import classes.Autor;
+import classes.Editora;
 import classes.Livro;
 import interfaces.ILivroDAO;
 import java.io.BufferedReader;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 public class LivroDAO implements ILivroDAO {
     
     private String nomeDoArquivo = "";
+    private String editora_db = "./src/arquivos/Editoras.csv";
+    private String autor_db = "./src/arquivos/Autores.csv";
     
     public LivroDAO(String nomeDoArquivo){
         this.nomeDoArquivo = nomeDoArquivo;
@@ -80,38 +84,108 @@ public class LivroDAO implements ILivroDAO {
     }
     
     public Livro getLivroByTitulo(String titulo) throws Exception { 
-        Livro livro = null;        
-        ArrayList<Livro> listaLivros = this.listar();
-        for (int i = 0; i < listaLivros.size(); i++) {
-            Livro temp = listaLivros.get(i);
-            if(titulo.equals(temp.getTitulo())) {
-                livro = temp;
-            }       
+        try {
+            Livro livro = null;        
+            ArrayList<Livro> listaLivros = this.listar();
+            for (int i = 0; i < listaLivros.size(); i++) {
+                Livro temp = listaLivros.get(i);
+                if(titulo.equals(temp.getTitulo())) {
+                    livro = temp;
+                }       
+            }
+            return livro;
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            throw erro;
         }
-        return livro;
+        
     }
     
     public ArrayList<Livro> getLivrosByTitulo(String titulo) throws Exception { 
-        ArrayList<Livro> livrosEncontrados = new ArrayList();
-        ArrayList<Livro> listaLivros = this.listar();
-        for (int i = 0; i < listaLivros.size(); i++) {
-            Livro temp = listaLivros.get(i);
-            if(titulo.contains(temp.getTitulo())) {
-                livrosEncontrados.add(temp);
+        try {
+            ArrayList<Livro> livrosEncontrados = new ArrayList();
+            ArrayList<Livro> listaLivros = this.listar();
+            for (int i = 0; i < listaLivros.size(); i++) {
+                Livro temp = listaLivros.get(i);
+                if(temp.getTitulo().contains(titulo)) {
+                    livrosEncontrados.add(temp);
+                }
             }
+            return livrosEncontrados;
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            throw erro;
         }
-        return livrosEncontrados;
+        
+    }
+    
+    public ArrayList<Livro> getLivrosByEditora(String nomeEditora) throws Exception { 
+        try {
+            ArrayList<Livro> livrosEncontrados = new ArrayList();
+            ArrayList<Livro> listaLivros = this.listar();
+            EditoraDAO edao = new EditoraDAO(editora_db);
+            ArrayList<Editora> listaEditoras = edao.getEditorasByName(nomeEditora);
+            if(listaEditoras.size() > 0) {
+                for (int i = 0; i < listaLivros.size(); i++) {
+                    Livro tempLivro = listaLivros.get(i);
+                    for (int j = 0; j < listaEditoras.size(); j++) {
+                        Editora tempEditora = listaEditoras.get(j);
+                        if(tempLivro.getEditoraID() == tempEditora.getId()) {
+                            livrosEncontrados.add(tempLivro);
+                        }
+                    }
+                }
+
+            }
+            return livrosEncontrados;
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            throw erro;
+        }
+        
+    }
+    
+    public ArrayList<Livro> getLivrosByAutor(String nomeAutor) throws Exception { 
+        try {
+            ArrayList<Livro> livrosEncontrados = new ArrayList();
+            ArrayList<Livro> listaLivros = this.listar();
+            AutorDAO adao = new AutorDAO(autor_db);
+            ArrayList<Autor> listaAutores = adao.getAutoresByNome(nomeAutor);
+            if(listaAutores.size() > 0) {
+                for (int i = 0; i < listaLivros.size(); i++) {
+                    Livro tempLivro = listaLivros.get(i);
+                    for (int j = 0; j < listaAutores.size(); j++) {
+                        Autor tempAutor = listaAutores.get(j);
+                        if(tempLivro.getAutorID() == tempAutor.getId()) {
+                            livrosEncontrados.add(tempLivro);
+                        }
+                    }
+                }
+
+            }
+            return livrosEncontrados;
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            throw erro;
+        }
+        
     }
     
     public Livro getLivroByID(int id) throws Exception { 
-        Livro livro = null;        
-        ArrayList<Livro> listaLivros = this.listar();
-        for (int i = 0; i < listaLivros.size(); i++) {
-            Livro temp = listaLivros.get(i);
-            if(id == temp.getId()) {
-                livro = temp;
-            } 
+        try {
+            Livro livro = null;        
+            ArrayList<Livro> listaLivros = this.listar();
+            for (int i = 0; i < listaLivros.size(); i++) {
+                Livro temp = listaLivros.get(i);
+                if(id == temp.getId()) {
+                    livro = temp;
+                } 
+            }
+            return livro;
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            throw erro;
         }
-        return livro;
+        
     }    
 }

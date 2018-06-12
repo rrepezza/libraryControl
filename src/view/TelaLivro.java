@@ -161,7 +161,7 @@ public class TelaLivro extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldBuscaLivros = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jButtonBuscarLivro = new javax.swing.JButton();
         jButtonListarLivros = new javax.swing.JButton();
         jComboBoxTipoBuscaLivro = new javax.swing.JComboBox<>();
 
@@ -286,10 +286,10 @@ public class TelaLivro extends javax.swing.JFrame {
 
         jLabel1.setText("Buscar por:");
 
-        jButton1.setText("Buscar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonBuscarLivro.setText("Buscar");
+        jButtonBuscarLivro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonBuscarLivroActionPerformed(evt);
             }
         });
 
@@ -314,7 +314,7 @@ public class TelaLivro extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldBuscaLivros, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(jButtonBuscarLivro)
                 .addGap(187, 187, 187)
                 .addComponent(jButtonListarLivros)
                 .addContainerGap())
@@ -326,7 +326,7 @@ public class TelaLivro extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldBuscaLivros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
+                    .addComponent(jButtonBuscarLivro)
                     .addComponent(jButtonListarLivros)
                     .addComponent(jComboBoxTipoBuscaLivro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -459,9 +459,35 @@ public class TelaLivro extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonListarLivrosActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonBuscarLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarLivroActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        try {
+            String tipoBusca = jComboBoxTipoBuscaLivro.getSelectedItem().toString();
+            String busca = jTextFieldBuscaLivros.getText();
+            if(!busca.isEmpty() && !tipoBusca.isEmpty()) {
+                LivroDAO ldao = new LivroDAO(livro_db);
+                ArrayList<Livro> livrosEncontrados = null;
+                if(tipoBusca.equals("Autor")) {
+                    livrosEncontrados = ldao.getLivrosByAutor(busca.toUpperCase());
+                } else if(tipoBusca.equals("Editora")) {
+                    livrosEncontrados = ldao.getLivrosByEditora(busca.toUpperCase());
+                } else {
+                    livrosEncontrados = ldao.getLivrosByTitulo(busca.toUpperCase());
+                }
+                if(livrosEncontrados != null) {
+                    showLivros(livrosEncontrados);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Nenhum livro encontrado.");
+                }
+                
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Preencha os campos de busca corretamente!");
+            }
+            
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonBuscarLivroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -499,7 +525,7 @@ public class TelaLivro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonBuscarLivro;
     private javax.swing.JButton jButtonCadastrarLivro;
     private javax.swing.JButton jButtonCarregaCapa;
     private javax.swing.JButton jButtonListarLivros;

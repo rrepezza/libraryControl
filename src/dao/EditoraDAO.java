@@ -68,40 +68,58 @@ public class EditoraDAO implements IEditoraDAO {
     }   
     
     public ArrayList getEditorasByName(String nome) throws Exception {
-        ArrayList<Editora> editorasEncontradas = new ArrayList();
-        ArrayList<Editora> listaEditoras = this.listar();
-        for (int i = 0; i < listaEditoras.size(); i++) {
-            Editora temp = listaEditoras.get(i);
-            String nomeDaEditora = temp.getNome();
-            if(nomeDaEditora.contains(nome)) {        
-                editorasEncontradas.add(listaEditoras.get(i));
+        try {
+            ArrayList<Editora> editorasEncontradas = new ArrayList();
+            ArrayList<Editora> listaEditoras = this.listar();
+            for (int i = 0; i < listaEditoras.size(); i++) {
+                Editora temp = listaEditoras.get(i);
+                String nomeDaEditora = temp.getNome();
+                if(nomeDaEditora.contains(nome)) {        
+                    editorasEncontradas.add(listaEditoras.get(i));
+                }
             }
+            return editorasEncontradas;
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            throw erro;
         }
-        return editorasEncontradas;
+        
     }
     
     public Editora getEditoraByNome(String nome) throws Exception {
-        Editora editora = null;
-        ArrayList<Editora> listaEditoras = this.listar();
-        for (int i = 0; i < listaEditoras.size(); i++) {
-            Editora temp = listaEditoras.get(i);
-            if(nome.equals(temp.getNome())) {
-                editora = temp;            
-            }     
+        try {
+            Editora editora = null;
+            ArrayList<Editora> listaEditoras = this.listar();
+            for (int i = 0; i < listaEditoras.size(); i++) {
+                Editora temp = listaEditoras.get(i);
+                if(nome.equals(temp.getNome())) {
+                    editora = temp;            
+                }     
+            }
+            return editora;
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            throw erro;
         }
-        return editora;
+        
     }
     
     public Editora getEditoraByID(int id) throws Exception {
-        Editora editora = null;
-        ArrayList<Editora> listaEditoras = this.listar();
-        for (int i = 0; i < listaEditoras.size(); i++) {
-            Editora temp = listaEditoras.get(i);
-            if(id == temp.getId()) {
-                editora = temp;            
-            }     
+        try {
+            Editora editora = null;
+            ArrayList<Editora> listaEditoras = this.listar();
+            for (int i = 0; i < listaEditoras.size(); i++) {
+                Editora temp = listaEditoras.get(i);
+                if(id == temp.getId()) {
+                    editora = temp;            
+                }     
+            }
+            return editora;
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            throw erro;
         }
-        return editora;
+        
     }
     
 }
