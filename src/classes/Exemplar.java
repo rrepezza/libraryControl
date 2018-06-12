@@ -6,6 +6,9 @@
 package classes;
 
 import interfaces.TratamentoDeDados;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -16,15 +19,17 @@ public class Exemplar implements TratamentoDeDados {
     private int id = 0;
     private boolean disponivel = false; 
     private int livroID = 0;
-    private boolean exemplarFixo = true;
+    private boolean exemplarReserva = true;
+    private Date disponivelAPartirDe = null;
     
     public Exemplar() {
         
     }
     
-    public Exemplar(int id, int livroID) {
+    public Exemplar(int id, int livroID, Date disponivelAPartirDe) {
         this.id = id;
         this.livroID = livroID;  
+        this.disponivelAPartirDe = disponivelAPartirDe;
     }
     
     /**
@@ -63,7 +68,7 @@ public class Exemplar implements TratamentoDeDados {
     }
 
     /**
-     * @param livro the livro to set
+     * @param livroID
      */
     public void setLivroID(int livroID) {
         this.livroID = livroID;
@@ -72,37 +77,55 @@ public class Exemplar implements TratamentoDeDados {
     /**
      * @return the exemplarFixo
      */
-    public boolean isExemplarFixo() {
-        return exemplarFixo;
+    public boolean isExemplarReserva() {
+        return exemplarReserva;
     }
 
     /**
-     * @param exemplarFixo the exemplarFixo to set
+     * @param exemplarReserva the exemplarFixo to set
      */
-    public void setExemplarFixo(boolean exemplarFixo) {
-        this.exemplarFixo = exemplarFixo;
+    public void setExemplarReserva(boolean exemplarReserva) {
+        this.exemplarReserva = exemplarReserva;
+    }
+    
+    /**
+     * @return the disponivelAPartirDe
+     */
+    public Date getDisponivelAPartirDe() {
+        return disponivelAPartirDe;
+    }
+
+    /**
+     * @param disponivelAPartirDe the disponivelEm to set
+     */
+    public void setDisponivelAPartirDe(Date disponivelAPartirDe) {
+        this.disponivelAPartirDe = disponivelAPartirDe;
     }
     
     @Override
     public void materializar(String dados) throws Exception {
         if(!dados.isEmpty()) {
             String vetorString[] = dados.split(";");
-            if(vetorString.length != 4) {
+            if(vetorString.length != 5) {
                 throw new Exception("Faltam dados na String");
             }
 
             id = Integer.parseInt(vetorString[0]);
             disponivel = Boolean.parseBoolean(vetorString[1]);
             livroID = Integer.parseInt(vetorString[2]);
-            exemplarFixo = Boolean.parseBoolean(vetorString[3]);
+            exemplarReserva = Boolean.parseBoolean(vetorString[3]);
+            DateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+            disponivelAPartirDe = (Date) formatoData.parse(vetorString[4]);
         
         }
     }
 
     @Override
     public String desmaterializar() {
-        String saida = getId() + ";" + IsDisponivel() + ";" + getLivroID() + ";" + isExemplarFixo();
+        String saida = getId() + ";" + IsDisponivel() + ";" + getLivroID() + ";" + isExemplarReserva() + ";";
+        DateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+        saida += formatoData.format(getDisponivelAPartirDe());
         return saida;
     }
-    
+
 }

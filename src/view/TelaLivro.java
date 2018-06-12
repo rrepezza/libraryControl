@@ -161,6 +161,7 @@ public class TelaLivro extends javax.swing.JFrame {
         jTextFieldBuscaLivros = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButtonListarLivros = new javax.swing.JButton();
+        jComboBoxTipoBuscaLivro = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Livros");
@@ -281,9 +282,14 @@ public class TelaLivro extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Busca de Livros"));
 
-        jLabel1.setText("Título:");
+        jLabel1.setText("Buscar por:");
 
         jButton1.setText("Buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButtonListarLivros.setText("Listar Livros");
         jButtonListarLivros.addActionListener(new java.awt.event.ActionListener() {
@@ -291,6 +297,8 @@ public class TelaLivro extends javax.swing.JFrame {
                 jButtonListarLivrosActionPerformed(evt);
             }
         });
+
+        jComboBoxTipoBuscaLivro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Autor", "Editora", "Título" }));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -300,10 +308,12 @@ public class TelaLivro extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
+                .addComponent(jComboBoxTipoBuscaLivro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldBuscaLivros, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(187, 187, 187)
                 .addComponent(jButtonListarLivros)
                 .addContainerGap())
         );
@@ -315,7 +325,8 @@ public class TelaLivro extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldBuscaLivros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
-                    .addComponent(jButtonListarLivros))
+                    .addComponent(jButtonListarLivros)
+                    .addComponent(jComboBoxTipoBuscaLivro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -444,6 +455,10 @@ public class TelaLivro extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonListarLivrosActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -486,6 +501,7 @@ public class TelaLivro extends javax.swing.JFrame {
     private javax.swing.JButton jButtonListarLivros;
     private javax.swing.JComboBox<String> jComboBoLivroEditora;
     private javax.swing.JComboBox<String> jComboBoxLivroAutor;
+    private javax.swing.JComboBox<String> jComboBoxTipoBuscaLivro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -24,16 +24,15 @@ import interfaces.TratamentoDeDados;
     private String cidade = "";
     private String email = "";
     private float saldoDevedor = 0;
-    private int quantidadeReservas = 0;
-    private int quantidadeEmprestimos = 0;
+    //private int quantidadeReservas = 0;
+    //private int quantidadeEmprestimos = 0;
     
     public Cliente() {
         
     }
     
     public Cliente(int id, String nome, String cpf, String cidade, String uf, String email, 
-            String endereco, String telefone, String tipoPessoa, float saldoDevedor, int quantidadeReservas,
-            int quantidadeEmprestimos) {
+            String endereco, String telefone, String tipoPessoa, float saldoDevedor) {
         
         this.id = id;
         this.endereco = endereco;
@@ -45,8 +44,8 @@ import interfaces.TratamentoDeDados;
         this.telefone = telefone;
         this.tipoPessoa = tipoPessoa;
         this.saldoDevedor = saldoDevedor;
-        this.quantidadeReservas = quantidadeReservas;
-        this.quantidadeEmprestimos = quantidadeEmprestimos;
+        //this.quantidadeReservas = quantidadeReservas;
+        //this.quantidadeEmprestimos = quantidadeEmprestimos;
         
     }
 
@@ -190,33 +189,6 @@ import interfaces.TratamentoDeDados;
         this.id = id;
     }
     
-    /**
-     * @return the quantidadeReservas
-     */
-    public int getQuantidadeReservas() {
-        return quantidadeReservas;
-    }
-
-    /**
-     * @param quantidadeReservas the quantidadeReservas to set
-     */
-    public void setQuantidadeReservas(int quantidadeReservas) {
-        this.quantidadeReservas = quantidadeReservas;
-    }
-
-    /**
-     * @return the quantidadeEmprestimos
-     */
-    public int getQuantidadeEmprestimos() {
-        return quantidadeEmprestimos;
-    }
-
-    /**
-     * @param quantidadeEmprestimos the quantidadeEmprestimos to set
-     */
-    public void setQuantidadeEmprestimos(int quantidadeEmprestimos) {
-        this.quantidadeEmprestimos = quantidadeEmprestimos;
-    }
 
     @Override
     public void materializar(String dados) throws Exception {
@@ -236,8 +208,8 @@ import interfaces.TratamentoDeDados;
             uf = vetorString[7];
             tipoPessoa = vetorString[8];
             saldoDevedor = Float.parseFloat(vetorString[9]);
-            quantidadeReservas = Integer.parseInt(vetorString[10]);
-            quantidadeEmprestimos = Integer.parseInt(vetorString[11]);
+            //quantidadeReservas = Integer.parseInt(vetorString[10]);
+            //quantidadeEmprestimos = Integer.parseInt(vetorString[11]);
    
         }
     }
@@ -246,11 +218,19 @@ import interfaces.TratamentoDeDados;
     public String desmaterializar() {
         String saida = getId() + ";" + getCpf()+ ";" + getNome()+ ";" + getEmail()+ ";" 
             + getTelefone()+ ";" + getEndereco() + ";" + getCidade() + ";"
+            + getUf() + ";" + getTipoPessoa() + ";" + getSaldoDevedor();            
+        return saida;
+    }
+    
+    /*
+    public String desmaterializar() {
+        String saida = getId() + ";" + getCpf()+ ";" + getNome()+ ";" + getEmail()+ ";" 
+            + getTelefone()+ ";" + getEndereco() + ";" + getCidade() + ";"
             + getUf() + ";" + getTipoPessoa() + ";" + getSaldoDevedor() + ";"
             + getQuantidadeReservas() + ";" + getQuantidadeEmprestimos();
         return saida;
     }
-
+    */
 
 }
 

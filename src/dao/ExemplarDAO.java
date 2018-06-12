@@ -105,7 +105,7 @@ public class ExemplarDAO implements IExemplarDAO {
         }
     }
     
-    public boolean hasExemplarFixo(int livroID) throws Exception {
+    public boolean hasExemplarReserva(int livroID) throws Exception {
         try {
             boolean has = false;
             ArrayList<Exemplar> listaExemplares = this.listar();
@@ -115,7 +115,7 @@ public class ExemplarDAO implements IExemplarDAO {
                 for (int i = 0; i < listaExemplares.size(); i++) {
                     Exemplar temp = listaExemplares.get(i);
                     if(temp.getLivroID() == livro.getId()) {
-                        if(temp.isExemplarFixo()){
+                        if(temp.isExemplarReserva()){
                             has = true;
                         }
                     }

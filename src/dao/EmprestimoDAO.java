@@ -76,6 +76,7 @@ public class EmprestimoDAO implements IEmprestimoDAO {
         //implementar
     }
     
+    //Renova emprestimo de um determinado exemplar, caso nao exista reserva ativa do mesmo
     public void renovarEmprestimo(int id) throws Exception {
         try {
             ReservaDAO rdao = new ReservaDAO(reserva_db);
@@ -83,6 +84,23 @@ public class EmprestimoDAO implements IEmprestimoDAO {
                 //implementar alteracao no registro do emprestimo
                 //alterar a data de emprestimo e a data de retorno
             }
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    //Retorna a quantidade de emprestimos ativos por cliente
+    public int getQuantidadeDeEmprestimosDoCliente(int clienteID) throws Exception {
+        try {
+            int quantidadeDeEmprestimos = 0;
+            ArrayList<Emprestimo> listaEmprestimos = this.listar();
+            for (int i = 0; i < listaEmprestimos.size(); i++) {
+                Emprestimo temp = listaEmprestimos.get(i);
+                if(temp.getClienteID() == clienteID && temp.isAtivo()) {
+                    quantidadeDeEmprestimos++;
+                }
+            }
+            return quantidadeDeEmprestimos;
         } catch (Exception erro) {
             throw erro;
         }

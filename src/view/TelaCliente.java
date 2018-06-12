@@ -45,8 +45,8 @@ public class TelaCliente extends javax.swing.JFrame {
                 modelo.setValueAt(cli.getEmail(), i, 3);   
                 modelo.setValueAt(cli.getTipoPessoa(), i, 4);   
                 modelo.setValueAt(cli.getSaldoDevedor(), i, 5);   
-                modelo.setValueAt(cli.getQuantidadeEmprestimos(), i, 6);   
-                modelo.setValueAt(cli.getQuantidadeReservas(), i, 7);   
+                //modelo.setValueAt(cli.getQuantidadeEmprestimos(), i, 6);   
+                //modelo.setValueAt(cli.getQuantidadeReservas(), i, 7);   
             }
             
         } catch (Exception erro) {
@@ -270,7 +270,7 @@ public class TelaCliente extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nome", "CPF", "E-Mail", "Tipo", "Saldo Devedor", "Empréstimos", "Reservas"
+                "ID", "Nome", "CPF", "E-Mail", "Tipo", "Saldo Devedor"
             }
         ));
         jScrollPane1.setViewportView(jTableClientes);
@@ -351,7 +351,7 @@ public class TelaCliente extends javax.swing.JFrame {
                 int id = novoID.getNovoID();
                 
                 ClienteDAO cdao = new ClienteDAO(cliente_db);
-                Cliente novoCliente = new Cliente(id, nome, cpf, cidade, uf, email, endereco, telefone, tipoPessoa, 0, 0, 0);
+                Cliente novoCliente = new Cliente(id, nome, cpf, cidade, uf, email, endereco, telefone, tipoPessoa, 0);
                 
                 cdao.incluir(novoCliente);
                 novoID.gravaID(id);

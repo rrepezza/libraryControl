@@ -78,17 +78,35 @@ public class ReservaDAO implements IReservaDAO {
         
     }
     
+    //Verifica se um determinado exemplar possui alguma reserva não expirada
     public boolean existeReserva(int exemplarID) throws Exception {
         try {
             boolean hasReserva = false;
             ArrayList<Reserva> reservas = this.listar();
             for (int i = 0; i < reservas.size(); i++) {
                 Reserva temp = reservas.get(i);
-                if(temp.getExemplarID() == exemplarID) {
+                if(temp.getExemplarID() == exemplarID && temp.isAtiva()) {
                     hasReserva = true;
                 }
             }
             return hasReserva;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    //Retorna a quantidade de reservas ativas de um determinado cliente
+    public int getQuantidadeDeReservasDoCliente(int clienteID) throws Exception {
+        try {
+            int quantidadeDeReservas = 0;
+            ArrayList<Reserva> listaReservas = this.listar();
+            for (int i = 0; i < listaReservas.size(); i++) {
+                Reserva temp = listaReservas.get(i);
+                if(temp.getClienteID() == clienteID && temp.isAtiva()) {
+                    quantidadeDeReservas++;
+                }
+            }
+            return quantidadeDeReservas;
         } catch (Exception erro) {
             throw erro;
         }

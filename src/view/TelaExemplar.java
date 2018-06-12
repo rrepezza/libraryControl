@@ -10,6 +10,8 @@ import classes.Livro;
 import dao.ExemplarDAO;
 import dao.LivroDAO;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -77,7 +79,7 @@ public class TelaExemplar extends javax.swing.JFrame {
                 String disponivel = exemplar.IsDisponivel() ? "Sim" : "Não";
                 modelo.setValueAt(disponivel, i, 2);   
                 
-                String fixo = exemplar.isExemplarFixo() ? "Sim" : "Não";
+                String fixo = exemplar.isExemplarReserva() ? "Sim" : "Não";
                 modelo.setValueAt(fixo, i, 3);           
                 
             }
@@ -177,7 +179,7 @@ public class TelaExemplar extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Livro", "Disponivel", "Fixo"
+                "ID", "Livro", "Disponivel", "Exemplar Reserva"
             }
         ));
         jScrollPane1.setViewportView(jTableExemplares);
@@ -295,19 +297,26 @@ public class TelaExemplar extends javax.swing.JFrame {
 
             if(!jTextFieldQuantidadeExemplar.getText().isEmpty() && !jComboBoxExemplarLivro.getSelectedItem().toString().equals("Selecione...")) {
                 
-                boolean hasExemplarFixo = edao.hasExemplarFixo(livro.getId());
+                boolean hasExemplarFixo = edao.hasExemplarReserva(livro.getId());
 
                 for (int i = 0; i < quantidadeDeExemplares; i++) {
                     
                     id = novoID.getNovoID();
-                    Exemplar novoExemplar = new Exemplar(id, livro.getId());
+                    
+                    //disponivel a partir de
+                    Date hoje = new Date();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(hoje);
+                    Date disponivelEm = cal.getTime();
+                    
+                    Exemplar novoExemplar = new Exemplar(id, livro.getId(), disponivelEm);
                      
                     if(hasExemplarFixo) {
                         novoExemplar.setDisponivel(true);
-                        novoExemplar.setExemplarFixo(false);
+                        novoExemplar.setExemplarReserva(false);
                     } else {
                         novoExemplar.setDisponivel(false);
-                        novoExemplar.setExemplarFixo(true);
+                        novoExemplar.setExemplarReserva(true);
                         hasExemplarFixo = true;
                     }
                     edao.incluir(novoExemplar);
