@@ -26,7 +26,7 @@ public class EditoraDAO implements IEditoraDAO {
     }
 
     @Override
-    public void alterar(int id) throws Exception {
+    public void alterar(Editora editora) throws Exception {
         
     }
 

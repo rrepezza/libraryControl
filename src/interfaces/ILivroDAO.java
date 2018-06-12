@@ -15,5 +15,5 @@ import java.util.ArrayList;
 public interface ILivroDAO {
     public void incluir(Livro livro) throws Exception;
     public ArrayList<Livro> listar() throws Exception;
-    public void alterar(int id) throws Exception;
+    public void alterar(Livro livro) throws Exception;
 }

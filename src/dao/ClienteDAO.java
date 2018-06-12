@@ -45,7 +45,7 @@ public class ClienteDAO implements IClienteDAO{
     }
 
     @Override
-    public void alterar(int id) throws Exception {
+    public void alterar(Cliente cliente) throws Exception {
         
     }
 

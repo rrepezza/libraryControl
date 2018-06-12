@@ -75,7 +75,7 @@ public class LivroDAO implements ILivroDAO {
     }
 
     @Override
-    public void alterar(int id) throws Exception {
+    public void alterar(Livro livro) throws Exception {
         
     }
     

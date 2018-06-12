@@ -10,6 +10,7 @@ import classes.Livro;
 import dao.ExemplarDAO;
 import dao.LivroDAO;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
@@ -36,13 +37,13 @@ public class TelaExemplar extends javax.swing.JFrame {
         try {
             LivroDAO ldao = new LivroDAO(livro_db);
             ArrayList<Livro> listaLivros = ldao.listar();
-            String[] livros = new String[listaLivros.size() + 1];   
-            System.out.println(livros.length);
-            livros[0] = "Selecione...";
+            String[] livros = new String[listaLivros.size()];   
             for (int i = 0; i < listaLivros.size(); i++) {
                 Livro livro = listaLivros.get(i);
-                livros[i + 1] = livro.getTitulo();
+                livros[i] = livro.getTitulo();
             }
+            
+            Arrays.sort(livros);
             
             DefaultComboBoxModel m_livros = new DefaultComboBoxModel(livros);
             jComboBoxExemplarLivro.setModel(m_livros);
@@ -323,6 +324,7 @@ public class TelaExemplar extends javax.swing.JFrame {
                     novoID.gravaID(id);
                 }
                 
+                JOptionPane.showMessageDialog(rootPane, "Exempla(es) cadastrado(s) com sucesso!");
                 limparCampos();
                 
             } else {

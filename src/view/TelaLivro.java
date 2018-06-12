@@ -15,6 +15,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -51,20 +52,21 @@ public class TelaLivro extends javax.swing.JFrame {
             ArrayList<Autor> listaAutores = ad.listar();
             ArrayList<Editora> listaEditoras = ed.listar();
             
-            String[] autores = new String[listaAutores.size() + 1];
-            String[] editoras = new String[listaEditoras.size() + 1];
+            String[] autores = new String[listaAutores.size()];
+            String[] editoras = new String[listaEditoras.size()];
             
-            autores[0] = "Selecione...";
-            editoras[0] = "Selecione...";
             for (int i = 0; i < listaAutores.size(); i++) {
                 Autor a = listaAutores.get(i);
-                autores[i + 1] = a.getNome();
+                autores[i] = a.getNome();
             }
             
             for (int i = 0; i < listaEditoras.size(); i++) {
                 Editora e = listaEditoras.get(i);
-                editoras[i + 1] = e.getNome();
+                editoras[i] = e.getNome();
             }
+            
+            Arrays.sort(autores);
+            Arrays.sort(editoras);
             
             DefaultComboBoxModel m_autores = new DefaultComboBoxModel(autores);
             jComboBoxLivroAutor.setModel(m_autores);
@@ -423,7 +425,9 @@ public class TelaLivro extends javax.swing.JFrame {
                     ldao.incluir(novoLivro);
                     
                     novoID.gravaID(id);
+                    JOptionPane.showMessageDialog(rootPane, "Livro " + titulo + " cadastrado com sucesso!");
                     limparCampos();
+                    
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Erro ao incluir livro.");
                 }                           

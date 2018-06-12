@@ -15,5 +15,5 @@ import java.util.ArrayList;
     public interface IClienteDAO {
     public void incluir(Cliente cliente) throws Exception;
     public ArrayList<Cliente> listar() throws Exception;
-    public void alterar(int id) throws Exception;
+    public void alterar(Cliente cliente) throws Exception;
 }

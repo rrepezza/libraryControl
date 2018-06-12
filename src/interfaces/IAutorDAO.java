@@ -15,5 +15,5 @@ import java.util.ArrayList;
 public interface IAutorDAO {
     public void incluir(Autor autor) throws Exception;
     public ArrayList<Autor> listar() throws Exception;   
-    public void alterar(int id) throws Exception;
+    public void alterar(Autor autor) throws Exception;
 }

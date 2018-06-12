@@ -47,8 +47,29 @@ public class AutorDAO implements IAutorDAO {
     }
 
     @Override
-    public void alterar(int id) throws Exception {
-        
+    public void alterar(Autor autor) throws Exception {
+        try {
+            ArrayList<Autor> autoresCadastrados = this.listar();
+            ArrayList<Autor> novosAutores = new ArrayList();
+            for (int i = 0; i < autoresCadastrados.size(); i++) {
+                Autor temp = autoresCadastrados.get(i);
+                if(temp.getId() == autor.getId()) {
+                    novosAutores.add(autor);
+                }else{
+                    novosAutores.add(temp);
+                }
+            }
+            
+            FileWriter fw = new FileWriter(nomeDoArquivo,false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (int i = 0; i < novosAutores.size(); i++) {
+                Autor novo = novosAutores.get(i);
+                bw.write(novo.desmaterializar() + "\n");
+            }
+            bw.close();	
+        } catch (Exception erro) {
+            throw erro;
+        }
     }
 
     @Override

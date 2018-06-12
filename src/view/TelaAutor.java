@@ -25,6 +25,9 @@ public class TelaAutor extends javax.swing.JFrame {
      */
     public TelaAutor() {
         initComponents();
+        //Inicio o formulário com o botão de alterar e cancelar alteracao ocultos
+        jButtonAlterarAutor.setVisible(false);
+        jButtonCancelaAutorAlteracao.setVisible(false);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
@@ -62,6 +65,9 @@ public class TelaAutor extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jTextFieldAutorNome = new javax.swing.JTextField();
         jButtonCadastrarAutor = new javax.swing.JButton();
+        jButtonAlterarAutor = new javax.swing.JButton();
+        jLabelAutorID = new javax.swing.JLabel();
+        jButtonCancelaAutorAlteracao = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableAutores = new javax.swing.JTable();
@@ -87,6 +93,20 @@ public class TelaAutor extends javax.swing.JFrame {
             }
         });
 
+        jButtonAlterarAutor.setText("Alterar");
+        jButtonAlterarAutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAlterarAutorActionPerformed(evt);
+            }
+        });
+
+        jButtonCancelaAutorAlteracao.setText("Cancelar Alteração");
+        jButtonCancelaAutorAlteracao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelaAutorAlteracaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -97,9 +117,16 @@ public class TelaAutor extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldAutorNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButtonCadastrarAutor))
-                .addContainerGap(375, Short.MAX_VALUE))
+                        .addComponent(jTextFieldAutorNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelAutorID))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButtonCadastrarAutor)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonAlterarAutor)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonCancelaAutorAlteracao)))
+                .addContainerGap(368, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,9 +134,13 @@ public class TelaAutor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextFieldAutorNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldAutorNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelAutorID))
                 .addGap(18, 18, 18)
-                .addComponent(jButtonCadastrarAutor)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonCadastrarAutor)
+                    .addComponent(jButtonAlterarAutor)
+                    .addComponent(jButtonCancelaAutorAlteracao))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -123,6 +154,11 @@ public class TelaAutor extends javax.swing.JFrame {
                 "ID", "Nome"
             }
         ));
+        jTableAutores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableAutoresMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableAutores);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -133,7 +169,7 @@ public class TelaAutor extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Busca de Autores"));
@@ -201,8 +237,8 @@ public class TelaAutor extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -294,6 +330,58 @@ public class TelaAutor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonListarAutoresActionPerformed
 
+    private void jButtonAlterarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarAutorActionPerformed
+        // TODO add your handling code here:
+        try {
+            
+            int idAutor = Integer.parseInt(jLabelAutorID.getText());
+            String nomeAutor = jTextFieldAutorNome.getText();
+           
+            Autor autorAlterado = new Autor(idAutor, nomeAutor.toUpperCase());
+            
+            AutorDAO adao = new AutorDAO(autor_db);
+            adao.alterar(autorAlterado);
+            
+            jTextFieldAutorNome.setText("");
+            JOptionPane.showMessageDialog(rootPane, "Autor alterado com sucesso!");
+            jButtonListarAutoresActionPerformed(evt);
+            
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonAlterarAutorActionPerformed
+
+    private void jTableAutoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAutoresMouseClicked
+        //Evento é executado quando clicamos numa linha da tabela
+        //Pega o numero da linha selecionada
+        //Criei um jLabel que fica sempre oculto, para receber o ID do autor
+        //Seto nele o ID do autor que será utilizado na alteração, juntamente com o nome
+        //que é setado no próprio campo de texto do formulário
+        //Ao chamar o método, oculto o botão de incluir e mostro o botão de alterar e o botao de cancelar alteração
+        int linhaSelecionada = jTableAutores.getSelectedRow();
+        jLabelAutorID.setVisible(false); 
+        jButtonCadastrarAutor.setVisible(false);
+        jButtonAlterarAutor.setVisible(true);
+        jButtonCancelaAutorAlteracao.setVisible(true);
+        jLabelAutorID.setText(jTableAutores.getModel().getValueAt(linhaSelecionada, 0).toString());
+        jTextFieldAutorNome.setText(jTableAutores.getModel().getValueAt(linhaSelecionada, 1).toString());
+    }//GEN-LAST:event_jTableAutoresMouseClicked
+
+    private void jButtonCancelaAutorAlteracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelaAutorAlteracaoActionPerformed
+        //Evento do botão de cancelar alteração
+        //torna o botão de cadastro visivel
+        //torna o botão de alterar invisivel
+        //torna o botão de cancelar alteração invisivel
+        //remove o id do jlabel oculto
+        //remove o texto do campo de nome do autor
+        jButtonCadastrarAutor.setVisible(true);
+        jButtonAlterarAutor.setVisible(false);
+        jButtonCancelaAutorAlteracao.setVisible(false);
+        jLabelAutorID.setText("");
+        jTextFieldAutorNome.setText("");
+    }//GEN-LAST:event_jButtonCancelaAutorAlteracaoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -330,11 +418,14 @@ public class TelaAutor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAlterarAutor;
     private javax.swing.JButton jButtonBuscaAutor;
     private javax.swing.JButton jButtonCadastrarAutor;
+    private javax.swing.JButton jButtonCancelaAutorAlteracao;
     private javax.swing.JButton jButtonListarAutores;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelAutorID;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
