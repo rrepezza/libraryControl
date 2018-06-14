@@ -5,17 +5,34 @@
  */
 package view;
 
+import dao.ClienteDAO;
+import dao.ExemplarDAO;
+
 /**
  *
  * @author repez
  */
 public class TelaReserva extends javax.swing.JFrame {
+    
+    private String cliente_db = "./src/arquivos/Clientes.csv";
+    private String exemplar_db = "./src/arquivos/Exemplares.csv";
 
     /**
      * Creates new form TelaReserva
      */
     public TelaReserva() {
         initComponents();
+        
+        try {
+            
+            ClienteDAO cdao = new ClienteDAO(cliente_db);
+            ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+            
+            
+            
+        } catch (Exception erro) {
+            erro.printStackTrace();
+        }
     }
 
     /**
