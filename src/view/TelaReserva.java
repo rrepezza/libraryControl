@@ -8,14 +8,20 @@ package view;
 import classes.Cliente;
 import classes.Exemplar;
 import classes.Livro;
+import classes.Reserva;
 import dao.ClienteDAO;
 import dao.ExemplarDAO;
 import dao.LivroDAO;
 import dao.ReservaDAO;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import util.IDGenerator;
 
 /**
  *
@@ -65,8 +71,10 @@ public class TelaReserva extends javax.swing.JFrame {
                 Exemplar e = listaExemplares.get(i);
                 int livroID = e.getLivroID();
                 Livro livro = ldao.getLivroByID(livroID);
+                if(!e.IsDisponivel()) {
+                    exemplares[i] = livro.getTitulo() + " | ID " + e.getId();
+                }
                 
-                exemplares[i] = livro.getTitulo() + " | ID " + e.getId();
             }
             
             Arrays.sort(clientes);
@@ -283,6 +291,21 @@ public class TelaReserva extends javax.swing.JFrame {
             
             if(clienteAptoParaReservar(qtdReservasDoCliente, c.getTipoPessoa())) {
                 
+                IDGenerator novoID = new IDGenerator();
+                int id = novoID.getNovoID();
+                               
+                //data reserva
+                Date hoje = new Date();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(hoje);
+                Date dataReserva = cal.getTime();
+                
+                Reserva novaReserva = new Reserva(id, exemplarID, c.getId(), dataReserva);
+                rdao.incluir(novaReserva);
+                
+                novoID.gravaID(id);
+                
+                JOptionPane.showMessageDialog(rootPane, "Reserva cadastrada com sucesso!");
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Cliente já reserva o número máximo de livros permitido.");
             }

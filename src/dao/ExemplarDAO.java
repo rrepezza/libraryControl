@@ -140,6 +140,21 @@ public class ExemplarDAO implements IExemplarDAO {
         } catch (Exception erro) {
             throw erro;
         }
-    }
+    }    
     
+    public ArrayList<Exemplar> getExemplaresDisponiveis() throws Exception {
+        try {
+            ArrayList<Exemplar> exemplaresDisponiveis = new ArrayList();
+            ArrayList<Exemplar> listaExemplares = this.listar();
+            for (int i = 0; i < listaExemplares.size(); i++) {
+                Exemplar temp = listaExemplares.get(i);
+                if(temp.IsDisponivel()) {
+                    exemplaresDisponiveis.add(temp);
+                }
+            }
+            return exemplaresDisponiveis;
+        } catch (Exception erro) {
+            throw erro;
+        } 
+    }
 }

@@ -5,6 +5,7 @@
  */
 package dao;
 
+import classes.Exemplar;
 import classes.Reserva;
 import interfaces.IReservaDAO;
 import java.io.BufferedReader;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class ReservaDAO implements IReservaDAO {
     
     private String nomeDoArquivo = "";
+    private String exemplar_db = "./src/arquivos/Exemplares.csv";
     
     public ReservaDAO(String nomeDoArquivo){
         this.nomeDoArquivo = nomeDoArquivo;
@@ -109,6 +111,19 @@ public class ReservaDAO implements IReservaDAO {
             return quantidadeDeReservas;
         } catch (Exception erro) {
             throw erro;
+        }
+    }
+    
+    //Altera status da reserva para false, de acordo com a data de retorno do exemplar
+    public void atualizarReservasExpiradas() {
+        try {
+            ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+            ArrayList<Exemplar> listaExemplares = edao.getExemplaresDisponiveis();
+            ArrayList<Reserva> listaReservas = this.listar();
+            for (int i = 0; i < listaExemplares.size(); i++) {
+                
+            }
+        } catch (Exception e) {
         }
     }
     
