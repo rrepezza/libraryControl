@@ -5,8 +5,17 @@
  */
 package view;
 
+import classes.Cliente;
+import classes.Exemplar;
+import classes.Livro;
 import dao.ClienteDAO;
 import dao.ExemplarDAO;
+import dao.LivroDAO;
+import dao.ReservaDAO;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,19 +25,58 @@ public class TelaReserva extends javax.swing.JFrame {
     
     private String cliente_db = "./src/arquivos/Clientes.csv";
     private String exemplar_db = "./src/arquivos/Exemplares.csv";
-
+    private String livro_db = "./src/arquivos/Livros.csv";
+    private String reserva_db = "./src/arquivos/Reservas.csv";
+    
+    public boolean clienteAptoParaReservar(int quantidadeAtualDeReservas, String tipoCliente) {
+        if(tipoCliente.equals("Aluno")) {
+            return quantidadeAtualDeReservas < 3;
+        } else {
+            return quantidadeAtualDeReservas < 5;
+        }
+    }
+    
     /**
      * Creates new form TelaReserva
      */
     public TelaReserva() {
         initComponents();
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
         try {
             
             ClienteDAO cdao = new ClienteDAO(cliente_db);
             ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+            LivroDAO ldao = new LivroDAO(livro_db);
+            
+            ArrayList<Cliente> listaClientes = cdao.listar();
+            ArrayList<Exemplar> listaExemplares = edao.listar();
+            
+            String[] clientes = new String[listaClientes.size()];
+            String[] exemplares = new String[listaExemplares.size()];
             
             
+            for (int i = 0; i < listaClientes.size(); i++) {
+                Cliente c = listaClientes.get(i);
+                clientes[i] = c.getNome();
+            }
+            
+            for (int i = 0; i < listaExemplares.size(); i++) {
+                Exemplar e = listaExemplares.get(i);
+                int livroID = e.getLivroID();
+                Livro livro = ldao.getLivroByID(livroID);
+                
+                exemplares[i] = livro.getTitulo() + " | ID " + e.getId();
+            }
+            
+            Arrays.sort(clientes);
+            Arrays.sort(exemplares);
+            
+            DefaultComboBoxModel m_clientes = new DefaultComboBoxModel(clientes);
+            jComboBoxReservaCliente.setModel(m_clientes);
+            
+            DefaultComboBoxModel m_exemplares = new DefaultComboBoxModel(exemplares);
+            jComboBoxReservaExemplar.setModel(m_exemplares);
             
         } catch (Exception erro) {
             erro.printStackTrace();
@@ -75,6 +123,11 @@ public class TelaReserva extends javax.swing.JFrame {
         jComboBoxReservaCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButtonCadastrarReserva.setText("Cadastrar");
+        jButtonCadastrarReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCadastrarReservaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -214,6 +267,30 @@ public class TelaReserva extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonCadastrarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarReservaActionPerformed
+        // TODO add your handling code here:
+        try {
+            ClienteDAO cdao = new ClienteDAO(cliente_db);
+            Cliente c = cdao.getClienteByNome(jComboBoxReservaCliente.getSelectedItem().toString());
+            
+            String livroExemplarID = jComboBoxReservaExemplar.getSelectedItem().toString();
+            String pieces[] = livroExemplarID.split("\\| ID ");
+            int exemplarID = Integer.parseInt(pieces[1]);
+                                    
+            ReservaDAO rdao = new ReservaDAO(reserva_db);
+            int qtdReservasDoCliente = rdao.getQuantidadeDeReservasDoCliente(c.getId());
+            
+            if(clienteAptoParaReservar(qtdReservasDoCliente, c.getTipoPessoa())) {
+                
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Cliente já reserva o número máximo de livros permitido.");
+            }
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonCadastrarReservaActionPerformed
 
     /**
      * @param args the command line arguments

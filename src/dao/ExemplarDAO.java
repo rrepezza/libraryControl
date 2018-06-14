@@ -127,9 +127,15 @@ public class ExemplarDAO implements IExemplarDAO {
         }
     }
     
-    public boolean isExemplarFixo(int exemplarID) {
+    public boolean isExemplarFixo(int exemplarID) throws Exception {
         try {
-            
+            ArrayList<Exemplar> exemplaresCadastrados = this.listar();
+            for (int i = 0; i < exemplaresCadastrados.size(); i++) {
+                Exemplar temp = exemplaresCadastrados.get(i);
+                if(temp.getId() == exemplarID && temp.isExemplarReserva()){
+                    return true;
+                } 
+            }
             return false;
         } catch (Exception erro) {
             throw erro;

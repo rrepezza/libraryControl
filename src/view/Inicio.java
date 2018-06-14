@@ -140,8 +140,18 @@ public class Inicio extends javax.swing.JFrame {
         );
 
         jButtonNovoEmprestimo.setText("Novo Empréstimo");
+        jButtonNovoEmprestimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNovoEmprestimoActionPerformed(evt);
+            }
+        });
 
         jButtonNovaReserva.setText("Nova Reserva");
+        jButtonNovaReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNovaReservaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -227,6 +237,18 @@ public class Inicio extends javax.swing.JFrame {
         TelaCliente tc = new TelaCliente();
         tc.setVisible(true);
     }//GEN-LAST:event_jButtonClienteActionPerformed
+
+    private void jButtonNovaReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovaReservaActionPerformed
+        // TODO add your handling code here:
+        TelaReserva tr = new TelaReserva();
+        tr.setVisible(true);
+    }//GEN-LAST:event_jButtonNovaReservaActionPerformed
+
+    private void jButtonNovoEmprestimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovoEmprestimoActionPerformed
+        // TODO add your handling code here:
+        TelaEmprestimo te = new TelaEmprestimo();
+        te.setVisible(true);
+    }//GEN-LAST:event_jButtonNovoEmprestimoActionPerformed
 
     /**
      * @param args the command line arguments

@@ -229,11 +229,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Novo Empr&#xe9;stimo"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonNovoEmprestimoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonNovaReserva">
           <Properties>
             <Property name="text" type="java.lang.String" value="Nova Reserva"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonNovaReservaActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
