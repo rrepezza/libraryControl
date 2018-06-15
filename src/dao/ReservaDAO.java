@@ -76,8 +76,29 @@ public class ReservaDAO implements IReservaDAO {
     }
 
     @Override
-    public void alterar(int id) throws Exception {
-        
+    public void alterar(Reserva reserva) throws Exception {
+        try {
+            ArrayList<Reserva> reservasCadastradas = this.listar();
+            ArrayList<Reserva> novasReservas = new ArrayList();
+            for (int i = 0; i < reservasCadastradas.size(); i++) {
+                Reserva temp = reservasCadastradas.get(i);
+                if(temp.getId() == reserva.getId()) {
+                    novasReservas.add(reserva);
+                }else{
+                    novasReservas.add(temp);
+                }
+            }
+            
+            FileWriter fw = new FileWriter(nomeDoArquivo,false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (int i = 0; i < novasReservas.size(); i++) {
+                Reserva nova = novasReservas.get(i);
+                bw.write(nova.desmaterializar() + "\n");
+            }
+            bw.close();	
+        } catch (Exception erro) {
+            throw erro;
+        }
     }
     
     //Verifica se um determinado exemplar possui alguma reserva não expirada
@@ -115,7 +136,7 @@ public class ReservaDAO implements IReservaDAO {
     }
     
     //Altera status da reserva para false, de acordo com a data de retorno do exemplar
-    public void atualizarReservasExpiradas() {
+    public void atualizarReservasExpiradas() throws Exception {
         try {
             ExemplarDAO edao = new ExemplarDAO(exemplar_db);
             ArrayList<Exemplar> listaExemplares = edao.getExemplaresDisponiveis();
@@ -123,7 +144,8 @@ public class ReservaDAO implements IReservaDAO {
             for (int i = 0; i < listaExemplares.size(); i++) {
                 
             }
-        } catch (Exception e) {
+        } catch (Exception erro) {
+            throw erro;
         }
     }
     

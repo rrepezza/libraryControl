@@ -60,8 +60,29 @@ public class ExemplarDAO implements IExemplarDAO {
     }
 
     @Override
-    public void alterar(int id) throws Exception {
-        
+    public void alterar(Exemplar exemplar) throws Exception {
+        try {
+            ArrayList<Exemplar> exemplaresCadastrados = this.listar();
+            ArrayList<Exemplar> novosExemplares = new ArrayList();
+            for (int i = 0; i < exemplaresCadastrados.size(); i++) {
+                Exemplar temp = exemplaresCadastrados.get(i);
+                if(temp.getId() == exemplar.getId()) {
+                    novosExemplares.add(exemplar);
+                }else{
+                    novosExemplares.add(temp);
+                }
+            }
+            
+            FileWriter fw = new FileWriter(nomeDoArquivo,false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (int i = 0; i < novosExemplares.size(); i++) {
+                Exemplar novo = novosExemplares.get(i);
+                bw.write(novo.desmaterializar() + "\n");
+            }
+            bw.close();	
+        } catch (Exception erro) {
+            throw erro;
+        }
     }
     
     public ArrayList<Exemplar> getExemplarByTitulo(String titulo) throws Exception {

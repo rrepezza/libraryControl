@@ -15,5 +15,5 @@ import java.util.ArrayList;
 public interface IReservaDAO {
     public void incluir(Reserva reserva) throws Exception;
     public ArrayList<Reserva> listar() throws Exception;
-    public void alterar(int id) throws Exception;
+    public void alterar(Reserva reserva) throws Exception;
 }
