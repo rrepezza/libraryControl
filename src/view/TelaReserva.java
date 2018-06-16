@@ -5,14 +5,19 @@
  */
 package view;
 
+import classes.Autor;
 import classes.Cliente;
+import classes.Editora;
 import classes.Exemplar;
 import classes.Livro;
 import classes.Reserva;
+import dao.AutorDAO;
 import dao.ClienteDAO;
+import dao.EditoraDAO;
 import dao.ExemplarDAO;
 import dao.LivroDAO;
 import dao.ReservaDAO;
+import java.awt.Image;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,8 +25,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import util.IDGenerator;
+import util.RenderizaLabel;
 
 /**
  *
@@ -51,16 +60,20 @@ public class TelaReserva extends javax.swing.JFrame {
         
         try {
             
+            //atualiza reservas expiradas, setando-as como false (expiradas)
+            ReservaDAO rdao = new ReservaDAO(reserva_db);
+            rdao.atualizarReservasExpiradas();
+            
+            //carrega comboboxes
             ClienteDAO cdao = new ClienteDAO(cliente_db);
             ExemplarDAO edao = new ExemplarDAO(exemplar_db);
             LivroDAO ldao = new LivroDAO(livro_db);
             
             ArrayList<Cliente> listaClientes = cdao.listar();
-            ArrayList<Exemplar> listaExemplares = edao.listar();
+            ArrayList<Exemplar> listaExemplares = edao.getExemplaresDisponiveis();
             
             String[] clientes = new String[listaClientes.size()];
             String[] exemplares = new String[listaExemplares.size()];
-            
             
             for (int i = 0; i < listaClientes.size(); i++) {
                 Cliente c = listaClientes.get(i);
@@ -71,12 +84,9 @@ public class TelaReserva extends javax.swing.JFrame {
                 Exemplar e = listaExemplares.get(i);
                 int livroID = e.getLivroID();
                 Livro livro = ldao.getLivroByID(livroID);
-                if(!e.IsDisponivel()) {
-                    exemplares[i] = livro.getTitulo() + " | ID " + e.getId();
-                }
-                
+                exemplares[i] = livro.getTitulo() + " | ID " + e.getId();  
             }
-            
+                        
             Arrays.sort(clientes);
             Arrays.sort(exemplares);
             
@@ -88,6 +98,46 @@ public class TelaReserva extends javax.swing.JFrame {
             
         } catch (Exception erro) {
             erro.printStackTrace();
+        }
+    }
+    
+    //Método para buscar os autores e preencher a jTable inicialmente
+    public void showReservas(ArrayList<Reserva> listaReservas) {
+        try {
+
+            DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
+
+            modelo.setNumRows(listaReservas.size());
+            
+            ClienteDAO cdao = new ClienteDAO(cliente_db);
+            ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+            LivroDAO ldao = new LivroDAO(livro_db);
+            
+            for (int i = 0; i < listaReservas.size(); i++) {
+                
+                Reserva res = listaReservas.get(i);
+                
+                Exemplar exemplar = edao.getExemplarByID(res.getExemplarID());
+                Livro livro = ldao.getLivroByID(exemplar.getLivroID());
+                Cliente cliente = cdao.getClienteById(res.getClienteID());
+                
+                String livroEIDExemplar = livro.getTitulo() + " | ID: " + exemplar.getId();
+                
+                modelo.setValueAt(res.getId(), i, 0);
+                modelo.setValueAt(livroEIDExemplar, i, 1);
+                modelo.setValueAt(cliente.getNome(), i, 2);   
+                
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                modelo.setValueAt(sdf.format(res.getDataReserva()), i, 3);
+                
+                String disponivel = res.isAtiva() ? "NÃO" : "SIM";
+                modelo.setValueAt(disponivel, i, 4);
+ 
+            }
+            
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
     }
 
@@ -179,6 +229,11 @@ public class TelaReserva extends javax.swing.JFrame {
         jButtonBuscarReserva.setText("Buscar");
 
         jButton1.setText("Listar Reservas");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -214,7 +269,7 @@ public class TelaReserva extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Livro", "Cliente", "Data da Reserva"
+                "ID", "Livro", "Cliente", "Data da Reserva", "Expirada"
             }
         ));
         jScrollPane1.setViewportView(jTableReservas);
@@ -300,6 +355,8 @@ public class TelaReserva extends javax.swing.JFrame {
                 cal.setTime(hoje);
                 Date dataReserva = cal.getTime();
                 
+                System.out.println(dataReserva);
+                
                 Reserva novaReserva = new Reserva(id, exemplarID, c.getId(), dataReserva);
                 rdao.incluir(novaReserva);
                 
@@ -314,6 +371,25 @@ public class TelaReserva extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
     }//GEN-LAST:event_jButtonCadastrarReservaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try {
+            ReservaDAO rdao = new ReservaDAO(reserva_db);
+            ArrayList<Reserva> listaReservas = rdao.listar();
+            rdao.atualizarReservasExpiradas();
+            if(listaReservas.size() > 0) {
+                showReservas(listaReservas);
+            } else {
+                DefaultTableModel modelo = (DefaultTableModel) jTableReservas.getModel();
+                modelo.setRowCount(0);
+                JOptionPane.showMessageDialog(rootPane, "Nenhuma reserva cadastrada."); 
+            }   
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -6,13 +6,14 @@
 package classes;
 
 import interfaces.TratamentoDeDados;
+import java.io.Serializable;
 
 /**
  *
  * @author aluno
  */
 
-    public class Cliente implements TratamentoDeDados {
+    public class Cliente implements TratamentoDeDados, Serializable {
     
     private int id = 0;
     private String cpf = "";
@@ -194,7 +195,7 @@ import interfaces.TratamentoDeDados;
     public void materializar(String dados) throws Exception {
         if(!dados.isEmpty()) {
             String vetorString[] = dados.split(";");
-            if(vetorString.length != 12) {
+            if(vetorString.length != 10) {
                 throw new Exception("Faltam dados na String");
             }
             

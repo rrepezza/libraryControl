@@ -6,6 +6,7 @@
 package classes;
 
 import interfaces.TratamentoDeDados;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,7 +15,7 @@ import java.util.Date;
  *
  * @author repez
  */
-public class Exemplar implements TratamentoDeDados {
+public class Exemplar implements TratamentoDeDados, Serializable {
     
     private int id = 0;
     private boolean disponivel = false; 

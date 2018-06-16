@@ -102,6 +102,21 @@ public class ClienteDAO implements IClienteDAO{
         return clientesEncontrados;
     }
      
+    public Cliente getClienteById(int clienteID) throws Exception {
+        try {
+            Cliente encontrado = null;
+            ArrayList<Cliente> listaClientes = this.listar();
+            for (int i = 0; i < listaClientes.size(); i++) {
+                Cliente temp = listaClientes.get(i);
+                if(temp.getId() == clienteID) {
+                    encontrado = temp;
+                }
+            }
+            return encontrado;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
 }
 
 

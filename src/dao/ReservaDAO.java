@@ -5,6 +5,7 @@
  */
 package dao;
 
+import classes.Cliente;
 import classes.Exemplar;
 import classes.Reserva;
 import interfaces.IReservaDAO;
@@ -12,7 +13,10 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -22,6 +26,7 @@ public class ReservaDAO implements IReservaDAO {
     
     private String nomeDoArquivo = "";
     private String exemplar_db = "./src/arquivos/Exemplares.csv";
+    private String cliente_db = "./src/arquivos/Clientes.csv";
     
     public ReservaDAO(String nomeDoArquivo){
         this.nomeDoArquivo = nomeDoArquivo;
@@ -139,10 +144,37 @@ public class ReservaDAO implements IReservaDAO {
     public void atualizarReservasExpiradas() throws Exception {
         try {
             ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+            ClienteDAO cdao = new ClienteDAO(cliente_db);
             ArrayList<Exemplar> listaExemplares = edao.getExemplaresDisponiveis();
             ArrayList<Reserva> listaReservas = this.listar();
             for (int i = 0; i < listaExemplares.size(); i++) {
-                
+                Exemplar exemplar = listaExemplares.get(i);
+                for (int j = 0; j < listaReservas.size(); j++) {
+                    Reserva reserva = listaReservas.get(j);
+                    if(exemplar.getId() == reserva.getExemplarID()) {
+                        Cliente cliente = cdao.getClienteById(reserva.getClienteID());
+                        Date exemplarDisponivelAPartirDe = exemplar.getDisponivelAPartirDe();
+                        System.out.println("Disponibilidade do Exemplar" + exemplarDisponivelAPartirDe);
+                        Calendar c = Calendar.getInstance();    
+                        c.setTime(exemplarDisponivelAPartirDe);
+                        if(cliente.getTipoPessoa().equals("Aluno")) {
+                            c.add(Calendar.DATE, 3);
+                        } else {
+                            c.add(Calendar.DATE, 5);
+                        }
+                        Date hoje = new Date();
+                        
+                        
+                        exemplarDisponivelAPartirDe = c.getTime();
+                        
+                        System.out.println("ATUAL " + hoje);
+                        System.out.println("LIMITE " + exemplarDisponivelAPartirDe);
+                        if(hoje.after(exemplarDisponivelAPartirDe)) {
+                            reserva.setIsAtiva(false);
+                            this.alterar(reserva);
+                        }
+                    }
+                }
             }
         } catch (Exception erro) {
             throw erro;

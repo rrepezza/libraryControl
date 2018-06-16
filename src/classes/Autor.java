@@ -6,12 +6,13 @@
 package classes;
 
 import interfaces.TratamentoDeDados;
+import java.io.Serializable;
 
 /**
  *
  * @author repez
  */
-public class Autor implements TratamentoDeDados {
+public class Autor implements TratamentoDeDados, Serializable {
     
     private int id = 0;
     private String nome = "";

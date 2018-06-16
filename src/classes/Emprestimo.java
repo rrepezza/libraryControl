@@ -6,6 +6,7 @@
 package classes;
 
 import interfaces.TratamentoDeDados;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author repez
  */
-public class Emprestimo implements TratamentoDeDados {
+public class Emprestimo implements TratamentoDeDados, Serializable {
     
     private int id = 0;
     private int exemplarID = 0;

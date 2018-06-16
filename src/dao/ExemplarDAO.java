@@ -178,4 +178,20 @@ public class ExemplarDAO implements IExemplarDAO {
             throw erro;
         } 
     }
+    
+    public Exemplar getExemplarByID(int exemplarID) throws Exception {
+        try {
+            Exemplar exemplar = null;
+            ArrayList<Exemplar> listaExemplares = this.listar();
+            for (int i = 0; i < listaExemplares.size(); i++) {
+                Exemplar temp = listaExemplares.get(i);
+                if(temp.getId() == exemplarID) {
+                    exemplar = temp;
+                }
+            }
+            return exemplar;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
 }
