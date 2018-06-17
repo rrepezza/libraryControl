@@ -5,19 +5,165 @@
  */
 package view;
 
+import classes.Cliente;
+import classes.Emprestimo;
+import classes.Exemplar;
+import classes.Livro;
+import dao.ClienteDAO;
+import dao.EmprestimoDAO;
+import dao.ExemplarDAO;
+import dao.LivroDAO;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import util.IDGenerator;
+
 /**
  *
  * @author repez
  */
 public class TelaEmprestimo extends javax.swing.JFrame {
-
+    
+    private String emprestimo_db = "./src/arquivos/Emprestimos.csv";
+    private String exemplar_db = "./src/arquivos/Exemplares.csv";
+    private String cliente_db = "./src/arquivos/Clientes.csv";
+    private String livro_db = "./src/arquivos/Livros.csv";
+    
+    public boolean clienteAptoParaRetirar(int quantidadeDeEmprestimos, String tipoCliente) {
+        if(tipoCliente.equals("ALUNO")) {
+            return quantidadeDeEmprestimos < 3;
+        } else {
+            return quantidadeDeEmprestimos < 5;
+        }
+    }
+    
     /**
      * Creates new form TelaEmprestimo
      */
     public TelaEmprestimo() {
         initComponents();
-    }
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        verificaDividas();
+        
+        try {
+            
+            ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+            ClienteDAO cdao = new ClienteDAO(cliente_db);
+            LivroDAO ldao = new LivroDAO(livro_db);
+            
+            ArrayList<Exemplar> listaExemplares = edao.getExemplaresSemReserva();
+            ArrayList<Cliente> listaClientes = cdao.getClientesSemDivida();
+            
+            String exemplares[] = new String[listaExemplares.size()];
+            String clientes[] = new String[listaClientes.size()];
+            
+            for (int i = 0; i < listaExemplares.size(); i++) {
+                Exemplar e = listaExemplares.get(i);
+                int livroID = e.getLivroID();
+                Livro livro = ldao.getLivroByID(livroID);
+                exemplares[i] = livro.getTitulo() + " | ID " + e.getId();
+            }
+            
+            for (int i = 0; i < listaClientes.size(); i++) {
+                Cliente c = listaClientes.get(i);
+                clientes[i] = c.getNome();
+            }
+            
+            Arrays.sort(exemplares);
+            Arrays.sort(clientes);
 
+            DefaultComboBoxModel m_exemplares = new DefaultComboBoxModel(exemplares);
+            jComboBoxEmprestimoExemplar.setModel(m_exemplares);
+            
+            DefaultComboBoxModel m_clientes = new DefaultComboBoxModel(clientes);
+            jComboBoxEmprestimoCliente.setModel(m_clientes);
+            
+        } catch (Exception erro) {
+            erro.printStackTrace();
+        }
+    }
+    
+    public void showEmprestimos(ArrayList<Emprestimo> listaEmprestimos) {
+        try {
+
+            DefaultTableModel modelo = (DefaultTableModel) jTableEmprestimo.getModel();
+
+            modelo.setNumRows(listaEmprestimos.size());
+            
+            ClienteDAO cdao = new ClienteDAO(cliente_db);
+            ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+            LivroDAO ldao = new LivroDAO(livro_db);
+            
+            for (int i = 0; i < listaEmprestimos.size(); i++) {
+                
+                Emprestimo emp = listaEmprestimos.get(i);
+  
+                Exemplar exemplar = edao.getExemplarByID(emp.getExemplarID());
+                Livro livro = ldao.getLivroByID(exemplar.getLivroID());
+                Cliente cliente = cdao.getClienteById(emp.getClienteID());
+                
+                String livroEIDExemplar = livro.getTitulo() + " | ID: " + exemplar.getId();
+                
+                modelo.setValueAt(emp.getId(), i, 0);
+                modelo.setValueAt(livroEIDExemplar, i, 1);
+                modelo.setValueAt(cliente.getNome(), i, 2);   
+                
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                modelo.setValueAt(sdf.format(emp.getDataEmprestimo()), i, 3);
+                modelo.setValueAt(sdf.format(emp.getDataDevolucao()), i, 4);
+                
+                String emprestimoExpirado = emp.isAtivo() ? "NÃO" : "SIM";
+                modelo.setValueAt(emprestimoExpirado, i, 5);
+ 
+            }
+            
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }
+    
+    //Metodo que percorre todas os emprestimos ativos e, caso estejam atrasados,
+    //atualiza o saldo devedor do cliente que os fez 
+    public void verificaDividas() {
+        try {
+            
+            EmprestimoDAO empdao = new EmprestimoDAO(emprestimo_db);
+            ArrayList<Emprestimo> emprestimosAtivos = empdao.getEmprestimosAtivos();
+            ClienteDAO cdao = new ClienteDAO(cliente_db);
+            ArrayList<Cliente> clientesComEmprestimosAtivos = cdao.getClientesComEmprestimosAtivos();
+            Date hoje = new Date();
+            
+            for (int i = 0; i < clientesComEmprestimosAtivos.size(); i++) {
+                int quantidadeDeDiasEmAtraso = 0;
+                Cliente c = clientesComEmprestimosAtivos.get(i);
+                for (int j = 0; j < emprestimosAtivos.size(); j++) {
+                    Emprestimo emp = emprestimosAtivos.get(j);
+                    if(c.getId() == emp.getClienteID() && hoje.after(emp.getDataDevolucao())) {
+                        long diferenca = hoje.getTime() - emp.getDataDevolucao().getTime();
+                        
+                        quantidadeDeDiasEmAtraso += (int) TimeUnit.DAYS.convert(diferenca, TimeUnit.MILLISECONDS); 
+                        System.out.println(quantidadeDeDiasEmAtraso);
+                    }
+                }
+                
+                if(quantidadeDeDiasEmAtraso > 0) {
+                    c.setSaldoDevedor(quantidadeDeDiasEmAtraso * 2);
+                    System.out.println(c.getSaldoDevedor());
+                    cdao.alterar(c);
+                }
+            }
+           
+        } catch (Exception erro) {
+            erro.printStackTrace();
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,16 +177,14 @@ public class TelaEmprestimo extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jButtonCadastrarEmprestimo = new javax.swing.JButton();
         jComboBoxEmprestimoExemplar = new javax.swing.JComboBox<>();
         jComboBoxEmprestimoCliente = new javax.swing.JComboBox<>();
-        jTextFieldDataDevolucao = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldBuscaEmprestimo = new javax.swing.JTextField();
         jButtonBuscarEmprestimo = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jButtonListarEmprestimos = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableEmprestimo = new javax.swing.JTable();
@@ -55,9 +199,12 @@ public class TelaEmprestimo extends javax.swing.JFrame {
 
         jLabel2.setText("Cliente:");
 
-        jLabel3.setText("Data Devolução:");
-
         jButtonCadastrarEmprestimo.setText("Cadastrar");
+        jButtonCadastrarEmprestimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCadastrarEmprestimoActionPerformed(evt);
+            }
+        });
 
         jComboBoxEmprestimoExemplar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -76,13 +223,9 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                             .addGap(65, 65, 65)
                             .addComponent(jComboBoxEmprestimoExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel2)
-                                .addComponent(jLabel3))
+                            .addComponent(jLabel2)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jComboBoxEmprestimoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextFieldDataDevolucao, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jComboBoxEmprestimoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jButtonCadastrarEmprestimo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -98,10 +241,6 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                     .addComponent(jComboBoxEmprestimoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldDataDevolucao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
                 .addComponent(jButtonCadastrarEmprestimo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -112,7 +251,12 @@ public class TelaEmprestimo extends javax.swing.JFrame {
 
         jButtonBuscarEmprestimo.setText("Buscar");
 
-        jButton1.setText("Listar Empréstimos");
+        jButtonListarEmprestimos.setText("Listar Empréstimos");
+        jButtonListarEmprestimos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonListarEmprestimosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -126,7 +270,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonBuscarEmprestimo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(jButtonListarEmprestimos)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -137,7 +281,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jTextFieldBuscaEmprestimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBuscarEmprestimo)
-                    .addComponent(jButton1))
+                    .addComponent(jButtonListarEmprestimos))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -148,7 +292,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Livro", "Cliente", "Data Empréstimo", "Data Devolução"
+                "ID", "Livro", "Cliente", "Data Empréstimo", "Data Devolução", "Expirado"
             }
         ));
         jScrollPane1.setViewportView(jTableEmprestimo);
@@ -161,9 +305,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -185,7 +327,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -209,6 +351,91 @@ public class TelaEmprestimo extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonCadastrarEmprestimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarEmprestimoActionPerformed
+        // TODO add your handling code here:
+        try {
+             
+            //Cria uma instancia dos DAOS de cliente, exemplar e emprestimo
+            ClienteDAO cdao = new ClienteDAO(cliente_db);
+            ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+            EmprestimoDAO empdao = new EmprestimoDAO(emprestimo_db);
+            
+            //Cria um objeto de cliente a partir do ID do cliente selecionado
+            Cliente c = cdao.getClienteByNome(jComboBoxEmprestimoCliente.getSelectedItem().toString());
+            
+            //Pega o item selecionado com o nome do livro e ID do exemplar
+            String livroExemplarID = jComboBoxEmprestimoExemplar.getSelectedItem().toString();
+            
+            //Quebra a string e pega o ID do exemplar
+            String pieces[] = livroExemplarID.split("\\| ID ");
+            int exemplarID = Integer.parseInt(pieces[1]);
+            
+            //Cria um objeto Exemplar a partir do ID do exemplar selecionado
+            Exemplar exemplarEmprestado = edao.getExemplarByID(exemplarID);
+            
+            //Busca a quantidade de emprestimos do cliente que tentará realizar o empréstimo
+            int quantidadeDeEmprestimosDoCliente = empdao.getQuantidadeDeEmprestimosDoCliente(c.getId());
+            
+            //Caso o cliente esteja apto para retirar o exemplar por empréstimo, executa o bloco abaixo
+            if(clienteAptoParaRetirar(quantidadeDeEmprestimosDoCliente, c.getTipoPessoa())) {
+                
+                //Gera um ID para o novo empréstimo
+                IDGenerator novoID = new IDGenerator();
+                int id = novoID.getNovoID();
+                
+                //Cria um novo objeto de empr;estimo
+                Emprestimo novoEmprestimo = new Emprestimo(id, exemplarID, c.getId());
+                
+                //Verifica, de acordo com o tipo do cliente, a duração do empréstimo
+                int duracaoEmprestimo = 0;
+                if(c.getTipoPessoa().equals("ALUNO")) {
+                    duracaoEmprestimo = 10;
+                } else {
+                    duracaoEmprestimo = 15;
+                }
+                
+                //Seta, no objeto do novo empréstimo, a data prevista de devolução do exemplar retirado
+                novoEmprestimo.setDataDevolucao(novoEmprestimo.calculaDataDeDevolucao(duracaoEmprestimo));
+                
+                //Inclui o novo empréstimo no CSV de emprestimos
+                empdao.incluir(novoEmprestimo);
+                
+                //Grava o último ID gerado
+                novoID.gravaID(id);
+                
+                //No registro do exemplar, seta como indisponível (emprestado) e seta também a data de devolução como a data que o exemplar estará 
+                //disponível, caso não haja atraso na devolução e altera o mesmo no CSV de exemplares
+                exemplarEmprestado.setDisponivelAPartirDe(novoEmprestimo.calculaDataDeDevolucao(duracaoEmprestimo));
+                exemplarEmprestado.setDisponivel(false);
+                edao.alterar(exemplarEmprestado);
+                
+            }
+            
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonCadastrarEmprestimoActionPerformed
+
+    private void jButtonListarEmprestimosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarEmprestimosActionPerformed
+        // TODO add your handling code here:
+        try {
+            EmprestimoDAO empdao = new EmprestimoDAO(emprestimo_db);
+            ArrayList<Emprestimo> listaEmprestimos = empdao.listar();
+            
+            if(listaEmprestimos.size() > 0) {
+                showEmprestimos(listaEmprestimos);
+            } else {
+                DefaultTableModel modelo = (DefaultTableModel) jTableEmprestimo.getModel();
+                modelo.setRowCount(0);
+                JOptionPane.showMessageDialog(rootPane, "Nenhum empréstimo cadastrado."); 
+            }   
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonListarEmprestimosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,14 +473,13 @@ public class TelaEmprestimo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonBuscarEmprestimo;
     private javax.swing.JButton jButtonCadastrarEmprestimo;
+    private javax.swing.JButton jButtonListarEmprestimos;
     private javax.swing.JComboBox<String> jComboBoxEmprestimoCliente;
     private javax.swing.JComboBox<String> jComboBoxEmprestimoExemplar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -262,6 +488,5 @@ public class TelaEmprestimo extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableEmprestimo;
     private javax.swing.JTextField jTextFieldBuscaEmprestimo;
-    private javax.swing.JTextField jTextFieldDataDevolucao;
     // End of variables declaration//GEN-END:variables
 }

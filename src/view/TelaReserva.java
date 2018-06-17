@@ -5,32 +5,23 @@
  */
 package view;
 
-import classes.Autor;
 import classes.Cliente;
-import classes.Editora;
 import classes.Exemplar;
 import classes.Livro;
 import classes.Reserva;
-import dao.AutorDAO;
 import dao.ClienteDAO;
-import dao.EditoraDAO;
 import dao.ExemplarDAO;
 import dao.LivroDAO;
 import dao.ReservaDAO;
-import java.awt.Image;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.IDGenerator;
-import util.RenderizaLabel;
 
 /**
  *
@@ -44,7 +35,7 @@ public class TelaReserva extends javax.swing.JFrame {
     private String reserva_db = "./src/arquivos/Reservas.csv";
     
     public boolean clienteAptoParaReservar(int quantidadeAtualDeReservas, String tipoCliente) {
-        if(tipoCliente.equals("Aluno")) {
+        if(tipoCliente.equals("ALUNO")) {
             return quantidadeAtualDeReservas < 3;
         } else {
             return quantidadeAtualDeReservas < 5;
@@ -130,8 +121,8 @@ public class TelaReserva extends javax.swing.JFrame {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 modelo.setValueAt(sdf.format(res.getDataReserva()), i, 3);
                 
-                String disponivel = res.isAtiva() ? "NÃO" : "SIM";
-                modelo.setValueAt(disponivel, i, 4);
+                String reservaExpirada = res.isAtiva() ? "NÃO" : "SIM";
+                modelo.setValueAt(reservaExpirada, i, 4);
  
             }
             
@@ -161,7 +152,7 @@ public class TelaReserva extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextFieldBuscaReserva = new javax.swing.JTextField();
         jButtonBuscarReserva = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jButtonListarReservas = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableReservas = new javax.swing.JTable();
@@ -228,10 +219,10 @@ public class TelaReserva extends javax.swing.JFrame {
 
         jButtonBuscarReserva.setText("Buscar");
 
-        jButton1.setText("Listar Reservas");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonListarReservas.setText("Listar Reservas");
+        jButtonListarReservas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonListarReservasActionPerformed(evt);
             }
         });
 
@@ -247,7 +238,7 @@ public class TelaReserva extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonBuscarReserva)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(jButtonListarReservas)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -258,7 +249,7 @@ public class TelaReserva extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldBuscaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonBuscarReserva)
-                    .addComponent(jButton1))
+                    .addComponent(jButtonListarReservas))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -345,7 +336,7 @@ public class TelaReserva extends javax.swing.JFrame {
             int qtdReservasDoCliente = rdao.getQuantidadeDeReservasDoCliente(c.getId());
             
             if(clienteAptoParaReservar(qtdReservasDoCliente, c.getTipoPessoa())) {
-                
+                                
                 IDGenerator novoID = new IDGenerator();
                 int id = novoID.getNovoID();
                                
@@ -372,7 +363,7 @@ public class TelaReserva extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonCadastrarReservaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonListarReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListarReservasActionPerformed
         // TODO add your handling code here:
         try {
             ReservaDAO rdao = new ReservaDAO(reserva_db);
@@ -389,7 +380,7 @@ public class TelaReserva extends javax.swing.JFrame {
             erro.printStackTrace();
             JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonListarReservasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -427,9 +418,9 @@ public class TelaReserva extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonBuscarReserva;
     private javax.swing.JButton jButtonCadastrarReserva;
+    private javax.swing.JButton jButtonListarReservas;
     private javax.swing.JComboBox<String> jComboBoxReservaCliente;
     private javax.swing.JComboBox<String> jComboBoxReservaExemplar;
     private javax.swing.JLabel jLabel1;

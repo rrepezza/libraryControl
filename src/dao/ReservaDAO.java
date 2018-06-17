@@ -140,7 +140,8 @@ public class ReservaDAO implements IReservaDAO {
         }
     }
     
-    //Altera status da reserva para false, de acordo com a data de retorno do exemplar
+    //Altera status da reserva para false, caso a data do dia seja superior a data
+    //que a reserva irá expirar
     public void atualizarReservasExpiradas() throws Exception {
         try {
             ExemplarDAO edao = new ExemplarDAO(exemplar_db);
@@ -153,23 +154,20 @@ public class ReservaDAO implements IReservaDAO {
                     Reserva reserva = listaReservas.get(j);
                     if(exemplar.getId() == reserva.getExemplarID()) {
                         Cliente cliente = cdao.getClienteById(reserva.getClienteID());
-                        Date exemplarDisponivelAPartirDe = exemplar.getDisponivelAPartirDe();
-                        System.out.println("Disponibilidade do Exemplar" + exemplarDisponivelAPartirDe);
+                        Date reservaExpiraEm = exemplar.getDisponivelAPartirDe();
+                        //System.out.println("Disponibilidade do Exemplar" + reservaExpiraEm);
                         Calendar c = Calendar.getInstance();    
-                        c.setTime(exemplarDisponivelAPartirDe);
+                        c.setTime(reservaExpiraEm);
                         if(cliente.getTipoPessoa().equals("Aluno")) {
                             c.add(Calendar.DATE, 3);
                         } else {
                             c.add(Calendar.DATE, 5);
                         }
                         Date hoje = new Date();
-                        
-                        
-                        exemplarDisponivelAPartirDe = c.getTime();
-                        
-                        System.out.println("ATUAL " + hoje);
-                        System.out.println("LIMITE " + exemplarDisponivelAPartirDe);
-                        if(hoje.after(exemplarDisponivelAPartirDe)) {
+                        reservaExpiraEm = c.getTime();
+                        //System.out.println("ATUAL " + hoje);
+                        //System.out.println("LIMITE " + reservaExpiraEm);
+                        if(hoje.after(reservaExpiraEm)) {
                             reserva.setIsAtiva(false);
                             this.alterar(reserva);
                         }

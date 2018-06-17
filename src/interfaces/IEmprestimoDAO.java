@@ -15,5 +15,5 @@ import java.util.ArrayList;
 public interface IEmprestimoDAO {
     public void incluir(Emprestimo emprestimo) throws Exception;
     public ArrayList<Emprestimo> listar() throws Exception;
-    public void alterar(int id) throws Exception;
+    public void alterar(Emprestimo emprestimo) throws Exception;
 }

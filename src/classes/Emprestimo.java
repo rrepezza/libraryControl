@@ -30,12 +30,11 @@ public class Emprestimo implements TratamentoDeDados, Serializable {
         
     }
     
-    public Emprestimo(int id, int exemplarID, int clienteID, Date dataDevolucao) {
+    public Emprestimo(int id, int exemplarID, int clienteID) {
         this.id = id;
         this.exemplarID = exemplarID;
         this.clienteID = clienteID;  
         this.dataEmprestimo = (Date) Calendar.getInstance().getTime();
-        this.dataDevolucao = dataDevolucao;
     }
     
     
@@ -161,5 +160,11 @@ public class Emprestimo implements TratamentoDeDados, Serializable {
         return saida;
     }
     
-    
+    public Date calculaDataDeDevolucao(int limite) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(dataEmprestimo);
+        c.add(Calendar.DATE, limite);
+        return c.getTime();
+    }
+        
 }

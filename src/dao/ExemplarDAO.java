@@ -22,6 +22,7 @@ public class ExemplarDAO implements IExemplarDAO {
     
     private String nomeDoArquivo = "";
     private String livro_db = "./src/arquivos/Livros.csv";
+    private String reserva_db = "./src/arquivos/Reservas.csv";
     
     public ExemplarDAO(String nomeDoArquivo){
         this.nomeDoArquivo = nomeDoArquivo;
@@ -169,7 +170,7 @@ public class ExemplarDAO implements IExemplarDAO {
             ArrayList<Exemplar> listaExemplares = this.listar();
             for (int i = 0; i < listaExemplares.size(); i++) {
                 Exemplar temp = listaExemplares.get(i);
-                if(temp.IsDisponivel()) {
+                if(temp.IsDisponivel() && !temp.isExemplarReserva()) {
                     exemplaresDisponiveis.add(temp);
                 }
             }
@@ -190,6 +191,22 @@ public class ExemplarDAO implements IExemplarDAO {
                 }
             }
             return exemplar;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    public ArrayList<Exemplar> getExemplaresSemReserva() throws Exception {
+        try {
+            ArrayList<Exemplar> exemplaresSemReserva = new ArrayList<>();
+            ArrayList<Exemplar> listaExemplares = this.listar();
+            ReservaDAO rdao = new ReservaDAO(reserva_db);
+            for (Exemplar exemplar : listaExemplares) {
+                if(!rdao.existeReserva(exemplar.getId()) && !isExemplarFixo(exemplar.getId())) {
+                    exemplaresSemReserva.add(exemplar);
+                }
+            }
+            return exemplaresSemReserva;
         } catch (Exception erro) {
             throw erro;
         }

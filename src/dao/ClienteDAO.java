@@ -6,6 +6,7 @@
 package dao;
 
 import classes.Cliente;
+import classes.Emprestimo;
 import interfaces.IClienteDAO;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class ClienteDAO implements IClienteDAO{
     
     private String nomeDoArquivo = "";
+    private String emprestimo_db = "./src/arquivos/Emprestimos.csv";
     
     public ClienteDAO(String nomeDoArquivo){
         this.nomeDoArquivo = nomeDoArquivo;
@@ -46,7 +48,28 @@ public class ClienteDAO implements IClienteDAO{
 
     @Override
     public void alterar(Cliente cliente) throws Exception {
-        
+        try {
+            ArrayList<Cliente> clientesCadastrados = this.listar();
+            ArrayList<Cliente> novosClientes = new ArrayList();
+            for (int i = 0; i < clientesCadastrados.size(); i++) {
+                Cliente temp = clientesCadastrados.get(i);
+                if(temp.getId() == cliente.getId()) {
+                    novosClientes.add(cliente);
+                }else{
+                    novosClientes.add(temp);
+                }
+            }
+            
+            FileWriter fw = new FileWriter(nomeDoArquivo,false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (int i = 0; i < novosClientes.size(); i++) {
+                Cliente novo = novosClientes.get(i);
+                bw.write(novo.desmaterializar() + "\n");
+            }
+            bw.close();	
+        } catch (Exception erro) {
+            throw erro;
+        }
     }
 
     @Override
@@ -113,6 +136,42 @@ public class ClienteDAO implements IClienteDAO{
                 }
             }
             return encontrado;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    public ArrayList<Cliente> getClientesSemDivida() throws Exception {
+        try {
+            ArrayList<Cliente> clientesSemDivida = new ArrayList<>();
+            ArrayList<Cliente> listaClientes = this.listar();
+            for (Cliente cliente : listaClientes) {
+                if(cliente.getSaldoDevedor() == 0){
+                    clientesSemDivida.add(cliente);
+                }
+            }
+            return clientesSemDivida;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    public ArrayList<Cliente> getClientesComEmprestimosAtivos() throws Exception {
+        try {
+            ArrayList<Cliente> clientesComEmprestimos = new ArrayList<>();
+            ArrayList<Cliente> clientesCadastrados = this.listar();
+            EmprestimoDAO empdao = new EmprestimoDAO(emprestimo_db);
+            ArrayList<Emprestimo> listaEmprestimosAtivos = empdao.getEmprestimosAtivos();
+            for (int i = 0; i < clientesCadastrados.size(); i++) {
+                Cliente temp = clientesCadastrados.get(i);
+                for (int j = 0; j < listaEmprestimosAtivos.size(); j++) {
+                    Emprestimo emp = listaEmprestimosAtivos.get(j);
+                    if(emp.getClienteID() == temp.getId()) {
+                        clientesComEmprestimos.add(temp);
+                    }
+                }
+            }
+            return clientesComEmprestimos;
         } catch (Exception erro) {
             throw erro;
         }

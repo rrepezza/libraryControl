@@ -72,8 +72,29 @@ public class EmprestimoDAO implements IEmprestimoDAO {
     }
 
     @Override
-    public void alterar(int id) throws Exception {
-        //implementar
+    public void alterar(Emprestimo emprestimo) throws Exception {
+        try {
+            ArrayList<Emprestimo> novosEmprestimos = new ArrayList<>();
+            ArrayList<Emprestimo> emprestimosCadastrados = this.listar();
+            for (int i = 0; i < emprestimosCadastrados.size(); i++) {
+                Emprestimo temp = emprestimosCadastrados.get(i);
+                if(temp.getId() == emprestimo.getId()) {
+                    novosEmprestimos.add(emprestimo);
+                } else {
+                    novosEmprestimos.add(temp);
+                }
+            }
+            
+            FileWriter fw = new FileWriter(nomeDoArquivo,false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (int i = 0; i < novosEmprestimos.size(); i++) {
+                Emprestimo novo = novosEmprestimos.get(i);
+                bw.write(novo.desmaterializar() + "\n");
+            }
+            bw.close();	
+        } catch (Exception erro) {
+            throw erro;
+        }
     }
     
     //Renova emprestimo de um determinado exemplar, caso nao exista reserva ativa do mesmo
@@ -101,6 +122,23 @@ public class EmprestimoDAO implements IEmprestimoDAO {
                 }
             }
             return quantidadeDeEmprestimos;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    //Retorna lista de emprestimos ativos
+    public ArrayList<Emprestimo> getEmprestimosAtivos() throws Exception {
+        try {
+            ArrayList<Emprestimo> emprestimosAtivos = new ArrayList<>();
+            ArrayList<Emprestimo> emprestimosCadastrados = this.listar();
+            for (int i = 0; i < emprestimosCadastrados.size(); i++) {
+                Emprestimo temp = emprestimosCadastrados.get(i);
+                if(temp.isAtivo()) {
+                    emprestimosAtivos.add(temp);
+                }
+            }
+            return emprestimosAtivos;
         } catch (Exception erro) {
             throw erro;
         }
