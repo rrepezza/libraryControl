@@ -52,6 +52,12 @@ public class TelaReserva extends javax.swing.JFrame {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
+        //botoes de edicao de reserva iniciam ocultos
+        jLabelReservaID.setVisible(false);
+        jButtonCancelarEdicao.setVisible(false);
+        jButtonEfetuarEmprestimo.setVisible(false);
+        jButtonCancelarReserva.setVisible(false);
+        
         try {
             
             //atualiza reservas expiradas, setando-as como false (expiradas)
@@ -153,7 +159,7 @@ public class TelaReserva extends javax.swing.JFrame {
         jButtonCadastrarReserva = new javax.swing.JButton();
         jButtonEfetuarEmprestimo = new javax.swing.JButton();
         jButtonCancelarReserva = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jButtonCancelarEdicao = new javax.swing.JButton();
         jLabelReservaID = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -199,10 +205,10 @@ public class TelaReserva extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Cancelar Edição");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonCancelarEdicao.setText("Cancelar Edição");
+        jButtonCancelarEdicao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonCancelarEdicaoActionPerformed(evt);
             }
         });
 
@@ -232,7 +238,7 @@ public class TelaReserva extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jButtonCancelarReserva)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1)))
+                        .addComponent(jButtonCancelarEdicao)))
                 .addContainerGap(109, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -252,7 +258,7 @@ public class TelaReserva extends javax.swing.JFrame {
                     .addComponent(jButtonCadastrarReserva)
                     .addComponent(jButtonEfetuarEmprestimo)
                     .addComponent(jButtonCancelarReserva)
-                    .addComponent(jButton1))
+                    .addComponent(jButtonCancelarEdicao))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -311,6 +317,11 @@ public class TelaReserva extends javax.swing.JFrame {
                 "ID", "Livro", "Cliente", "Data da Reserva", "Expirada"
             }
         ));
+        jTableReservas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableReservasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableReservas);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -438,6 +449,7 @@ public class TelaReserva extends javax.swing.JFrame {
             
             //Se o texto contido no label for diferente de vazio, executa
             if(!jLabelReservaID .getText().isEmpty()) {
+            
                 //Cria instancia de ReservaDAO
                 ReservaDAO rdao = new ReservaDAO(reserva_db);
                 
@@ -470,7 +482,8 @@ public class TelaReserva extends javax.swing.JFrame {
                 //Dependendo do tipo do Cliente e / ou da data da reserva ou se existe uma reserva prioritária para o exemplar
                 if(reservasDoExemplar.size() > 1) {
                     
-                    boolean prioritario = false;
+                    boolean reservaPoderaSerFeita = true;
+                    Date dataReservaAtual = reservaAtual.getDataReserva();
                     
                     for (int i = 0; i < reservasDoExemplar.size(); i++) {
                         Reserva reservaExistente = reservasDoExemplar.get(i);
@@ -479,8 +492,67 @@ public class TelaReserva extends javax.swing.JFrame {
                         //Caso o cliente possua a mesma preferencia do atual, verifica a data da reserva e só realiza o empréstimo
                         //caso a data da reserva atual for anterior à data da reserva pesquisada
                         if(reservaExistente.getId() != reservaAtual.getId()) {
-                            //Cliente clienteReservaExistente = 
+                            Cliente clienteReservaExistente = cdao.getClienteById(reservaExistente.getClienteID());
+                            
+                            //Proxima reserva pertencente à um professor e atual sendo de um aluno
+                            //Caso sim, seta a flag que a reserva não poderá ser transformada em um empréstimo
+                            //Caso não, verificaremos a data da reserva, se e só realiza o empréstimo
+                            //se a data da reserva atual não for maior que nenhuma data de alguma reserva existente
+                            if(clienteReservaExistente.getTipoPessoa().equals("PROFESSOR") && clienteReservaAtual.getTipoPessoa().equals("ALUNO"))  {
+                                reservaPoderaSerFeita = false;
+                            } else {
+                                
+                                Date dataReservaExistente = reservaExistente.getDataReserva();
+                                if(dataReservaAtual.after(dataReservaExistente)) {
+                                    reservaPoderaSerFeita = false;
+                                } 
+                                
+                            }
                         }
+                    }
+                    
+                    //Caso a flag se mantenha em verdadeiro (reserva poderá ser transformada em empréstimo)
+                    //efetua o mesmo
+                    if(reservaPoderaSerFeita) {
+                        
+                        //Cria novo ID para o emprestimo
+                        int emprestimoID = novoID.getNovoID();
+
+                        //Cria um objeto do novo emprestimo a partir da reserva selecionada
+                        Emprestimo emprestimo = new Emprestimo(emprestimoID, reservaAtual.getExemplarID(), reservaAtual.getClienteID());
+                        
+                        //Seta a data de devolução do empréstimo, a partir do tipo do cliente
+                        emprestimo.setDataDevolucao(emprestimo.calculaDataDeDevolucao(clienteReservaAtual.getTipoPessoa()));
+                        
+                        //Seta o emprestimo como ativo (não expirado)
+                        emprestimo.setIsAtivo(true);
+                        
+                        //Inclui o emprestimo no CSV correspondente
+                        empdao.incluir(emprestimo);
+
+                        //Seta a reserva como não ativa (expirada)
+                        reservaAtual.setIsAtiva(false);
+                        
+                        //Altera a reserva no CSV correspondente
+                        rdao.alterar(reservaAtual);
+
+                        //Seta o exemplar como indisponível
+                        exemplar.setDisponivel(false);
+                        
+                        //Seta a data de disponibilidade do exemplar, pelo tipo do cliente
+                        exemplar.setDisponivelAPartirDe(emprestimo.calculaDataDeDevolucao(clienteReservaAtual.getTipoPessoa()));
+                        
+                        //Altera o exemplar no CSV correspondente
+                        edao.alterar(exemplar);
+
+                        //Grava o ID gerado no arquivo correspondente (incremento automático)
+                        novoID.gravaID(emprestimoID);
+                        
+                        //Exibe mensagem de sucesso
+                        JOptionPane.showMessageDialog(rootPane, "Empréstimo realizado com sucesso!");                   
+                        
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "Não foi possível realizar o empréstimo da reserva selecionada.");
                     }
                     
                     
@@ -527,15 +599,59 @@ public class TelaReserva extends javax.swing.JFrame {
 
     private void jButtonCancelarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarReservaActionPerformed
         // TODO add your handling code here:
+        try {
+            //Busca o ID do empréstimo, que foi vinculado ao label invisível no formulário de Reservas
+            int reservaID = Integer.parseInt(jLabelReservaID .getText());
+            
+            if(!jLabelReservaID .getText().isEmpty()) {
+                
+                ReservaDAO rdao = new ReservaDAO(reserva_db);
+                Reserva reserva = rdao.getReservaById(reservaID);
+                if(reserva.isAtiva()) {
+                    reserva.setIsAtiva(false);
+                    rdao.alterar(reserva);
+                    JOptionPane.showMessageDialog(rootPane, "Reserva cancelada com sucesso!");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "A reserva selecionada já está expirada!");
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Erro ao cancelar a reserva. Nenhuma reserva foi selecionada.");
+            }
+            
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
     }//GEN-LAST:event_jButtonCancelarReservaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonCancelarEdicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarEdicaoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        jLabelReservaID.setText(jTableReservas.getModel().getValueAt(linhaSelecionada, 0).toString());
+        jButtonCancelarEdicao.setVisible(false);
+        jButtonEfetuarEmprestimo.setVisible(false);
+        jButtonCancelarReserva.setVisible(false);
+        jButtonCadastrarReserva.setVisible(true);
+    }//GEN-LAST:event_jButtonCancelarEdicaoActionPerformed
 
     private void jButtonBuscarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarReservaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonBuscarReservaActionPerformed
+
+    private void jTableReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableReservasMouseClicked
+        // TODO add your handling code here:
+        try {
+            int linhaSelecionada = jTableReservas.getSelectedRow();
+            jLabelReservaID.setText(jTableReservas.getModel().getValueAt(linhaSelecionada, 0).toString());
+            jButtonCancelarEdicao.setVisible(true);
+            jButtonEfetuarEmprestimo.setVisible(true);
+            jButtonCancelarReserva.setVisible(true);
+            jButtonCadastrarReserva.setVisible(false);
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jTableReservasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -573,9 +689,9 @@ public class TelaReserva extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonBuscarReserva;
     private javax.swing.JButton jButtonCadastrarReserva;
+    private javax.swing.JButton jButtonCancelarEdicao;
     private javax.swing.JButton jButtonCancelarReserva;
     private javax.swing.JButton jButtonEfetuarEmprestimo;
     private javax.swing.JButton jButtonListarReservas;
