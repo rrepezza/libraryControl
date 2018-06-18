@@ -6,6 +6,7 @@
 package view;
 
 import classes.Cliente;
+import classes.Emprestimo;
 import classes.Exemplar;
 import classes.Livro;
 import classes.Reserva;
@@ -435,7 +436,19 @@ public class TelaReserva extends javax.swing.JFrame {
             ReservaDAO rdao = new ReservaDAO(reserva_db);
             
             if(!jLabelReservaID .getText().isEmpty()) {
-                Reserva reserva = rdao.getReservaById(reservaID);
+                Reserva reserva = rdao.getReservaById(reservaID);                
+                ArrayList<Reserva> reservasDoExemplar = rdao.getReservasByExemplarID(reserva.getExemplarID());
+                ClienteDAO cdao = new ClienteDAO(cliente_db);
+                boolean prioritario = false;
+                if(reservasDoExemplar.size() > 0) {
+                    
+                } else {
+                    IDGenerator novoID = new IDGenerator();
+                    int id = novoID.getNovoID();
+                    Emprestimo emprestimo = new Emprestimo(id, reserva.getExemplarID(), reserva.getClienteID());
+                    
+                    //falta código
+                }
             }
             
         } catch (Exception erro) {
