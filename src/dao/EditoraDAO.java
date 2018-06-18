@@ -27,7 +27,28 @@ public class EditoraDAO implements IEditoraDAO {
 
     @Override
     public void alterar(Editora editora) throws Exception {
-        
+        try {
+            ArrayList<Editora> editorasCadastradas = this.listar();
+            ArrayList<Editora> novasEditoras = new ArrayList();
+            for (int i = 0; i < editorasCadastradas.size(); i++) {
+                Editora temp = editorasCadastradas.get(i);
+                if(temp.getId() == editora.getId()) {
+                    novasEditoras.add(editora);
+                }else{
+                    novasEditoras.add(temp);
+                }
+            }
+            
+            FileWriter fw = new FileWriter(nomeDoArquivo,false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (int i = 0; i < novasEditoras.size(); i++) {
+                Editora nova = novasEditoras.get(i);
+                bw.write(nova.desmaterializar() + "\n");
+            }
+            bw.close();	
+        } catch (Exception erro) {
+            throw erro;
+        }
     }
 
     @Override

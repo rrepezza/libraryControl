@@ -34,10 +34,9 @@ public class Inicio extends javax.swing.JFrame {
         jButtonEditora = new javax.swing.JButton();
         jButtonAutor = new javax.swing.JButton();
         jButtonCliente = new javax.swing.JButton();
-        jPanelUltimasReservas = new javax.swing.JPanel();
-        jPanelUltimosEmprestimos = new javax.swing.JPanel();
-        jButtonNovoEmprestimo = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         jButtonNovaReserva = new javax.swing.JButton();
+        jButtonNovoEmprestimo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("libraryControl");
@@ -89,69 +88,66 @@ public class Inicio extends javax.swing.JFrame {
             jPanelCadastrosBasicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCadastrosBasicosLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jButtonAutor)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonEditora)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonLivro)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonExemplar)
                 .addGap(18, 18, 18)
-                .addComponent(jButtonEditora)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonAutor)
-                .addGap(18, 18, 18)
                 .addComponent(jButtonCliente)
-                .addContainerGap(281, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelCadastrosBasicosLayout.setVerticalGroup(
             jPanelCadastrosBasicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelCadastrosBasicosLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(45, 45, 45)
                 .addGroup(jPanelCadastrosBasicosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonAutor)
+                    .addComponent(jButtonEditora)
                     .addComponent(jButtonLivro)
                     .addComponent(jButtonExemplar)
-                    .addComponent(jButtonEditora)
-                    .addComponent(jButtonAutor)
                     .addComponent(jButtonCliente))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanelUltimasReservas.setBorder(javax.swing.BorderFactory.createTitledBorder("Últimas Reservas"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Ações"));
 
-        javax.swing.GroupLayout jPanelUltimasReservasLayout = new javax.swing.GroupLayout(jPanelUltimasReservas);
-        jPanelUltimasReservas.setLayout(jPanelUltimasReservasLayout);
-        jPanelUltimasReservasLayout.setHorizontalGroup(
-            jPanelUltimasReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanelUltimasReservasLayout.setVerticalGroup(
-            jPanelUltimasReservasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 177, Short.MAX_VALUE)
-        );
+        jButtonNovaReserva.setText("Reserva");
+        jButtonNovaReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonNovaReservaActionPerformed(evt);
+            }
+        });
 
-        jPanelUltimosEmprestimos.setBorder(javax.swing.BorderFactory.createTitledBorder("Últimos Empréstimos"));
-
-        javax.swing.GroupLayout jPanelUltimosEmprestimosLayout = new javax.swing.GroupLayout(jPanelUltimosEmprestimos);
-        jPanelUltimosEmprestimos.setLayout(jPanelUltimosEmprestimosLayout);
-        jPanelUltimosEmprestimosLayout.setHorizontalGroup(
-            jPanelUltimosEmprestimosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanelUltimosEmprestimosLayout.setVerticalGroup(
-            jPanelUltimosEmprestimosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 177, Short.MAX_VALUE)
-        );
-
-        jButtonNovoEmprestimo.setText("Novo Empréstimo");
+        jButtonNovoEmprestimo.setText("Empréstimo");
         jButtonNovoEmprestimo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonNovoEmprestimoActionPerformed(evt);
             }
         });
 
-        jButtonNovaReserva.setText("Nova Reserva");
-        jButtonNovaReserva.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonNovaReservaActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(75, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonNovoEmprestimo)
+                    .addComponent(jButtonNovaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(72, 72, 72))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonNovaReserva)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addComponent(jButtonNovoEmprestimo)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -159,30 +155,18 @@ public class Inicio extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelCadastrosBasicos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelUltimosEmprestimos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelUltimasReservas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonNovaReserva)
-                            .addComponent(jButtonNovoEmprestimo))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jPanelCadastrosBasicos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelCadastrosBasicos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanelUltimasReservas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonNovaReserva)
-                .addGap(18, 18, 18)
-                .addComponent(jPanelUltimosEmprestimos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonNovoEmprestimo)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelCadastrosBasicos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -190,53 +174,21 @@ public class Inicio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButtonEditoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditoraActionPerformed
-        // TODO add your handling code here:
-        TelaEditora e = new TelaEditora();
-        e.setVisible(true);
-        //dispose();
-    }//GEN-LAST:event_jButtonEditoraActionPerformed
-
-    private void jButtonAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAutorActionPerformed
-        // TODO add your handling code here:
-        TelaAutor a = new TelaAutor();
-        a.setVisible(true);
-        //dispose();
-    }//GEN-LAST:event_jButtonAutorActionPerformed
-
-    private void jButtonLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLivroActionPerformed
-        // TODO add your handling code here:
-        TelaLivro l = new TelaLivro();
-        l.setVisible(true);
-    }//GEN-LAST:event_jButtonLivroActionPerformed
-
-    private void jButtonExemplarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExemplarActionPerformed
-        // TODO add your handling code here:
-        TelaExemplar te = new TelaExemplar();
-        te.setVisible(true);
-    }//GEN-LAST:event_jButtonExemplarActionPerformed
-
-    private void jButtonClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClienteActionPerformed
-        // TODO add your handling code here:
-        TelaCliente tc = new TelaCliente();
-        tc.setVisible(true);
-    }//GEN-LAST:event_jButtonClienteActionPerformed
 
     private void jButtonNovaReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovaReservaActionPerformed
         // TODO add your handling code here:
@@ -249,6 +201,38 @@ public class Inicio extends javax.swing.JFrame {
         TelaEmprestimo te = new TelaEmprestimo();
         te.setVisible(true);
     }//GEN-LAST:event_jButtonNovoEmprestimoActionPerformed
+
+    private void jButtonClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClienteActionPerformed
+        // TODO add your handling code here:
+        TelaCliente tc = new TelaCliente();
+        tc.setVisible(true);
+    }//GEN-LAST:event_jButtonClienteActionPerformed
+
+    private void jButtonAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAutorActionPerformed
+        // TODO add your handling code here:
+        TelaAutor a = new TelaAutor();
+        a.setVisible(true);
+        //dispose();
+    }//GEN-LAST:event_jButtonAutorActionPerformed
+
+    private void jButtonEditoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditoraActionPerformed
+        // TODO add your handling code here:
+        TelaEditora e = new TelaEditora();
+        e.setVisible(true);
+        //dispose();
+    }//GEN-LAST:event_jButtonEditoraActionPerformed
+
+    private void jButtonExemplarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExemplarActionPerformed
+        // TODO add your handling code here:
+        TelaExemplar te = new TelaExemplar();
+        te.setVisible(true);
+    }//GEN-LAST:event_jButtonExemplarActionPerformed
+
+    private void jButtonLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLivroActionPerformed
+        // TODO add your handling code here:
+        TelaLivro l = new TelaLivro();
+        l.setVisible(true);
+    }//GEN-LAST:event_jButtonLivroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,8 +278,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JButton jButtonNovaReserva;
     private javax.swing.JButton jButtonNovoEmprestimo;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelCadastrosBasicos;
-    private javax.swing.JPanel jPanelUltimasReservas;
-    private javax.swing.JPanel jPanelUltimosEmprestimos;
     // End of variables declaration//GEN-END:variables
 }

@@ -43,6 +43,9 @@ public class TelaLivro extends javax.swing.JFrame {
         
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        jLabelLivroID.setVisible(false);
+        jButtonCancelarEdicao.setVisible(false);
+        jButtonEditarLivro.setVisible(false);
         
         try {
 
@@ -155,6 +158,9 @@ public class TelaLivro extends javax.swing.JFrame {
         jButtonCadastrarLivro = new javax.swing.JButton();
         jComboBoxLivroAutor = new javax.swing.JComboBox<>();
         jComboBoLivroEditora = new javax.swing.JComboBox<>();
+        jButtonEditarLivro = new javax.swing.JButton();
+        jButtonCancelarEdicao = new javax.swing.JButton();
+        jLabelLivroID = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableLivros = new javax.swing.JTable();
@@ -200,6 +206,20 @@ public class TelaLivro extends javax.swing.JFrame {
 
         jComboBoLivroEditora.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jButtonEditarLivro.setText("Editar");
+        jButtonEditarLivro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarLivroActionPerformed(evt);
+            }
+        });
+
+        jButtonCancelarEdicao.setText("Cancelar Edição");
+        jButtonCancelarEdicao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarEdicaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -210,8 +230,15 @@ public class TelaLivro extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(36, 36, 36)
-                        .addComponent(jTextFieldLivroISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButtonCadastrarLivro)
+                        .addComponent(jTextFieldLivroISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelLivroID))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButtonCadastrarLivro)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonEditarLivro)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonCancelarEdicao))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -234,7 +261,8 @@ public class TelaLivro extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextFieldLivroISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldLivroISBN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelLivroID))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -253,7 +281,10 @@ public class TelaLivro extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(jComboBoLivroEditora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButtonCadastrarLivro)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonCadastrarLivro)
+                    .addComponent(jButtonEditarLivro)
+                    .addComponent(jButtonCancelarEdicao))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -267,6 +298,11 @@ public class TelaLivro extends javax.swing.JFrame {
                 "ID", "ISBN", "Título", "Autor", "Editora", "Capa"
             }
         ));
+        jTableLivros.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableLivrosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableLivros);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -489,6 +525,51 @@ public class TelaLivro extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonBuscarLivroActionPerformed
 
+    private void jTableLivrosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableLivrosMouseClicked
+        // TODO add your handling code here:
+        try {
+            int linhaSelecionada = jTableLivros.getSelectedRow();
+            jLabelLivroID.setText(jTableLivros.getModel().getValueAt(linhaSelecionada, 0).toString());
+            int livroID = Integer.parseInt(jLabelLivroID.getText());
+            
+            if(!jLabelLivroID.getText().isEmpty()) {
+                LivroDAO ldao = new LivroDAO(livro_db);
+                Livro livro = ldao.getLivroByID(livroID);
+                
+                jTextFieldLivroCapa.setText(livro.getFotoDaCapa());
+                jTextFieldLivroISBN.setText(String.valueOf(livro.getIsbn()));
+                jTextFieldLivroTitulo.setText(livro.getTitulo());
+                
+                EditoraDAO edao = new EditoraDAO(editora_db);
+                Editora editora = edao.getEditoraByID(livro.getEditoraID());
+                jComboBoLivroEditora.setSelectedItem(editora.getNome());
+                
+                AutorDAO adao = new AutorDAO(autor_db);
+                Autor autor = adao.getAutorByID(livro.getAutorID());
+                jComboBoxLivroAutor.setSelectedItem(autor.getNome());
+            }
+            
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+        
+        
+        
+    }//GEN-LAST:event_jTableLivrosMouseClicked
+
+    private void jButtonEditarLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarLivroActionPerformed
+        // TODO add your handling code here:
+        try {
+            
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonEditarLivroActionPerformed
+
+    private void jButtonCancelarEdicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarEdicaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonCancelarEdicaoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -527,7 +608,9 @@ public class TelaLivro extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBuscarLivro;
     private javax.swing.JButton jButtonCadastrarLivro;
+    private javax.swing.JButton jButtonCancelarEdicao;
     private javax.swing.JButton jButtonCarregaCapa;
+    private javax.swing.JButton jButtonEditarLivro;
     private javax.swing.JButton jButtonListarLivros;
     private javax.swing.JComboBox<String> jComboBoLivroEditora;
     private javax.swing.JComboBox<String> jComboBoxLivroAutor;
@@ -538,6 +621,7 @@ public class TelaLivro extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabelLivroID;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

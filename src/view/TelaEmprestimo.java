@@ -243,7 +243,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
             }
         });
 
-        jButtonRenovarEmprestimo.setText("Renover Empréstimo");
+        jButtonRenovarEmprestimo.setText("Renovar Empréstimo");
         jButtonRenovarEmprestimo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRenovarEmprestimoActionPerformed(evt);

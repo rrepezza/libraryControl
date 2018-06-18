@@ -219,7 +219,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButtonRenovarEmprestimo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Renover Empr&#xe9;stimo"/>
+                <Property name="text" type="java.lang.String" value="Renovar Empr&#xe9;stimo"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonRenovarEmprestimoActionPerformed"/>

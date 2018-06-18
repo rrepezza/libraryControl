@@ -25,6 +25,9 @@ public class TelaEditora extends javax.swing.JFrame {
      */
     public TelaEditora() {
         initComponents();
+        jLabelEditoraID.setVisible(false);
+        jButtonEditarEditora.setVisible(false);
+        jButtonCancelarEdicao.setVisible(false);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
@@ -47,6 +50,10 @@ public class TelaEditora extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
     }
+    
+    public void limpaCampos() {
+        jTextFieldEditoraNome.setText("");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,6 +69,9 @@ public class TelaEditora extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jButtonCadastrarEditora = new javax.swing.JButton();
         jTextFieldEditoraNome = new javax.swing.JTextField();
+        jLabelEditoraID = new javax.swing.JLabel();
+        jButtonEditarEditora = new javax.swing.JButton();
+        jButtonCancelarEdicao = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableEditoras = new javax.swing.JTable();
@@ -87,6 +97,20 @@ public class TelaEditora extends javax.swing.JFrame {
             }
         });
 
+        jButtonEditarEditora.setText("Editar");
+        jButtonEditarEditora.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarEditoraActionPerformed(evt);
+            }
+        });
+
+        jButtonCancelarEdicao.setText("Cancelar Edição");
+        jButtonCancelarEdicao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarEdicaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -94,12 +118,19 @@ public class TelaEditora extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonCadastrarEditora)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButtonCadastrarEditora)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonEditarEditora)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonCancelarEdicao))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(25, 25, 25)
-                        .addComponent(jTextFieldEditoraNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(361, Short.MAX_VALUE))
+                        .addComponent(jTextFieldEditoraNome, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelEditoraID)))
+                .addContainerGap(349, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,9 +138,13 @@ public class TelaEditora extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextFieldEditoraNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldEditoraNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelEditoraID))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                .addComponent(jButtonCadastrarEditora)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonCadastrarEditora)
+                    .addComponent(jButtonEditarEditora)
+                    .addComponent(jButtonCancelarEdicao))
                 .addContainerGap())
         );
 
@@ -123,6 +158,11 @@ public class TelaEditora extends javax.swing.JFrame {
                 "ID", "Nome"
             }
         ));
+        jTableEditoras.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableEditorasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableEditoras);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -293,6 +333,54 @@ public class TelaEditora extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButtonListarEditorasActionPerformed
 
+    private void jTableEditorasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEditorasMouseClicked
+        // TODO add your handling code here:
+        try {
+            int linhaSelecionada = jTableEditoras.getSelectedRow();
+            jLabelEditoraID.setText(jTableEditoras.getValueAt(linhaSelecionada, 0).toString());
+            jButtonCadastrarEditora.setVisible(false);
+            jButtonCancelarEdicao.setVisible(true);
+            jButtonEditarEditora.setVisible(true);
+            
+            EditoraDAO edao = new EditoraDAO(editora_db);
+            Editora editora = edao.getEditoraByID(Integer.parseInt(jTableEditoras.getModel().getValueAt(linhaSelecionada, 0).toString()));
+            
+            jTextFieldEditoraNome.setText(editora.getNome());
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jTableEditorasMouseClicked
+
+    private void jButtonCancelarEdicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarEdicaoActionPerformed
+        // TODO add your handling code here:
+        jLabelEditoraID.setText("");
+        jButtonCadastrarEditora.setVisible(true);
+        jButtonCancelarEdicao.setVisible(false);
+        jButtonEditarEditora.setVisible(false);
+        limpaCampos();
+    }//GEN-LAST:event_jButtonCancelarEdicaoActionPerformed
+
+    private void jButtonEditarEditoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarEditoraActionPerformed
+        // TODO add your handling code here:
+        int editoraID = Integer.parseInt(jLabelEditoraID.getText());
+        if(!jLabelEditoraID.getText().isEmpty()) {
+
+            try {
+                EditoraDAO edao = new EditoraDAO(editora_db);
+                Editora editora = edao.getEditoraByID(editoraID);
+                
+                editora.setNome(jTextFieldEditoraNome.getText().toUpperCase());
+                
+                edao.alterar(editora);
+                JOptionPane.showMessageDialog(rootPane, "Editora alterada com sucesso!");
+                limpaCampos();
+                showEditoras(edao.listar());
+            } catch (Exception erro) {
+                JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jButtonEditarEditoraActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -331,9 +419,12 @@ public class TelaEditora extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBuscaEditora;
     private javax.swing.JButton jButtonCadastrarEditora;
+    private javax.swing.JButton jButtonCancelarEdicao;
+    private javax.swing.JButton jButtonEditarEditora;
     private javax.swing.JButton jButtonListarEditoras;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelEditoraID;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

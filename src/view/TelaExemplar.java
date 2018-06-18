@@ -324,7 +324,7 @@ public class TelaExemplar extends javax.swing.JFrame {
                     novoID.gravaID(id);
                 }
                 
-                JOptionPane.showMessageDialog(rootPane, "Exempla(es) cadastrado(s) com sucesso!");
+                JOptionPane.showMessageDialog(rootPane, "Exemplar(es) cadastrado(s) com sucesso!");
                 limparCampos();
                 
             } else {

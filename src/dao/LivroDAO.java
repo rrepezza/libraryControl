@@ -80,7 +80,28 @@ public class LivroDAO implements ILivroDAO {
 
     @Override
     public void alterar(Livro livro) throws Exception {
-        
+        try {
+            ArrayList<Livro> livrosCadastrados = this.listar();
+            ArrayList<Livro> novosLivros = new ArrayList();
+            for (int i = 0; i < livrosCadastrados.size(); i++) {
+                Livro temp = livrosCadastrados.get(i);
+                if(temp.getId() == livro.getId()) {
+                    novosLivros.add(livro);
+                }else{
+                    novosLivros.add(temp);
+                }
+            }
+            
+            FileWriter fw = new FileWriter(nomeDoArquivo,false);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (int i = 0; i < novosLivros.size(); i++) {
+                Livro novo = novosLivros.get(i);
+                bw.write(novo.desmaterializar() + "\n");
+            }
+            bw.close();	
+        } catch (Exception erro) {
+            throw erro;
+        }
     }
     
     public Livro getLivroByTitulo(String titulo) throws Exception { 

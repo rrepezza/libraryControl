@@ -54,8 +54,7 @@ public class TelaCliente extends javax.swing.JFrame {
                 Locale locale = new Locale("pt", "BR");
                 NumberFormat nf = NumberFormat.getCurrencyInstance();
                 modelo.setValueAt(nf.format(cli.getSaldoDevedor()), i, 5);   
-                //modelo.setValueAt(cli.getQuantidadeEmprestimos(), i, 6);   
-                //modelo.setValueAt(cli.getQuantidadeReservas(), i, 7);   
+                 
             }
             
         } catch (Exception erro) {
@@ -503,19 +502,31 @@ public class TelaCliente extends javax.swing.JFrame {
             String uf = jComboUf.getSelectedItem().toString();
             String tipoPessoa = jComboTipoCliente.getSelectedItem().toString().toUpperCase();
             int id = Integer.parseInt(jLabelClienteID.getText());
-            float saldoDevedor = Float.parseFloat(jTextFieldSaldoDevedor.getText());
+            
            
             if(!jLabelClienteID.getText().isEmpty() && !jTextFieldNome.getText().isEmpty() && !jTextFieldEndereco.getText().isEmpty() 
                 && !jTextFieldCidade.getText().isEmpty() && !jTextFieldEmail.getText().isEmpty() && !jTextFieldCpf.getText().isEmpty()
                 && !jTextFieldTelefone.getText().isEmpty() && !jComboUf.getSelectedItem().toString().equals("SELECIONE...")
-                && !jComboTipoCliente.getSelectedItem().toString().equals("SELECIONE...") && !jTextFieldSaldoDevedor.getText().isEmpty()) {
+                && !jComboTipoCliente.getSelectedItem().toString().equals("SELECIONE...")) {
                 
                 ClienteDAO cdao = new ClienteDAO(cliente_db);
+                float saldoDevedor;
+                
+                if(jTextFieldSaldoDevedor.getText().isEmpty()) {
+                    saldoDevedor = 0;
+                } else {
+                    saldoDevedor = Float.parseFloat(jTextFieldSaldoDevedor.getText());
+                }
+                
                 Cliente novoCliente = new Cliente(id, nome, cpf, cidade, uf, email, endereco, telefone, tipoPessoa, saldoDevedor);
                 
                 cdao.alterar(novoCliente);
+                
                 JOptionPane.showMessageDialog(rootPane, "Cliente alterado com sucesso!");
+                
                 limparCampos();
+                
+                showClientes(cdao.listar());
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Preencha todos os campos antes de tentar alterar um cliente.");
             }

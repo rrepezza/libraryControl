@@ -182,7 +182,7 @@ public class ReservaDAO implements IReservaDAO {
     //Retorna as reservas ativas
     public ArrayList<Reserva> getReservasAtivas() throws Exception {
         try {
-            ArrayList<Reserva> reservasEncontradas = null;
+            ArrayList<Reserva> reservasEncontradas = new ArrayList();
             ArrayList<Reserva> reservasCadastradas = this.listar();
             for (int i = 0; i < reservasCadastradas.size(); i++) {
                 Reserva reserva = reservasCadastradas.get(i);
@@ -216,7 +216,7 @@ public class ReservaDAO implements IReservaDAO {
     //Retorna um arraylist de reservas ativas de um exemplar especifico
     public ArrayList<Reserva> getReservasByExemplarID(int exemplarID) throws Exception {
         try {
-            ArrayList<Reserva> reservasDoExemplar = null;
+            ArrayList<Reserva> reservasDoExemplar = new ArrayList<>();
             ArrayList<Reserva> reservasAtivas = this.getReservasAtivas();
             for (int i = 0; i < reservasAtivas.size(); i++) {
                 Reserva reserva = reservasAtivas.get(i);

@@ -480,113 +480,123 @@ public class TelaReserva extends javax.swing.JFrame {
                 //Caso haja mais de uma reserva para o exemplar vinculado à reserva selecionada
                 //Verifica se essa reserva atual será a que poderá gerar um empréstimo nesse momento
                 //Dependendo do tipo do Cliente e / ou da data da reserva ou se existe uma reserva prioritária para o exemplar
-                if(reservasDoExemplar.size() > 1) {
+                if(exemplar.IsDisponivel()) {
                     
-                    boolean reservaPoderaSerFeita = true;
-                    Date dataReservaAtual = reservaAtual.getDataReserva();
+                    if(reservasDoExemplar.size() > 1) {
                     
-                    for (int i = 0; i < reservasDoExemplar.size(); i++) {
-                        Reserva reservaExistente = reservasDoExemplar.get(i);
-                        //Verifica se a reserva do arraylist é diferente da reserva atual
-                        //Caso o cliente possua preferencia sobre o cliente da reserva atual, não faz o empréstimo
-                        //Caso o cliente possua a mesma preferencia do atual, verifica a data da reserva e só realiza o empréstimo
-                        //caso a data da reserva atual for anterior à data da reserva pesquisada
-                        if(reservaExistente.getId() != reservaAtual.getId()) {
-                            Cliente clienteReservaExistente = cdao.getClienteById(reservaExistente.getClienteID());
-                            
-                            //Proxima reserva pertencente à um professor e atual sendo de um aluno
-                            //Caso sim, seta a flag que a reserva não poderá ser transformada em um empréstimo
-                            //Caso não, verificaremos a data da reserva, se e só realiza o empréstimo
-                            //se a data da reserva atual não for maior que nenhuma data de alguma reserva existente
-                            if(clienteReservaExistente.getTipoPessoa().equals("PROFESSOR") && clienteReservaAtual.getTipoPessoa().equals("ALUNO"))  {
-                                reservaPoderaSerFeita = false;
-                            } else {
-                                
-                                Date dataReservaExistente = reservaExistente.getDataReserva();
-                                if(dataReservaAtual.after(dataReservaExistente)) {
-                                    reservaPoderaSerFeita = false;
-                                } 
-                                
+                        boolean emprestimoPoderaSerFeito = true;
+                        Date dataReservaAtual = reservaAtual.getDataReserva();
+
+                        for (int i = 0; i < reservasDoExemplar.size(); i++) {
+                            Reserva reservaExistente = reservasDoExemplar.get(i);
+                            //Verifica se a reserva do arraylist é diferente da reserva atual
+                            //Caso o cliente possua preferencia sobre o cliente da reserva atual, não faz o empréstimo
+                            //Caso o cliente possua a mesma preferencia do atual, verifica a data da reserva e só realiza o empréstimo
+                            //caso a data da reserva atual for anterior à data da reserva pesquisada
+                            if(reservaExistente.getId() != reservaAtual.getId()) {
+                                Cliente clienteReservaExistente = cdao.getClienteById(reservaExistente.getClienteID());
+
+                                //Proxima reserva pertencente à um professor e atual sendo de um aluno
+                                //Caso sim, seta a flag que a reserva não poderá ser transformada em um empréstimo
+                                //Caso não, verificaremos a data da reserva, se e só realiza o empréstimo
+                                //se a data da reserva atual não for maior que nenhuma data de alguma reserva existente
+                                if(clienteReservaExistente.getTipoPessoa().equals("PROFESSOR") && clienteReservaAtual.getTipoPessoa().equals("ALUNO"))  {
+                                    emprestimoPoderaSerFeito = false;                               
+                                } else if(clienteReservaExistente.getTipoPessoa().equals("ALUNO") && clienteReservaAtual.getTipoPessoa().equals("PROFESSOR")) {
+                                    emprestimoPoderaSerFeito = true;
+                                } else {
+                                    Date dataReservaExistente = reservaExistente.getDataReserva();
+                                    if(dataReservaAtual.after(dataReservaExistente)) {
+                                        emprestimoPoderaSerFeito = false;
+                                    } 
+                                }
                             }
                         }
-                    }
-                    
-                    //Caso a flag se mantenha em verdadeiro (reserva poderá ser transformada em empréstimo)
-                    //efetua o mesmo
-                    if(reservaPoderaSerFeita) {
-                        
+
+                        //Caso a flag se mantenha em verdadeiro (reserva poderá ser transformada em empréstimo)
+                        //efetua o mesmo
+                        if(clienteReservaAtual.getSaldoDevedor() == 0) {
+                            if(emprestimoPoderaSerFeito) {
+
+                                //Cria novo ID para o emprestimo
+                                int emprestimoID = novoID.getNovoID();
+
+                                //Cria um objeto do novo emprestimo a partir da reserva selecionada
+                                Emprestimo emprestimo = new Emprestimo(emprestimoID, reservaAtual.getExemplarID(), reservaAtual.getClienteID());
+
+                                //Seta a data de devolução do empréstimo, a partir do tipo do cliente
+                                emprestimo.setDataDevolucao(emprestimo.calculaDataDeDevolucao(clienteReservaAtual.getTipoPessoa()));
+
+                                //Seta o emprestimo como ativo (não expirado)
+                                emprestimo.setIsAtivo(true);
+
+                                //Inclui o emprestimo no CSV correspondente
+                                empdao.incluir(emprestimo);
+
+                                //Seta a reserva como não ativa (expirada)
+                                reservaAtual.setIsAtiva(false);
+
+                                //Altera a reserva no CSV correspondente
+                                rdao.alterar(reservaAtual);
+
+                                //Seta o exemplar como indisponível
+                                exemplar.setDisponivel(false);
+
+                                //Seta a data de disponibilidade do exemplar, pelo tipo do cliente
+                                exemplar.setDisponivelAPartirDe(emprestimo.calculaDataDeDevolucao(clienteReservaAtual.getTipoPessoa()));
+
+                                //Altera o exemplar no CSV correspondente
+                                edao.alterar(exemplar);
+
+                                //Grava o ID gerado no arquivo correspondente (incremento automático)
+                                novoID.gravaID(emprestimoID);
+
+                                //Exibe mensagem de sucesso
+                                JOptionPane.showMessageDialog(rootPane, "Empréstimo realizado com sucesso!");                   
+
+                            } else {
+                                JOptionPane.showMessageDialog(rootPane, "Não foi possível realizar o empréstimo da reserva "
+                                        + "selecionada, pois há alguma reserva prioritária cadastrada.");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(rootPane, "O cliente possuí dívidas com a biblioteca. Regularize antes.");
+                        }
+
+                    } else {
                         //Cria novo ID para o emprestimo
                         int emprestimoID = novoID.getNovoID();
 
                         //Cria um objeto do novo emprestimo a partir da reserva selecionada
                         Emprestimo emprestimo = new Emprestimo(emprestimoID, reservaAtual.getExemplarID(), reservaAtual.getClienteID());
-                        
                         //Seta a data de devolução do empréstimo, a partir do tipo do cliente
                         emprestimo.setDataDevolucao(emprestimo.calculaDataDeDevolucao(clienteReservaAtual.getTipoPessoa()));
-                        
                         //Seta o emprestimo como ativo (não expirado)
                         emprestimo.setIsAtivo(true);
-                        
                         //Inclui o emprestimo no CSV correspondente
                         empdao.incluir(emprestimo);
 
                         //Seta a reserva como não ativa (expirada)
                         reservaAtual.setIsAtiva(false);
-                        
                         //Altera a reserva no CSV correspondente
                         rdao.alterar(reservaAtual);
 
                         //Seta o exemplar como indisponível
                         exemplar.setDisponivel(false);
-                        
                         //Seta a data de disponibilidade do exemplar, pelo tipo do cliente
                         exemplar.setDisponivelAPartirDe(emprestimo.calculaDataDeDevolucao(clienteReservaAtual.getTipoPessoa()));
-                        
                         //Altera o exemplar no CSV correspondente
                         edao.alterar(exemplar);
 
                         //Grava o ID gerado no arquivo correspondente (incremento automático)
                         novoID.gravaID(emprestimoID);
-                        
                         //Exibe mensagem de sucesso
-                        JOptionPane.showMessageDialog(rootPane, "Empréstimo realizado com sucesso!");                   
-                        
-                    } else {
-                        JOptionPane.showMessageDialog(rootPane, "Não foi possível realizar o empréstimo da reserva selecionada.");
+                        JOptionPane.showMessageDialog(rootPane, "Empréstimo realizado com sucesso!");
                     }
-                    
-                    
                 } else {
-                    //Cria novo ID para o emprestimo
-                    int emprestimoID = novoID.getNovoID();
-                    
-                    //Cria um objeto do novo emprestimo a partir da reserva selecionada
-                    Emprestimo emprestimo = new Emprestimo(emprestimoID, reservaAtual.getExemplarID(), reservaAtual.getClienteID());
-                    //Seta a data de devolução do empréstimo, a partir do tipo do cliente
-                    emprestimo.setDataDevolucao(emprestimo.calculaDataDeDevolucao(clienteReservaAtual.getTipoPessoa()));
-                    //Seta o emprestimo como ativo (não expirado)
-                    emprestimo.setIsAtivo(true);
-                    //Inclui o emprestimo no CSV correspondente
-                    empdao.incluir(emprestimo);
-                                    
-                    //Seta a reserva como não ativa (expirada)
-                    reservaAtual.setIsAtiva(false);
-                    //Altera a reserva no CSV correspondente
-                    rdao.alterar(reservaAtual);
-                    
-                    //Seta o exemplar como indisponível
-                    exemplar.setDisponivel(false);
-                    //Seta a data de disponibilidade do exemplar, pelo tipo do cliente
-                    exemplar.setDisponivelAPartirDe(emprestimo.calculaDataDeDevolucao(clienteReservaAtual.getTipoPessoa()));
-                    //Altera o exemplar no CSV correspondente
-                    edao.alterar(exemplar);
-                    
-                    //Grava o ID gerado no arquivo correspondente (incremento automático)
-                    novoID.gravaID(emprestimoID);
-                    //Exibe mensagem de sucesso
-                    JOptionPane.showMessageDialog(rootPane, "Empréstimo realizado com sucesso!");
+                    JOptionPane.showMessageDialog(rootPane, "O exemplar selecionado não está disponível no "
+                            + "momento para efetivar o empréstimo através da reserva selecionada.");
                 }
-                
+  
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Nenhuma reserva selecionada.");
             }
@@ -627,7 +637,7 @@ public class TelaReserva extends javax.swing.JFrame {
 
     private void jButtonCancelarEdicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarEdicaoActionPerformed
         // TODO add your handling code here:
-        jLabelReservaID.setText(jTableReservas.getModel().getValueAt(linhaSelecionada, 0).toString());
+        jLabelReservaID.setText("");
         jButtonCancelarEdicao.setVisible(false);
         jButtonEfetuarEmprestimo.setVisible(false);
         jButtonCancelarReserva.setVisible(false);
