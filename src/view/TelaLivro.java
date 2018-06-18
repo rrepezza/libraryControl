@@ -112,7 +112,7 @@ public class TelaLivro extends javax.swing.JFrame {
                    
                 ImageIcon foto = new ImageIcon(liv.getFotoDaCapa());
                 Image imagem = foto.getImage();
-                Image novaImagem = imagem.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+                Image novaImagem = imagem.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
                 ImageIcon fotoRedimensionada = new ImageIcon(novaImagem);
                     
                 JLabel img = new JLabel();
@@ -532,6 +532,10 @@ public class TelaLivro extends javax.swing.JFrame {
             jLabelLivroID.setText(jTableLivros.getModel().getValueAt(linhaSelecionada, 0).toString());
             int livroID = Integer.parseInt(jLabelLivroID.getText());
             
+            jButtonEditarLivro.setVisible(true);
+            jButtonCancelarEdicao.setVisible(true);
+            jButtonCadastrarLivro.setVisible(false);
+            
             if(!jLabelLivroID.getText().isEmpty()) {
                 LivroDAO ldao = new LivroDAO(livro_db);
                 Livro livro = ldao.getLivroByID(livroID);
@@ -560,7 +564,29 @@ public class TelaLivro extends javax.swing.JFrame {
     private void jButtonEditarLivroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarLivroActionPerformed
         // TODO add your handling code here:
         try {
-            
+            int livroID = Integer.parseInt(String.valueOf(jLabelLivroID.getText()));
+            if(!jLabelLivroID.getText().isEmpty()) {
+                LivroDAO ldao = new LivroDAO(livro_db);
+                Livro livro = ldao.getLivroByID(livroID);
+                
+                livro.setFotoDaCapa(jTextFieldLivroCapa.getText());
+                livro.setTitulo(jTextFieldLivroTitulo.getText());
+                livro.setIsbn(Integer.parseInt(jTextFieldLivroISBN.getText()));
+                
+                AutorDAO adao = new AutorDAO(autor_db);
+                Autor autor = adao.getAutorByNome(jComboBoxLivroAutor.getSelectedItem().toString());
+                
+                EditoraDAO edao = new EditoraDAO(editora_db);
+                Editora editora = edao.getEditoraByNome(jComboBoLivroEditora.getSelectedItem().toString());
+                
+                livro.setAutorID(autor.getId());
+                livro.setEditoraID(editora.getId());
+                
+                ldao.alterar(livro);
+                JOptionPane.showMessageDialog(rootPane, "Livro alterado com sucesso!");
+                limparCampos();
+                showLivros(ldao.listar());
+            }
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
@@ -568,6 +594,11 @@ public class TelaLivro extends javax.swing.JFrame {
 
     private void jButtonCancelarEdicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarEdicaoActionPerformed
         // TODO add your handling code here:
+        jLabelLivroID.setText("");
+        jButtonCadastrarLivro.setVisible(true);
+        jButtonCancelarEdicao.setVisible(false);
+        jButtonEditarLivro.setVisible(false);
+        limparCampos();
     }//GEN-LAST:event_jButtonCancelarEdicaoActionPerformed
 
     /**
