@@ -9,10 +9,12 @@ import classes.Cliente;
 import classes.Emprestimo;
 import classes.Exemplar;
 import classes.Livro;
+import classes.Reserva;
 import dao.ClienteDAO;
 import dao.EmprestimoDAO;
 import dao.ExemplarDAO;
 import dao.LivroDAO;
+import dao.ReservaDAO;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
     private String exemplar_db = "./src/arquivos/Exemplares.csv";
     private String cliente_db = "./src/arquivos/Clientes.csv";
     private String livro_db = "./src/arquivos/Livros.csv";
+    private String reserva_db = "./src/arquivos/Reservas.csv";
     
     public boolean clienteAptoParaRetirar(int quantidadeDeEmprestimos, String tipoCliente) {
         if(tipoCliente.equals("ALUNO")) {
@@ -42,12 +45,25 @@ public class TelaEmprestimo extends javax.swing.JFrame {
         }
     }
     
+    public int duracaoEmprestimo(String tipoPessoa) {
+        if(tipoPessoa.equals("ALUNO")){
+            return 10;
+        } else {
+            return 15;
+        }
+    }
+    
     /**
      * Creates new form TelaEmprestimo
      */
     public TelaEmprestimo() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        //botoes de edicao do emprestimo e jlabel do id iniciam invisiveis, até que uma linha da tabela seja clicada
+        jLabelEmprestimoID.setVisible(false);
+        jButtonCancelarEdicao.setVisible(false);
+        jButtonFinalizarEmprestimo.setVisible(false);
+        jButtonRenovarEmprestimo.setVisible(false);
         verificaDividas();
         
         try {
@@ -180,6 +196,10 @@ public class TelaEmprestimo extends javax.swing.JFrame {
         jButtonCadastrarEmprestimo = new javax.swing.JButton();
         jComboBoxEmprestimoExemplar = new javax.swing.JComboBox<>();
         jComboBoxEmprestimoCliente = new javax.swing.JComboBox<>();
+        jButtonFinalizarEmprestimo = new javax.swing.JButton();
+        jButtonCancelarEdicao = new javax.swing.JButton();
+        jButtonRenovarEmprestimo = new javax.swing.JButton();
+        jLabelEmprestimoID = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldBuscaEmprestimo = new javax.swing.JTextField();
@@ -210,6 +230,27 @@ public class TelaEmprestimo extends javax.swing.JFrame {
 
         jComboBoxEmprestimoCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jButtonFinalizarEmprestimo.setText("Finalizar Empréstimo");
+        jButtonFinalizarEmprestimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFinalizarEmprestimoActionPerformed(evt);
+            }
+        });
+
+        jButtonCancelarEdicao.setText("Cancelar Edição");
+        jButtonCancelarEdicao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarEdicaoActionPerformed(evt);
+            }
+        });
+
+        jButtonRenovarEmprestimo.setText("Renover Empréstimo");
+        jButtonRenovarEmprestimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRenovarEmprestimoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -217,16 +258,26 @@ public class TelaEmprestimo extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addGap(65, 65, 65)
-                            .addComponent(jComboBoxEmprestimoExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBoxEmprestimoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jButtonCadastrarEmprestimo))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(65, 65, 65)
+                                .addComponent(jComboBoxEmprestimoExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jComboBoxEmprestimoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelEmprestimoID))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButtonCadastrarEmprestimo)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonFinalizarEmprestimo)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonRenovarEmprestimo)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonCancelarEdicao)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -235,13 +286,18 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxEmprestimoExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabelEmprestimoID))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxEmprestimoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
-                .addComponent(jButtonCadastrarEmprestimo)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonCadastrarEmprestimo)
+                    .addComponent(jButtonFinalizarEmprestimo)
+                    .addComponent(jButtonCancelarEdicao)
+                    .addComponent(jButtonRenovarEmprestimo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -250,6 +306,11 @@ public class TelaEmprestimo extends javax.swing.JFrame {
         jLabel4.setText("Título:");
 
         jButtonBuscarEmprestimo.setText("Buscar");
+        jButtonBuscarEmprestimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarEmprestimoActionPerformed(evt);
+            }
+        });
 
         jButtonListarEmprestimos.setText("Listar Empréstimos");
         jButtonListarEmprestimos.addActionListener(new java.awt.event.ActionListener() {
@@ -295,6 +356,11 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                 "ID", "Livro", "Cliente", "Data Empréstimo", "Data Devolução", "Expirado"
             }
         ));
+        jTableEmprestimo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableEmprestimoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableEmprestimo);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -387,16 +453,8 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                 //Cria um novo objeto de empr;estimo
                 Emprestimo novoEmprestimo = new Emprestimo(id, exemplarID, c.getId());
                 
-                //Verifica, de acordo com o tipo do cliente, a duração do empréstimo
-                int duracaoEmprestimo = 0;
-                if(c.getTipoPessoa().equals("ALUNO")) {
-                    duracaoEmprestimo = 10;
-                } else {
-                    duracaoEmprestimo = 15;
-                }
-                
                 //Seta, no objeto do novo empréstimo, a data prevista de devolução do exemplar retirado
-                novoEmprestimo.setDataDevolucao(novoEmprestimo.calculaDataDeDevolucao(duracaoEmprestimo));
+                novoEmprestimo.setDataDevolucao(novoEmprestimo.calculaDataDeDevolucao(duracaoEmprestimo(c.getTipoPessoa())));
                 
                 //Inclui o novo empréstimo no CSV de emprestimos
                 empdao.incluir(novoEmprestimo);
@@ -406,7 +464,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                 
                 //No registro do exemplar, seta como indisponível (emprestado) e seta também a data de devolução como a data que o exemplar estará 
                 //disponível, caso não haja atraso na devolução e altera o mesmo no CSV de exemplares
-                exemplarEmprestado.setDisponivelAPartirDe(novoEmprestimo.calculaDataDeDevolucao(duracaoEmprestimo));
+                exemplarEmprestado.setDisponivelAPartirDe(novoEmprestimo.calculaDataDeDevolucao(duracaoEmprestimo(c.getTipoPessoa())));
                 exemplarEmprestado.setDisponivel(false);
                 edao.alterar(exemplarEmprestado);
                 
@@ -436,6 +494,140 @@ public class TelaEmprestimo extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, erro.getMessage());
         }
     }//GEN-LAST:event_jButtonListarEmprestimosActionPerformed
+
+    private void jButtonFinalizarEmprestimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFinalizarEmprestimoActionPerformed
+        // TODO add your handling code here:
+        try {
+            int emprestimoID = Integer.parseInt(jLabelEmprestimoID.getText());
+            if(!jLabelEmprestimoID.getText().isEmpty()) {
+                
+                EmprestimoDAO empdao = new EmprestimoDAO(emprestimo_db);
+                Emprestimo emprestimo = empdao.getEmprestimoById(emprestimoID);
+                                
+                ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+                Exemplar exemplar = edao.getExemplarByID(emprestimo.getExemplarID());
+
+                float saldoDevedor = emprestimo.calculaSaldoDevedor();
+                if(saldoDevedor > 0) {
+                    ClienteDAO cdao = new ClienteDAO(cliente_db);
+                    Cliente c = cdao.getClienteById(emprestimo.getClienteID());
+                    c.setSaldoDevedor(saldoDevedor);
+                    cdao.alterar(c);
+                }
+                
+                Date hoje = new Date();
+                
+                emprestimo.setIsAtivo(false);
+                emprestimo.setDataDevolucao(hoje);
+                exemplar.setDisponivel(true);
+                exemplar.setDisponivelAPartirDe(hoje);
+
+                empdao.alterar(emprestimo);
+                edao.alterar(exemplar);
+                
+            }
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonFinalizarEmprestimoActionPerformed
+
+    private void jButtonCancelarEdicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarEdicaoActionPerformed
+        // TODO add your handling code here:
+        try {
+            jButtonCadastrarEmprestimo.setVisible(true);
+            jButtonCancelarEdicao.setVisible(false);
+            jButtonFinalizarEmprestimo.setVisible(false);
+            jButtonRenovarEmprestimo.setVisible(false);
+            jLabelEmprestimoID.setText("");
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+        
+    }//GEN-LAST:event_jButtonCancelarEdicaoActionPerformed
+
+    private void jTableEmprestimoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEmprestimoMouseClicked
+        // TODO add your handling code here:
+        try {
+            jButtonCadastrarEmprestimo.setVisible(false);
+            jButtonCancelarEdicao.setVisible(true);
+            jButtonFinalizarEmprestimo.setVisible(true);
+            jButtonRenovarEmprestimo.setVisible(true);
+            int linhaSelecionada = jTableEmprestimo.getSelectedRow();
+            jLabelEmprestimoID.setText(jTableEmprestimo.getValueAt(linhaSelecionada, 0).toString());
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jTableEmprestimoMouseClicked
+
+    private void jButtonRenovarEmprestimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRenovarEmprestimoActionPerformed
+        // TODO add your handling code here:
+        try {
+            int emprestimoID = Integer.parseInt(jLabelEmprestimoID.getText());
+            if(!jLabelEmprestimoID.getText().isEmpty()) {
+                
+                EmprestimoDAO empdao = new EmprestimoDAO(emprestimo_db);
+                Emprestimo emprestimo = empdao.getEmprestimoById(emprestimoID);
+                
+                ReservaDAO rdao = new ReservaDAO(reserva_db);
+                boolean existeReservaDoExemplar = rdao.existeReserva(emprestimo.getExemplarID());
+                
+                float saldoDevedor = emprestimo.calculaSaldoDevedor();
+                
+                ClienteDAO cdao = new ClienteDAO(cliente_db);
+                Cliente cliente = cdao.getClienteById(emprestimo.getClienteID());
+                
+                if(!existeReservaDoExemplar && saldoDevedor == 0) {
+                    
+                    ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+                    Exemplar exemplar = edao.getExemplarByID(emprestimo.getExemplarID());
+
+                    emprestimo.setDataDevolucao(emprestimo.calculaDataDeDevolucao(duracaoEmprestimo(cliente.getTipoPessoa())));
+                    exemplar.setDisponivelAPartirDe(emprestimo.calculaDataDeDevolucao(duracaoEmprestimo(cliente.getTipoPessoa())));
+                    exemplar.setDisponivel(false);
+                    
+                    edao.alterar(exemplar);
+                    empdao.alterar(emprestimo);
+                    
+                    JOptionPane.showMessageDialog(rootPane, "Empréstimo renovado com sucesso!");
+                    
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Não é possível renovar o empréstimo. Já existe(m) reserva(s) para o exemplar informado.");
+                    
+                    if(saldoDevedor > 0) {
+                        float saldoDevedorAtualCliente = cliente.getSaldoDevedor();
+                        if(saldoDevedorAtualCliente > 0) {
+                            cliente.setSaldoDevedor(saldoDevedorAtualCliente + saldoDevedor);
+                            cdao.alterar(cliente);
+                        }
+                    }
+                }
+            }
+            
+            
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonRenovarEmprestimoActionPerformed
+
+    private void jButtonBuscarEmprestimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEmprestimoActionPerformed
+        // TODO add your handling code here:
+        try {
+            String busca = jTextFieldBuscaEmprestimo.getText();
+            if(!busca.isEmpty()) {
+                EmprestimoDAO empdao = new EmprestimoDAO(emprestimo_db);
+                ArrayList<Emprestimo> emprestimosEncontrados = empdao.getEmprestimosByTitulo(busca);
+                if(emprestimosEncontrados.size() > 0) {
+                    showEmprestimos(emprestimosEncontrados);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Nenhum empréstimo encontrado para exemplares do livro " + busca);
+                }
+            }else {
+                JOptionPane.showMessageDialog(rootPane, "Preencha o campo Título antes de fazer a busca.");
+            }
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonBuscarEmprestimoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -475,12 +667,16 @@ public class TelaEmprestimo extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBuscarEmprestimo;
     private javax.swing.JButton jButtonCadastrarEmprestimo;
+    private javax.swing.JButton jButtonCancelarEdicao;
+    private javax.swing.JButton jButtonFinalizarEmprestimo;
     private javax.swing.JButton jButtonListarEmprestimos;
+    private javax.swing.JButton jButtonRenovarEmprestimo;
     private javax.swing.JComboBox<String> jComboBoxEmprestimoCliente;
     private javax.swing.JComboBox<String> jComboBoxEmprestimoExemplar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelEmprestimoID;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

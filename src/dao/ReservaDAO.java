@@ -179,4 +179,55 @@ public class ReservaDAO implements IReservaDAO {
         }
     }
     
+    //Retorna as reservas ativas
+    public ArrayList<Reserva> getReservasAtivas() throws Exception {
+        try {
+            ArrayList<Reserva> reservasEncontradas = null;
+            ArrayList<Reserva> reservasCadastradas = this.listar();
+            for (int i = 0; i < reservasCadastradas.size(); i++) {
+                Reserva reserva = reservasCadastradas.get(i);
+                if(reserva.isAtiva()) {
+                    reservasEncontradas.add(reserva);
+                }
+            }
+            return reservasEncontradas;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    //Retorna uma reserva de acordo com o id informado
+    public Reserva getReservaById(int reservaID) throws Exception {
+        try {
+            Reserva reservaEncontrada = null;
+            ArrayList<Reserva> reservasAtivasCadastradas = this.getReservasAtivas();
+            for (int i = 0; i < reservasAtivasCadastradas.size(); i++) {
+                Reserva reserva = reservasAtivasCadastradas.get(i);
+                if(reserva.getId() == reservaID) {
+                    reservaEncontrada = reserva;
+                }
+            }
+            return reservaEncontrada;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    //Retorna um arraylist de reservas ativas de um exemplar especifico
+    public ArrayList<Reserva> getReservasByExemplarID(int exemplarID) throws Exception {
+        try {
+            ArrayList<Reserva> reservasDoExemplar = null;
+            ArrayList<Reserva> reservasAtivas = this.getReservasAtivas();
+            for (int i = 0; i < reservasAtivas.size(); i++) {
+                Reserva reserva = reservasAtivas.get(i);
+                if(reserva.getExemplarID() == exemplarID) {
+                    reservasDoExemplar.add(reserva);
+                }
+            }
+            return reservasDoExemplar;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
 }

@@ -86,7 +86,7 @@ public class ExemplarDAO implements IExemplarDAO {
         }
     }
     
-    public ArrayList<Exemplar> getExemplarByTitulo(String titulo) throws Exception {
+    public ArrayList<Exemplar> getExemplaresByTitulo(String titulo) throws Exception {
         try {
             ArrayList<Exemplar> exemplaresEncontrados = new ArrayList();
             ArrayList<Exemplar> listaExemplares = this.listar();

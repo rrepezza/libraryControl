@@ -148,6 +148,10 @@ public class TelaReserva extends javax.swing.JFrame {
         jComboBoxReservaExemplar = new javax.swing.JComboBox<>();
         jComboBoxReservaCliente = new javax.swing.JComboBox<>();
         jButtonCadastrarReserva = new javax.swing.JButton();
+        jButtonEfetuarEmprestimo = new javax.swing.JButton();
+        jButtonCancelarReserva = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabelReservaID = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jTextFieldBuscaReserva = new javax.swing.JTextField();
@@ -178,6 +182,27 @@ public class TelaReserva extends javax.swing.JFrame {
             }
         });
 
+        jButtonEfetuarEmprestimo.setText("Efetuar Empréstimo");
+        jButtonEfetuarEmprestimo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEfetuarEmprestimoActionPerformed(evt);
+            }
+        });
+
+        jButtonCancelarReserva.setText("Cancelar Reserva");
+        jButtonCancelarReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarReservaActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Cancelar Edição");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -185,17 +210,27 @@ public class TelaReserva extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addGap(18, 18, 18)
-                            .addComponent(jComboBoxReservaExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(32, 32, 32)
-                            .addComponent(jComboBoxReservaCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jButtonCadastrarReserva))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBoxReservaExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(32, 32, 32)
+                                .addComponent(jComboBoxReservaCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelReservaID))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButtonCadastrarReserva)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonEfetuarEmprestimo)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonCancelarReserva)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,13 +238,18 @@ public class TelaReserva extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBoxReservaExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxReservaExemplar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelReservaID))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jComboBoxReservaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButtonCadastrarReserva)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonCadastrarReserva)
+                    .addComponent(jButtonEfetuarEmprestimo)
+                    .addComponent(jButtonCancelarReserva)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -218,6 +258,11 @@ public class TelaReserva extends javax.swing.JFrame {
         jLabel3.setText("Título:");
 
         jButtonBuscarReserva.setText("Buscar");
+        jButtonBuscarReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarReservaActionPerformed(evt);
+            }
+        });
 
         jButtonListarReservas.setText("Listar Reservas");
         jButtonListarReservas.addActionListener(new java.awt.event.ActionListener() {
@@ -382,6 +427,35 @@ public class TelaReserva extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonListarReservasActionPerformed
 
+    private void jButtonEfetuarEmprestimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEfetuarEmprestimoActionPerformed
+        // TODO add your handling code here:
+        try {
+            
+            int reservaID = Integer.parseInt(jLabelReservaID .getText());
+            ReservaDAO rdao = new ReservaDAO(reserva_db);
+            
+            if(!jLabelReservaID .getText().isEmpty()) {
+                Reserva reserva = rdao.getReservaById(reservaID);
+            }
+            
+        } catch (Exception erro) {
+            erro.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+    }//GEN-LAST:event_jButtonEfetuarEmprestimoActionPerformed
+
+    private void jButtonCancelarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarReservaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonCancelarReservaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButtonBuscarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarReservaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonBuscarReservaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -418,14 +492,18 @@ public class TelaReserva extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonBuscarReserva;
     private javax.swing.JButton jButtonCadastrarReserva;
+    private javax.swing.JButton jButtonCancelarReserva;
+    private javax.swing.JButton jButtonEfetuarEmprestimo;
     private javax.swing.JButton jButtonListarReservas;
     private javax.swing.JComboBox<String> jComboBoxReservaCliente;
     private javax.swing.JComboBox<String> jComboBoxReservaExemplar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabelReservaID;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

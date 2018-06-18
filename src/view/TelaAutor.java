@@ -26,6 +26,7 @@ public class TelaAutor extends javax.swing.JFrame {
     public TelaAutor() {
         initComponents();
         //Inicio o formulário com o botão de alterar e cancelar alteracao ocultos
+        jLabelAutorID.setVisible(false);
         jButtonAlterarAutor.setVisible(false);
         jButtonCancelaAutorAlteracao.setVisible(false);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -93,14 +94,14 @@ public class TelaAutor extends javax.swing.JFrame {
             }
         });
 
-        jButtonAlterarAutor.setText("Alterar");
+        jButtonAlterarAutor.setText("Editar");
         jButtonAlterarAutor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAlterarAutorActionPerformed(evt);
             }
         });
 
-        jButtonCancelaAutorAlteracao.setText("Cancelar Alteração");
+        jButtonCancelaAutorAlteracao.setText("Cancelar Edição");
         jButtonCancelaAutorAlteracao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCancelaAutorAlteracaoActionPerformed(evt);
@@ -342,6 +343,7 @@ public class TelaAutor extends javax.swing.JFrame {
             AutorDAO adao = new AutorDAO(autor_db);
             adao.alterar(autorAlterado);
             
+            jLabelAutorID.setText("");
             jTextFieldAutorNome.setText("");
             JOptionPane.showMessageDialog(rootPane, "Autor alterado com sucesso!");
             jButtonListarAutoresActionPerformed(evt);
@@ -360,12 +362,21 @@ public class TelaAutor extends javax.swing.JFrame {
         //que é setado no próprio campo de texto do formulário
         //Ao chamar o método, oculto o botão de incluir e mostro o botão de alterar e o botao de cancelar alteração
         int linhaSelecionada = jTableAutores.getSelectedRow();
-        jLabelAutorID.setVisible(false); 
+        
         jButtonCadastrarAutor.setVisible(false);
         jButtonAlterarAutor.setVisible(true);
         jButtonCancelaAutorAlteracao.setVisible(true);
-        jLabelAutorID.setText(jTableAutores.getModel().getValueAt(linhaSelecionada, 0).toString());
-        jTextFieldAutorNome.setText(jTableAutores.getModel().getValueAt(linhaSelecionada, 1).toString());
+        
+        try {
+            AutorDAO adao = new AutorDAO(autor_db);
+            Autor autor = adao.getAutorByID(Integer.parseInt(jTableAutores.getModel().getValueAt(linhaSelecionada, 0).toString()));
+            
+            jLabelAutorID.setText(String.valueOf(autor.getId()));
+            jTextFieldAutorNome.setText(autor.getNome());
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+        }
+         
     }//GEN-LAST:event_jTableAutoresMouseClicked
 
     private void jButtonCancelaAutorAlteracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelaAutorAlteracaoActionPerformed

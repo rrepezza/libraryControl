@@ -6,6 +6,7 @@
 package dao;
 
 import classes.Emprestimo;
+import classes.Exemplar;
 import interfaces.IEmprestimoDAO;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -21,6 +22,9 @@ public class EmprestimoDAO implements IEmprestimoDAO {
     
     private String nomeDoArquivo = "";
     private String reserva_db = "./src/arquivos/Reservas.csv";
+    private String exemplar_db = "./src/arquivos/Livros.csv";
+    private String livro_db = "./src/arquivos/Exemplares.csv";
+    
     
     public EmprestimoDAO(String nomeDoArquivo){
         this.nomeDoArquivo = nomeDoArquivo;
@@ -97,19 +101,6 @@ public class EmprestimoDAO implements IEmprestimoDAO {
         }
     }
     
-    //Renova emprestimo de um determinado exemplar, caso nao exista reserva ativa do mesmo
-    public void renovarEmprestimo(int id) throws Exception {
-        try {
-            ReservaDAO rdao = new ReservaDAO(reserva_db);
-            if(!rdao.existeReserva(id)) {
-                //implementar alteracao no registro do emprestimo
-                //alterar a data de emprestimo e a data de retorno
-            }
-        } catch (Exception erro) {
-            throw erro;
-        }
-    }
-    
     //Retorna a quantidade de emprestimos ativos por cliente
     public int getQuantidadeDeEmprestimosDoCliente(int clienteID) throws Exception {
         try {
@@ -139,6 +130,47 @@ public class EmprestimoDAO implements IEmprestimoDAO {
                 }
             }
             return emprestimosAtivos;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    //Retorna um objeto emprestimo de acordo com a id passada via parametro
+    public Emprestimo getEmprestimoById(int emprestimoID) throws Exception {
+        try {
+            ArrayList<Emprestimo> emprestimosCadastrados = this.listar();
+            Emprestimo emprestimo = null;
+            for (int i = 0; i < emprestimosCadastrados.size(); i++) {
+                Emprestimo temp = emprestimosCadastrados.get(i);
+                if(temp.getId() == emprestimoID) {
+                    emprestimo = temp;
+                }
+            }
+            return emprestimo;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    //Retorna um arraylist de emprestimos de acordo com o titulo do livro selecionado
+    public ArrayList<Emprestimo> getEmprestimosByTitulo(String titulo) throws Exception {
+        try {
+            ArrayList<Emprestimo> emprestimosEncontrados = null;
+            ArrayList<Emprestimo> emprestimosCadastrados = this.listar(); 
+            ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+            ArrayList<Exemplar> listaExemplares = edao.getExemplaresByTitulo(titulo);
+            if(listaExemplares.size() > 0) {
+                for (int i = 0; i < listaExemplares.size(); i++) {
+                    Exemplar exemplar = listaExemplares.get(i);
+                    for (int j = 0; j < emprestimosCadastrados.size(); j++) {
+                        Emprestimo emprestimo = emprestimosCadastrados.get(j);
+                        if(emprestimo.getExemplarID() == exemplar.getId()) {
+                            emprestimosEncontrados.add(emprestimo);
+                        }
+                    }
+                }
+            }
+            return emprestimosEncontrados;
         } catch (Exception erro) {
             throw erro;
         }

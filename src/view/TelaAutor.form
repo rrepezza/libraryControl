@@ -154,7 +154,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButtonAlterarAutor">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Alterar"/>
+                <Property name="text" type="java.lang.String" value="Editar"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAlterarAutorActionPerformed"/>
@@ -164,7 +164,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButtonCancelaAutorAlteracao">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cancelar Altera&#xe7;&#xe3;o"/>
+                <Property name="text" type="java.lang.String" value="Cancelar Edi&#xe7;&#xe3;o"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCancelaAutorAlteracaoActionPerformed"/>
