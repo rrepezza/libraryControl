@@ -160,7 +160,11 @@ public class Emprestimo implements TratamentoDeDados, Serializable {
         return saida;
     }
     
-    public Date calculaDataDeDevolucao(int limite) {
+    public Date calculaDataDeDevolucao(String tipoPessoa) {
+        int limite = 15;
+        if(tipoPessoa.equals("ALUNO")) {
+            limite = 10;
+        }
         Calendar c = Calendar.getInstance();
         c.setTime(dataEmprestimo);
         c.add(Calendar.DATE, limite);

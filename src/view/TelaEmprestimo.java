@@ -9,7 +9,6 @@ import classes.Cliente;
 import classes.Emprestimo;
 import classes.Exemplar;
 import classes.Livro;
-import classes.Reserva;
 import dao.ClienteDAO;
 import dao.EmprestimoDAO;
 import dao.ExemplarDAO;
@@ -454,7 +453,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                 Emprestimo novoEmprestimo = new Emprestimo(id, exemplarID, c.getId());
                 
                 //Seta, no objeto do novo empréstimo, a data prevista de devolução do exemplar retirado
-                novoEmprestimo.setDataDevolucao(novoEmprestimo.calculaDataDeDevolucao(duracaoEmprestimo(c.getTipoPessoa())));
+                novoEmprestimo.setDataDevolucao(novoEmprestimo.calculaDataDeDevolucao(c.getTipoPessoa()));
                 
                 //Inclui o novo empréstimo no CSV de emprestimos
                 empdao.incluir(novoEmprestimo);
@@ -464,7 +463,7 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                 
                 //No registro do exemplar, seta como indisponível (emprestado) e seta também a data de devolução como a data que o exemplar estará 
                 //disponível, caso não haja atraso na devolução e altera o mesmo no CSV de exemplares
-                exemplarEmprestado.setDisponivelAPartirDe(novoEmprestimo.calculaDataDeDevolucao(duracaoEmprestimo(c.getTipoPessoa())));
+                exemplarEmprestado.setDisponivelAPartirDe(novoEmprestimo.calculaDataDeDevolucao(c.getTipoPessoa()));
                 exemplarEmprestado.setDisponivel(false);
                 edao.alterar(exemplarEmprestado);
                 
@@ -581,8 +580,8 @@ public class TelaEmprestimo extends javax.swing.JFrame {
                     ExemplarDAO edao = new ExemplarDAO(exemplar_db);
                     Exemplar exemplar = edao.getExemplarByID(emprestimo.getExemplarID());
 
-                    emprestimo.setDataDevolucao(emprestimo.calculaDataDeDevolucao(duracaoEmprestimo(cliente.getTipoPessoa())));
-                    exemplar.setDisponivelAPartirDe(emprestimo.calculaDataDeDevolucao(duracaoEmprestimo(cliente.getTipoPessoa())));
+                    emprestimo.setDataDevolucao(emprestimo.calculaDataDeDevolucao(cliente.getTipoPessoa()));
+                    exemplar.setDisponivelAPartirDe(emprestimo.calculaDataDeDevolucao(cliente.getTipoPessoa()));
                     exemplar.setDisponivel(false);
                     
                     edao.alterar(exemplar);

@@ -11,6 +11,7 @@ import classes.Exemplar;
 import classes.Livro;
 import classes.Reserva;
 import dao.ClienteDAO;
+import dao.EmprestimoDAO;
 import dao.ExemplarDAO;
 import dao.LivroDAO;
 import dao.ReservaDAO;
@@ -34,6 +35,7 @@ public class TelaReserva extends javax.swing.JFrame {
     private String exemplar_db = "./src/arquivos/Exemplares.csv";
     private String livro_db = "./src/arquivos/Livros.csv";
     private String reserva_db = "./src/arquivos/Reservas.csv";
+    private String emprestimo_db = "./src/arquivos/Emprestimos.csv";
     
     public boolean clienteAptoParaReservar(int quantidadeAtualDeReservas, String tipoCliente) {
         if(tipoCliente.equals("ALUNO")) {
@@ -429,26 +431,92 @@ public class TelaReserva extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonListarReservasActionPerformed
 
     private void jButtonEfetuarEmprestimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEfetuarEmprestimoActionPerformed
-        // TODO add your handling code here:
+        //Efetua empréstimo a partir de uma reserva existente
         try {
-            
+            //Busca o ID do empréstimo, que foi vinculado ao label invisível no formulário de Reservas
             int reservaID = Integer.parseInt(jLabelReservaID .getText());
-            ReservaDAO rdao = new ReservaDAO(reserva_db);
             
+            //Se o texto contido no label for diferente de vazio, executa
             if(!jLabelReservaID .getText().isEmpty()) {
-                Reserva reserva = rdao.getReservaById(reservaID);                
-                ArrayList<Reserva> reservasDoExemplar = rdao.getReservasByExemplarID(reserva.getExemplarID());
+                //Cria instancia de ReservaDAO
+                ReservaDAO rdao = new ReservaDAO(reserva_db);
+                
+                //Cria um objeto Reserva de acordo com o ID selecionado
+                Reserva reservaAtual = rdao.getReservaById(reservaID);
+                
+                //Lista as reservas que existem para o exemplar selecionado
+                ArrayList<Reserva> reservasDoExemplar = rdao.getReservasByExemplarID(reservaAtual.getExemplarID());
+                
+                //Cria uma instancia de ClienteDAO
                 ClienteDAO cdao = new ClienteDAO(cliente_db);
-                boolean prioritario = false;
-                if(reservasDoExemplar.size() > 0) {
+                
+                //Cria um objeto de Cliente a partir do ID do cliente vinculado à reserva selecionada
+                Cliente clienteReservaAtual = cdao.getClienteById(reservaAtual.getClienteID());
+                
+                //Cria uma instancia de EmprestimoDAO
+                EmprestimoDAO empdao = new EmprestimoDAO(emprestimo_db);
+                
+                //Cria uma instancia de ExemplarDAO
+                ExemplarDAO edao = new ExemplarDAO(exemplar_db);
+                
+                //Cria um objeto Exemplar a partir do ID do exemplar vinculado à reserva selecionada
+                Exemplar exemplar = edao.getExemplarByID(reservaAtual.getExemplarID());
+                
+                //Cria uma instancia de IDGenerator, responsável por controlar o incremento dos IDs dos registros
+                IDGenerator novoID = new IDGenerator();
+                
+                //Caso haja mais de uma reserva para o exemplar vinculado à reserva selecionada
+                //Verifica se essa reserva atual será a que poderá gerar um empréstimo nesse momento
+                //Dependendo do tipo do Cliente e / ou da data da reserva ou se existe uma reserva prioritária para o exemplar
+                if(reservasDoExemplar.size() > 1) {
+                    
+                    boolean prioritario = false;
+                    
+                    for (int i = 0; i < reservasDoExemplar.size(); i++) {
+                        Reserva reservaExistente = reservasDoExemplar.get(i);
+                        //Verifica se a reserva do arraylist é diferente da reserva atual
+                        //Caso o cliente possua preferencia sobre o cliente da reserva atual, não faz o empréstimo
+                        //Caso o cliente possua a mesma preferencia do atual, verifica a data da reserva e só realiza o empréstimo
+                        //caso a data da reserva atual for anterior à data da reserva pesquisada
+                        if(reservaExistente.getId() != reservaAtual.getId()) {
+                            //Cliente clienteReservaExistente = 
+                        }
+                    }
+                    
                     
                 } else {
-                    IDGenerator novoID = new IDGenerator();
-                    int id = novoID.getNovoID();
-                    Emprestimo emprestimo = new Emprestimo(id, reserva.getExemplarID(), reserva.getClienteID());
+                    //Cria novo ID para o emprestimo
+                    int emprestimoID = novoID.getNovoID();
                     
-                    //falta código
+                    //Cria um objeto do novo emprestimo a partir da reserva selecionada
+                    Emprestimo emprestimo = new Emprestimo(emprestimoID, reservaAtual.getExemplarID(), reservaAtual.getClienteID());
+                    //Seta a data de devolução do empréstimo, a partir do tipo do cliente
+                    emprestimo.setDataDevolucao(emprestimo.calculaDataDeDevolucao(clienteReservaAtual.getTipoPessoa()));
+                    //Seta o emprestimo como ativo (não expirado)
+                    emprestimo.setIsAtivo(true);
+                    //Inclui o emprestimo no CSV correspondente
+                    empdao.incluir(emprestimo);
+                                    
+                    //Seta a reserva como não ativa (expirada)
+                    reservaAtual.setIsAtiva(false);
+                    //Altera a reserva no CSV correspondente
+                    rdao.alterar(reservaAtual);
+                    
+                    //Seta o exemplar como indisponível
+                    exemplar.setDisponivel(false);
+                    //Seta a data de disponibilidade do exemplar, pelo tipo do cliente
+                    exemplar.setDisponivelAPartirDe(emprestimo.calculaDataDeDevolucao(clienteReservaAtual.getTipoPessoa()));
+                    //Altera o exemplar no CSV correspondente
+                    edao.alterar(exemplar);
+                    
+                    //Grava o ID gerado no arquivo correspondente (incremento automático)
+                    novoID.gravaID(emprestimoID);
+                    //Exibe mensagem de sucesso
+                    JOptionPane.showMessageDialog(rootPane, "Empréstimo realizado com sucesso!");
                 }
+                
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Nenhuma reserva selecionada.");
             }
             
         } catch (Exception erro) {
